@@ -1,0 +1,363 @@
+@startuml
+package Task {
+
+entity CTask {
+name: str
+}
+
+class CDAOTask {
+create()
+read()
+update()
+delete()
+}
+
+CTask -- CDAOTask:<<uses>>
+
+class CTaskFactory <<Singleton>> {
+}
+
+CTaskFactory -- CTask: "<<create>>" >
+
+
+interface CTaskOptionGui {
+}
+
+class CTaskOptionCtrl <<Singleton>> {
+create()
+modify()
+delete()
+duplicate()
+parameterize()
+}
+
+CTaskOptionCtrl <--> CTaskOptionGui
+CTaskOptionCtrl -- CTaskFactory : <<uses>>
+CTaskOptionCtrl -- CDAOTask
+
+interface CTaskCreateGui {
+}
+
+class CTaskCreateCtrl <<Singleton>> {
+verify_date()
+verify_...()
+}
+
+CTaskCreateGui --> CTaskOptionCtrl
+CTaskCreateGui <--> CTaskCreateCtrl
+
+
+}
+
+package Event {
+
+entity CEvent {
+name: str
+horaire: str
+category: str
+repetition: str
+invited: str
+localisation: str
+reminders: str
+description: str
+visibility: str
+}
+
+class CDAOEvent {
+create()
+read()
+update()
+delete()
+}
+
+CEvent -- CDAOEvent:<<uses>>
+
+class CEventFactory <<Singleton>> {
+
+}
+
+CEventFactory -- CEvent: "<<create>>" >
+
+interface CEventOptionGui {
+}
+
+class CEventOptionCtrl <<Singleton>> {
+create()
+modify()
+delete()
+cancel()
+duplicate()
+parameterize()
+}
+
+CEventOptionCtrl <--> CEventOptionGui
+CEventOptionCtrl -- CEventFactory : <<uses>>
+CEventOptionCtrl -- CDAOEvent
+
+interface CEventCreateGui {
+}
+
+class CEventCreateCtrl <<Singleton>> {
+verify_date()
+verify_...()
+}
+
+CEventCreateGui --> CEventOptionCtrl
+CEventCreateGui <--> CEventCreateCtrl
+
+interface CEventModifyGui {
+}
+
+class CEventModifyCtrl <<Singleton>> {
+verify_date()
+verify_...()
+}
+
+CEventModifyGui --> CEventOptionCtrl
+CEventModifyGui <--> CEventModifyCtrl
+
+}
+
+package Agenda {
+
+entity CAgenda {
+list_event: list[Event]
+name: str
+}
+
+class CDAOAgenda {
+create()
+read()
+update()
+delete()
+}
+
+CAgenda -- CDAOAgenda:<<uses>>
+
+class CAgendaFactory <<Singleton>> {
+}
+
+CAgendaFactory -- CAgenda: "<<create>>" >
+
+
+interface CAgendaOptionGui {
+}
+
+class CAgendaOptionCtrl <<Singleton>> {
+create()
+modify()
+delete()
+duplicate()
+parameterize()
+}
+
+CAgendaOptionCtrl <--> CAgendaOptionGui
+CAgendaOptionCtrl -- CAgendaFactory : <<uses>>
+CAgendaOptionCtrl -- CDAOAgenda
+
+interface CAgendaCreateGui {
+}
+
+class CAgendaCreateCtrl <<Singleton>> {
+verify_date()
+verify_...()
+}
+
+CAgendaCreateGui --> CAgendaOptionCtrl
+CAgendaCreateGui <--> CAgendaCreateCtrl
+
+}
+
+CAgenda *-- CEvent
+
+package Login <<Frame>>{
+
+interface CLoginGui{
+}
+
+
+class CLoginCtrl <<Singleton>> {
+}
+
+CLoginCtrl <..> CLoginGui
+
+}
+
+
+package change_password <<Frame>>{
+interface CChangePasswordGui{
+}
+
+class CChangePasswordCtrl <<Singleton>> {
+}
+
+CChangePasswordGui <..> CChangePasswordCtrl
+
+}
+
+package create_account <<Frame>>{
+interface CCreateAccountGui{
+}
+
+class CCreateAccountCtrl <<Singleton>> {
+}
+
+CCreateAccountGui <..> CCreateAccountCtrl
+
+}
+
+interface CDashBoardGui{
+}
+
+interface CInputGui{
+}
+
+class CUser{
+login
+password
+}
+
+class CUserFactory <<Singleton>> {
+}
+
+class CDAOUser{
+}
+
+CLoginGui *-- CDashBoardGui
+CLoginGui *-- CInputGui
+
+CChangePasswordGui *-- CDashBoardGui
+CChangePasswordGui *-- CInputGui
+
+CCreateAccountGui *-- CDashBoardGui
+CCreateAccountGui *-- CInputGui
+
+CUserFactory --> CDAOUser
+
+CUser <.. CLoginCtrl
+CUser <.. CChangePasswordCtrl
+CUser <.. CCreateAccountCtrl
+
+CDAOUser --> CLoginCtrl
+CDAOUser --> CChangePasswordCtrl
+CDAOUser --> CCreateAccountCtrl
+
+package Server {
+class RequestRecepter {
+}
+
+class DBCom {
+}
+
+RequestRecepter <--> DBCom
+
+}
+
+package home_page {
+
+interface CHomePageGui {
+}
+
+class CHomePageCtrl <<Singleton>> {
+}
+
+CHomePageCtrl -- CHomePageGui
+
+}
+
+CHomePageCtrl --> CLoginGui
+CHomePageCtrl --> CCreateAccountGui
+
+package main_page {
+class SwitchDisplayCtrl {
+}
+
+package EventDisplay {
+
+class EventGui {
+}
+EventGui --> CEvent
+
+
+class EventCtrl {
+}
+EventCtrl --> CEventOptionGui
+
+EventGui <--> EventCtrl
+
+class SettingEventDisplayGui {
+}
+
+class SettingEventDisplayCtrl <<Singleton>> {
+}
+
+SettingEventDisplayGui <--> SettingEventDisplayCtrl
+
+
+class EventDisplayGui {
+}
+
+class EventDisplayCtrl <<Singleton>> {
+}
+
+EventDisplayGui <--> EventDisplayCtrl
+
+}
+
+class InfoDisplayGui {
+}
+
+class InfoDisplayCtrl <<Singleton>> {
+}
+
+InfoDisplayGui <--> InfoDisplayCtrl
+
+interface MainPageGui {
+}
+
+package TaskDisplay {
+
+class TaskGui {
+}
+
+class TaskCtrl {
+}
+
+TaskCtrl <--> TaskGui
+
+class SettingTaskDisplayGui {
+}
+
+class SettingTaskDisplayCtrl <<Singleton>> {
+}
+
+SettingTaskDisplayGui <--> SettingTaskDisplayCtrl
+
+
+class ListTaskGui {
+}
+
+class ListTaskCtrl {
+}
+
+ListTaskGui <--> ListTaskCtrl
+
+}
+
+MainPageGui *-- InfoDisplayGui
+MainPageGui *-- EventDisplayGui
+MainPageGui *-- SettingEventDisplayGui
+MainPageGui *-- SettingTaskDisplayGui
+}
+
+TaskGui --> CTask
+
+TaskGui *-- ListTaskGui
+TaskCtrl --> CTaskOptionGui
+
+MainPageGui <-- CLoginCtrl
+
+SwitchDisplayCtrl --> ListTaskGui
+SwitchDisplayCtrl --> EventDisplayGui
+
+@enduml
