@@ -1,0 +1,8 @@
+@startuml
+ref over User, System
+ connect
+end
+User -> System : valider la reception de l'agenda
+System --> User : ajouter l'agenda dans ceux de l'utilisateur
+System -> System : envoyer un mail aux concernés
+@enduml

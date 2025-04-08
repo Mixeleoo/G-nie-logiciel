@@ -1,0 +1,13 @@
+@startuml
+Actor User as u
+participant System as sy
+participant Server as se
+activate sy
+== CONTEXTE : Création ou modification d'évènement. ==
+
+u -> sy : L'utilisateur demande les rappels possibles à cet évènement.
+sy -> u : Le système propose les rappels possibles.
+u -> sy : L'utilisateur choisit ses rappels.
+
+deactivate sy
+@enduml

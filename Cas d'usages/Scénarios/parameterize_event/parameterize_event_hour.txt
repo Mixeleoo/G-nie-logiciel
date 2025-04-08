@@ -1,0 +1,17 @@
+@startuml
+Actor User as u
+participant System as sy
+participant Server as se
+activate sy
+== CONTEXTE : Création ou modification d'évènement. ==
+
+u -> sy : L'utilisateur personnalise l'heure de l'évènement.
+loop #Pink Tant que l'heure de l'évènement n'est pas valide.
+sy -> sy : Le système vérifie l'heure de l'évènement.
+sy -> u : Le système ne valide pas l'heure de l'évènement.
+u -> sy : L'utilisateur personnalise l'heure de l'évènement.
+end
+sy -> u : Le système valide l'heure de l'évènement.
+
+deactivate sy
+@enduml

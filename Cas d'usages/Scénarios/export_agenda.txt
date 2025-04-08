@@ -1,0 +1,16 @@
+@startuml
+User -> System : effectuer un clic droit sur l'agenda à exporter
+System --> User : ouvrir la fenêtre de choix
+User -> System : choisir "exporter agenda"
+System --> User : demander les droits d'accès souhaités
+User -> System : choisir les droits d'accès souhaités
+loop tant que l'adresse est invalide
+System --> User : demander l'adresse mail à qui envoyer
+User -> System : entrer l'adresse mail
+System -> Serveur : demander verification de l'adresse mail
+end
+Serveur --> System : valider l'adresse saisie
+System --> User : valider l'adresse saisie
+System --> User : valider l'export
+System -> System : envoyer mail d'export à l'adresse mail saisie
+@enduml

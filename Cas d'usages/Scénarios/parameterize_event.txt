@@ -1,0 +1,36 @@
+@startuml
+Actor User as u
+participant System as sy
+participant Server as se
+activate sy
+ref over u, sy, se: connect
+u -> sy : L'utilisateur clique droit sur un évènement.
+sy -> u : Le système affiche les options d'actions sur l'évènement.
+u -> sy : L'utilisateur clique sur "Modifier"
+sy -> u : Le système affiche les informations de l'évènement.
+opt L'utilisateur personnalise la date de l'évènement.
+ref over u, sy: parameterize_event_date.
+end
+opt L'utilisateur personnalise l'heure de l'évènement.
+ref over u, sy: parameterize_event_hour.
+end
+opt L'utilisateur personnalise la répétition de l'évènement.
+ref over u, sy: parameterize_event_repetition.
+end
+opt L'utilisateur ajoute des invités à l'évènement.
+ref over u, sy, se: parameterize_event_invitations.
+end
+opt L'utilisateur indique une localisation à cet l'évènement.
+ref over u, sy: parameterize_event_localisation.
+end
+opt L'utilisateur modifie les rappels de cet l'évènement.
+ref over u, sy: parameterize_event_reminders.
+end
+opt L'utilisateur rentre une description à cet évènement.
+ref over u, sy: parameterize_event_description.
+end
+opt L'utilisateur personnalise la visibilité de l'évènement.
+ref over u, sy, se: parameterize_event_visibility.
+end
+deactivate sy
+@enduml

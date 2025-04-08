@@ -1,0 +1,6 @@
+@startuml
+User -> System : effectuer un clic droit sur l'évenement à convertir
+System --> User : Ouvrir fenêtre de choix
+User -> System : Choisir action "exporter en texte"
+System --> User : Envoyer l'évenement sous forme de texte dans le presse papier
+@enduml

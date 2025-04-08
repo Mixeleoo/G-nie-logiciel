@@ -1,0 +1,11 @@
+@startuml
+ref over User, System
+ connect
+end
+User -> System : sélectionner la flèche "suivant" sur un évenement
+System -> Serveur : demander évenement suivant
+Serveur -> Serveur : trouver évènement\n suivant
+note right : vérifier évenement le plus\n proche de l'événement\n courant en fonction\n de sa date et son heure
+Serveur --> System : donner l'évenement suivant
+System --> User : afficher l'évenement suivant
+@enduml

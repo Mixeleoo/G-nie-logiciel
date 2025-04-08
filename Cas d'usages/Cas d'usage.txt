@@ -1,0 +1,149 @@
+@startuml
+!theme spacelab
+left to right direction
+
+package "UserUCS" {
+actor Utilisateur
+
+package "UsersAccess" {
+  usecase "connect" as AU010
+  usecase "create_account" as AU020
+  usecase "change_password" as AU030
+}
+
+package "Personnalisation" {
+  usecase "parameterize" as P010
+  note right
+   État sombre/clair, début du jour, langue, heure locale, notifications
+  end note
+  usecase "search_event " as P020
+  note right
+    Par titre ou description
+  end note
+  usecase "search_task" as P030
+  note right
+    Par titre
+  end note
+  usecase "check_events_details" as P040
+  usecase "switch_event" as UCSWI
+  note right
+    Chronologiquement
+  end note
+  usecase "next" as P050
+  usecase "previous" as P051
+  usecase "change_display" as P060
+  note right
+    Jour, semaine ou mois
+  end note
+}
+
+UCSWI -- Utilisateur
+UCSWI <|-- P050
+UCSWI <|-- P051
+
+package "Création et modification" {
+  usecase "manage_tasks" as UCMANTAS
+  usecase "create" as CM020
+  usecase "modify" as CM030
+  usecase "delete" as CM040
+
+  usecase "manage_event" as UCMANEVE
+  usecase "create" as CM060
+  usecase "modify" as CM070
+  usecase "delete" as CM080
+  note right
+    Supprimé totalement
+  end note
+  usecase "cancel" as CM090
+  note right
+    L'évènement est uniquement affiché barré
+  end note
+  usecase "duplicate" as CM100
+  usecase "parameterize" as CM120
+  note right
+    Catégorie, horaire, répétition, invités, localisation, rappels, description, visibilité
+  end note
+ 
+  usecase "manage_agenda" as UCMANAGE
+  usecase "create" as CM010
+  usecase "parameterize" as CM110
+  note right
+    Couleur, visibilité, personnes, rappels
+  end note
+}
+
+package "Partage et communication" {
+  usecase "share_event" as PC010
+  usecase "share_task" as PC020
+  usecase "export_agenda" as PC030
+  note right
+    En lecture seule ou modificateur
+  end note
+  usecase "import_agenda" as PC040
+  usecase "send_mail_import_notification" as PC050
+  note right
+    Le mail est envoyé au possesseur de l'agenda importé et au receveur de l'agenda importé
+  end note
+  usecase "event_to_text" as PC070
+  note right
+    Transformer les détails d'un évènement en texte pour un partage rapide
+  end note
+  usecase "task_to_text" as PC080
+  note right
+    Transformer les détails d'une tâche en texte pour un partage rapide
+  end note
+}
+
+:Serveur: as s <<application>><<secondaire>>
+
+Utilisateur -- AU010
+Utilisateur -- AU020
+Utilisateur -- AU030
+
+s -up-- AU010
+s -up-- AU020
+s -up-- AU030
+
+Utilisateur -- P010
+Utilisateur -- P020
+Utilisateur -- P030
+Utilisateur -- P040
+Utilisateur -- P060
+
+Utilisateur -- UCMANAGE
+UCMANAGE <|-- CM010
+UCMANAGE <|-- CM110
+
+Utilisateur -- UCMANTAS
+UCMANTAS <|-- CM020
+UCMANTAS <|-- CM030
+UCMANTAS <|-- CM040
+
+Utilisateur -- UCMANEVE
+UCMANEVE <|-- CM060
+UCMANEVE <|-- CM070
+UCMANEVE <|-- CM080
+UCMANEVE <|-- CM090
+UCMANEVE <|-- CM100
+UCMANEVE <|-- CM120
+
+Utilisateur -- PC010
+Utilisateur -- PC020
+Utilisateur -- PC030
+
+Utilisateur -- PC040
+PC040 -- PC050:<<include>>
+s -up-- PC050
+
+Utilisateur -- PC070
+Utilisateur -- PC080
+}
+
+
+package ServerUCS {
+actor Server as S <<application>>
+
+usecase "Gérer base de donnée" as UCBD
+S -- UCBD
+}
+@enduml

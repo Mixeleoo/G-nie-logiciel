@@ -1,0 +1,11 @@
+@startuml
+Actor User as u
+participant System as sy
+participant Server as se
+activate sy
+== CONTEXTE : Création ou modification d'évènement. ==
+
+u -> sy : L'utilisateur rentre une description.
+
+deactivate sy
+@enduml

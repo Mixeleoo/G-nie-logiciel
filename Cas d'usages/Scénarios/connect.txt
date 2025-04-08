@@ -1,0 +1,21 @@
+@startuml
+User -> System : choisir "se connecter"
+loop tant que l'adresse mail est invalide
+System --> User : demander adresse mail de connection
+User -> System : saisir adresse mail
+System -> Serveur : demander verification adresse mail
+Serveur -> Serveur : verifier adresse mail
+end
+Serveur --> System : valider adresse mail
+loop 3 essais
+System --> User : demander mot de passe
+System -> Serveur : demander verification mot de passe
+Serveur -> Serveur : vérifier mot de passe
+end
+alt mot de passe incorect après 3 essais
+ref over User, System, Serveur : modifier mot de passe
+else mot de passe valide
+Serveur --> System : valider mot de passe
+System --> User : valider connection
+end
+@enduml

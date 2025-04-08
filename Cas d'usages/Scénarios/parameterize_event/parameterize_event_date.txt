@@ -1,0 +1,15 @@
+@startuml
+Actor User as u
+participant System as sy
+participant Server as se
+activate sy
+== CONTEXTE : Création ou modification d'évènement. ==
+u -> sy : L'utilisateur personnalise la date de l'évènement.
+loop #Pink Tant que la date n'est pas valide
+sy -> sy : Le système vérifie la date de l'évènement.
+sy -> u : Le système ne valide pas la date de l'évènement.
+u -> sy : L'utilisateur personnalise la date de l'évènement.
+end
+sy -> u : Le système valide la date de l'évènement.
+deactivate sy
+@enduml

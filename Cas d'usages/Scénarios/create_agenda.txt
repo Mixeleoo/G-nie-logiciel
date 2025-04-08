@@ -1,0 +1,15 @@
+@startuml
+ref over User, System
+ connect
+end
+User -> System : cliquer sur + sous la liste des agendas
+System --> User : ouvrir la fenêtre de paramètre de l'agenda
+User -> System : entrer le nom du nouvel agenda
+User -> System : choisir la fréquence des rappels pour l'agenda
+User -> System : choisir la couleur du nouvel agenda
+opt
+ User -> System : entrer les utilisateurs avec qui partager l'agenda
+end
+System -> Serveur :enregistrer l'agenda
+System --> User : valider la création de l'agenda
+@enduml

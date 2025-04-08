@@ -1,0 +1,24 @@
+@startuml
+Actor User as u
+participant System as sy
+participant Server as se
+activate sy
+== CONTEXTE : Création ou modification d'évènement. ==
+
+u -> sy : L'utilisateur ajoute les invités à cet évènement.
+loop #Pink Tant que les invités ne sont pas valide.
+sy -> se : Le système demande la vérification les invités de l'évènement.
+activate se
+se -> sy : Le serveur ne valide pas les invités de l'évènement.
+deactivate se
+sy -> u : Le système ne valide pas les invités de l'évènement.
+u -> sy : L'utilisateur ajoute les invités à l'évènement.
+end
+sy -> se : Le système demande la vérification les invités de l'évènement.
+activate se
+se -> sy : Le serveur valide les invités de l'évènement..
+deactivate se
+sy -> u : Le système valide les invités à cet évènement.
+
+deactivate sy
+@enduml

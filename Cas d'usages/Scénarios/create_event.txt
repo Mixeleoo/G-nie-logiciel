@@ -1,0 +1,57 @@
+Cas : Créer un évènement
+3. L'utilisateur choisit l'agenda.
+4. L'utilisateur personnalise la date de l'évènement.
+5. Le système valide la date de l'évènement.
+6. L'utilisateur personnalise l'heure de l'évènement.
+7. Le système valide l'heure de l'évènement.
+8. L'utilisateur personnalise la répétition de l'évènement.
+9. Le système propose les répétitions possibles.
+10. L'utilisateur ajoute les invités à cet évènement.
+11. Le système valide les invités à cet évènement.
+12. L'utilisateur indique une localisation à cet évènement.
+13. Le système valide la localisation à cet évènement.
+14. L'utilisateur indique les rappels à cet évènement.
+15. Le système propose les rappels possibles.
+16. L'utilisateur choisit ses rappels.
+17. L'utilisateur rentre une description.
+18. Le système valide la description.
+19. L'utilisateur personnalise la visibilité de l'évènement.
+20. Le système propose les visibilités possible.
+21. L'utilisateur choisit les visbilités possible.
+
+A1. Le système ne valide pas la date de l'évènement.
+L'enchaînement A1 commence au point 5. du scénario nominal.
+6. Le système indique à l'utilisateur que la date de l'évènement n'est pas conforme.
+Le scénario nominal reprend au point 4.
+
+A2. Le système ne valide pas l'heure de l'évènement.
+L'enchaînement A2 commence au point 7. du scénario nominal.
+8. Le système indique à l'utilisateur que la date de l'évènement n'est pas conforme.
+Le scénario nominal reprend au point 6.
+
+A3. Le système ne valide pas les invités de l'évènement.
+L'enchaînement A2 commence au point 11. du scénario nominal.
+12. Le système indique à l'utilisateur que la date de l'évènement n'est pas conforme.
+Le scénario nominal reprend au point 10.
+
+@startuml
+Actor User as u
+participant System as sy
+participant Server as se
+activate sy
+sy -> u : Le système propose les agenda modifiables.
+u -> sy : L'utilisateur choisit l'agenda.
+ref over u, sy: parameterize_event_date.
+ref over u, sy: parameterize_event_hour.
+ref over u, sy: parameterize_event_repetition.
+opt #LightBlue L'utilisateur ajoute des invités à l'évènement.
+ref over u, sy, se: parameterize_event_invitations.
+end
+ref over u, sy: parameterize_event_localisation.
+opt #LightBlue L'utilisateur modifie les rappels de cet évènement.
+ref over u, sy: parameterize_event_reminders.
+end
+ref over u, sy: parameterize_event_description.
+ref over u, sy, se: parameterize_event_visibility.
+deactivate sy
+@enduml

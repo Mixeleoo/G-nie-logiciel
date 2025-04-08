@@ -1,0 +1,22 @@
+task_to_text ✅
+event_to_text ✅
+import_agenda ✅
+export_agenda ✅
+create_agenda
+parameterize_agenda
+duplicate_event
+cancel_event
+delete_event
+modify_event
+create_event
+delete_task
+modify_task
+create_task
+switch_event ✅
+change_display
+check_events_details
+search_task
+search_event
+parameterize
+connect ✅
+change_password ✅
