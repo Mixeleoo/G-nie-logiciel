@@ -30,8 +30,8 @@ if __name__ == '__main__':
     execute_from_command_line(['manage.py', 'runserver', '127.0.0.1:8000'])
 '''
 
-from connect import*
-from pyqt_test import*
+from test.connect import*
+from test.pyqt_test import*
 import sys
 
 app = QtWidgets.QApplication(sys.argv)
