@@ -10,11 +10,19 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MainWindow(object):
+
+    def action(self):
+        text = self.lineEdit.text()
+        self.lineEdit_2.setText(text)
+        print(text)
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+
+        # creation labels (textes)
         self.label = QtWidgets.QLabel(parent=self.centralwidget)
         self.label.setGeometry(QtCore.QRect(310, 100, 91, 41))
         self.label.setObjectName("label")
@@ -24,15 +32,21 @@ class Ui_MainWindow(object):
         self.label_3 = QtWidgets.QLabel(parent=self.centralwidget)
         self.label_3.setGeometry(QtCore.QRect(180, 180, 91, 16))
         self.label_3.setObjectName("label_3")
+
+        # creation line input
         self.lineEdit = QtWidgets.QLineEdit(parent=self.centralwidget)
         self.lineEdit.setGeometry(QtCore.QRect(270, 150, 151, 22))
         self.lineEdit.setObjectName("lineEdit")
         self.lineEdit_2 = QtWidgets.QLineEdit(parent=self.centralwidget)
         self.lineEdit_2.setGeometry(QtCore.QRect(270, 180, 151, 22))
         self.lineEdit_2.setObjectName("lineEdit_2")
+
+        # creation button
         self.pushButton = QtWidgets.QPushButton(parent=self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(300, 220, 75, 24))
         self.pushButton.setObjectName("pushButton")
+        self.pushButton.clicked.connect(self.action) # lien evenement sur le bouton et fonction
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(parent=MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 22))
