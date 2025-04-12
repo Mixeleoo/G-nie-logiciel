@@ -7,10 +7,17 @@
 from keyword import softkwlist
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtWidgets import QWidget
 
 
 class Ui_sofware_ui(object):
-    def setupUi(self, sofware_ui):
+    def setupUi(self, sofware_ui : QWidget):
+        '''
+        Intialisation du logiciel
+
+        :param sofware_ui:
+        :return: None
+        '''
         sofware_ui.setObjectName("sofware_ui")
         sofware_ui.resize(1200, 800)
         self.pages_logiciel = QtWidgets.QStackedWidget(parent=sofware_ui)
@@ -58,7 +65,6 @@ class Ui_sofware_ui(object):
         self.french_button.setIcon(icon)
         self.french_button.setIconSize(QtCore.QSize(22, 22))
         self.french_button.setObjectName("french_button")
-        self.french_button.clicked.connect(lambda : self.retranslateUi_french(sofware_ui)) # changement de langue
         self.english_button = QtWidgets.QPushButton(parent=self.page)
         self.english_button.setGeometry(QtCore.QRect(730, 460, 81, 31))
         font = QtGui.QFont()
@@ -71,7 +77,6 @@ class Ui_sofware_ui(object):
         self.english_button.setIcon(icon1)
         self.english_button.setIconSize(QtCore.QSize(22, 22))
         self.english_button.setObjectName("english_button")
-        self.english_button.clicked.connect(lambda : self.retranslateUi_english(sofware_ui)) #changement de langue
         self.pages_logiciel.addWidget(self.page)
         self.page_2 = QtWidgets.QWidget()
         self.page_2.setObjectName("page_2")
@@ -688,10 +693,15 @@ class Ui_sofware_ui(object):
         self.pages_tasks.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(sofware_ui)
 
-    def retranslateUi_french(self, sofware_ui):
-        print("changement fr")
+    def retranslateUi_french(self, sofware_ui : QWidget):
+        '''
+        #Permet de traduire l'entièreté du logiciel de l'anglais vers le français
+
+        #:param sofware_ui: QWidget sur lequel la traduction s'applique
+        #:return: None
+        '''
         _translate = QtCore.QCoreApplication.translate
-        sofware_ui.setWindowTitle(_translate("sofware_ui", "Form"))
+        sofware_ui.setWindowTitle(_translate("sofware_ui", "Genstionnaire d'agenda et de tâches"))
         self.create_account_button.setText(_translate("sofware_ui", "Créer un compte"))
         self.connect_button.setText(_translate("sofware_ui", "Se connecter"))
         self.french_button.setText(_translate("sofware_ui", "Français"))
@@ -798,43 +808,48 @@ class Ui_sofware_ui(object):
         self.eventtocome_label_e_3.setText(_translate("sofware_ui", "Tâches à venir"))
 
 
-    def retranslateUi_english(self, sofware_ui) :
-        print("changement en")
+    def retranslateUi_english(self, sofware_ui : QWidget) :
+        '''
+        #Permet de traduire l'entièreté du logiciel du français vers l'anglais
+
+        #:param sofware_ui: QWidget sur lequel la traduction s'applique
+        #:return: None
+        '''
         _translate = QtCore.QCoreApplication.translate
-        sofware_ui.setWindowTitle(_translate("sofware_ui", "Form"))
+        sofware_ui.setWindowTitle(_translate("sofware_ui", "Diary and tasks manager"))
         self.create_account_button.setText(_translate("sofware_ui", "Create account"))
         self.connect_button.setText(_translate("sofware_ui", "Sign in"))
         self.french_button.setText(_translate("sofware_ui", "Français"))
         self.english_button.setText(_translate("sofware_ui", "English"))
-        self.label.setText(_translate("sofware_ui", "Connectez-vous"))
-        self.back_button.setText(_translate("sofware_ui", "Retour"))
-        self.stay_connected_button.setText(_translate("sofware_ui", "Rester  connecté"))
-        self.label_2.setText(_translate("sofware_ui", "Adresse mail"))
-        self.label_4.setText(_translate("sofware_ui", "Mot de passe"))
-        self.validate_connect_button.setText(_translate("sofware_ui", "Valider"))
-        self.back_button_2.setText(_translate("sofware_ui", "Retour"))
-        self.stay_connected_button_2.setText(_translate("sofware_ui", "Rester  connecté"))
-        self.label_3.setText(_translate("sofware_ui", "Adresse mail"))
-        self.label_5.setText(_translate("sofware_ui", "Mot de passe"))
-        self.label_7.setText(_translate("sofware_ui", "Confirmer mot de passe"))
-        self.validate_account_button.setText(_translate("sofware_ui", "Valider"))
-        self.label_6.setText(_translate("sofware_ui", "Créez votre compte"))
+        self.label.setText(_translate("sofware_ui", "Sign in"))
+        self.back_button.setText(_translate("sofware_ui", "Back"))
+        self.stay_connected_button.setText(_translate("sofware_ui", "Stay connected"))
+        self.label_2.setText(_translate("sofware_ui", "Email adress"))
+        self.label_4.setText(_translate("sofware_ui", "Password"))
+        self.validate_connect_button.setText(_translate("sofware_ui", "OK"))
+        self.back_button_2.setText(_translate("sofware_ui", "Back"))
+        self.stay_connected_button_2.setText(_translate("sofware_ui", "Stay connected"))
+        self.label_3.setText(_translate("sofware_ui", "Email adress"))
+        self.label_5.setText(_translate("sofware_ui", "Password"))
+        self.label_7.setText(_translate("sofware_ui", "Confirm password"))
+        self.validate_account_button.setText(_translate("sofware_ui", "OK"))
+        self.label_6.setText(_translate("sofware_ui", "Create your account"))
         item = self.table_week.verticalHeaderItem(0)
-        item.setText(_translate("sofware_ui", "J"))
+        item.setText(_translate("sofware_ui", "D"))
         item = self.table_week.horizontalHeaderItem(0)
-        item.setText(_translate("sofware_ui", "Lun"))
+        item.setText(_translate("sofware_ui", "Mon"))
         item = self.table_week.horizontalHeaderItem(1)
-        item.setText(_translate("sofware_ui", "Mar"))
+        item.setText(_translate("sofware_ui", "Tue"))
         item = self.table_week.horizontalHeaderItem(2)
-        item.setText(_translate("sofware_ui", "Mer"))
+        item.setText(_translate("sofware_ui", "Wen"))
         item = self.table_week.horizontalHeaderItem(3)
-        item.setText(_translate("sofware_ui", "Jeu"))
+        item.setText(_translate("sofware_ui", "Thu"))
         item = self.table_week.horizontalHeaderItem(4)
-        item.setText(_translate("sofware_ui", "Ven"))
+        item.setText(_translate("sofware_ui", "Fri"))
         item = self.table_week.horizontalHeaderItem(5)
-        item.setText(_translate("sofware_ui", "Sam"))
+        item.setText(_translate("sofware_ui", "Sat"))
         item = self.table_week.horizontalHeaderItem(6)
-        item.setText(_translate("sofware_ui", "Dim"))
+        item.setText(_translate("sofware_ui", "Sun"))
         item = self.table_days.verticalHeaderItem(0)
         item.setText(_translate("sofware_ui", "1"))
         item = self.table_days.verticalHeaderItem(1)
@@ -880,40 +895,40 @@ class Ui_sofware_ui(object):
         item = self.table_days.verticalHeaderItem(21)
         item.setText(_translate("sofware_ui", "24"))
         item = self.table_days.horizontalHeaderItem(0)
-        item.setText(_translate("sofware_ui", "Jour"))
+        item.setText(_translate("sofware_ui", "Day"))
         self.curr_display_date.setText(_translate("sofware_ui", "<annee/semaine/mois>"))
-        self.calendar_display_choice.setTitle(_translate("sofware_ui", "Mode d\'affichage"))
-        self.radioDay.setText(_translate("sofware_ui", "Jours"))
-        self.radioWeek.setText(_translate("sofware_ui", "Semaine"))
-        self.radioYear.setText(_translate("sofware_ui", "Année"))
-        self.agenda_label.setText(_translate("sofware_ui", "Mes agenda"))
-        self.agenda_label_2.setText(_translate("sofware_ui", "Agenda suivis"))
-        self.New_event_button.setText(_translate("sofware_ui", "Nouveau"))
+        self.calendar_display_choice.setTitle(_translate("sofware_ui", "Display mode"))
+        self.radioDay.setText(_translate("sofware_ui", "Days"))
+        self.radioWeek.setText(_translate("sofware_ui", "Weeks"))
+        self.radioYear.setText(_translate("sofware_ui", "Years"))
+        self.agenda_label.setText(_translate("sofware_ui", "My diaries"))
+        self.agenda_label_2.setText(_translate("sofware_ui", "Followed diaries"))
+        self.New_event_button.setText(_translate("sofware_ui", "New"))
         self.event_button.setText(_translate("sofware_ui", "E"))
         self.task_button.setText(_translate("sofware_ui", "T"))
-        self.myinfo_label_e.setText(_translate("sofware_ui", "Mes information"))
+        self.myinfo_label_e.setText(_translate("sofware_ui", "My information"))
         self.email_label_e.setText(_translate("sofware_ui", "Email :"))
-        self.language_label_e.setText(_translate("sofware_ui", "Langue :"))
-        self.eventtocome_label_e_2.setText(_translate("sofware_ui", "Evènement à venir"))
+        self.language_label_e.setText(_translate("sofware_ui", "Language :"))
+        self.eventtocome_label_e_2.setText(_translate("sofware_ui", "Event to comme"))
         self.event_button_2.setText(_translate("sofware_ui", "E"))
         self.task_button_2.setText(_translate("sofware_ui", "T"))
-        self.New_task_button_2.setText(_translate("sofware_ui", "Nouveau"))
-        self.task_labrl.setText(_translate("sofware_ui", "Mes tâches"))
-        self.task_label_2.setText(_translate("sofware_ui", "Tâches suivis"))
-        self.finished_task_button.setText(_translate("sofware_ui", "Tâches terminées"))
-        self.back_ftask_button.setText(_translate("sofware_ui", "Tâches en cours"))
-        self.myinfo_label_t.setText(_translate("sofware_ui", "Mes information"))
+        self.New_task_button_2.setText(_translate("sofware_ui", "New"))
+        self.task_labrl.setText(_translate("sofware_ui", "My tasks"))
+        self.task_label_2.setText(_translate("sofware_ui", "Followed tasks"))
+        self.finished_task_button.setText(_translate("sofware_ui", "Completed tasks"))
+        self.back_ftask_button.setText(_translate("sofware_ui", "Ongoing tasks"))
+        self.myinfo_label_t.setText(_translate("sofware_ui", "My information"))
         self.email_label_t.setText(_translate("sofware_ui", "Email :"))
-        self.language_label_t.setText(_translate("sofware_ui", "Langue :"))
-        self.eventtocome_label_e_3.setText(_translate("sofware_ui", "Tâches à venir"))
+        self.language_label_t.setText(_translate("sofware_ui", "Language :"))
+        self.eventtocome_label_e_3.setText(_translate("sofware_ui", "Taskes to come"))
 
 
 
-if __name__ == "__main__":
+'''if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     sofware_ui = QtWidgets.QWidget()
     ui = Ui_sofware_ui()
     ui.setupUi(sofware_ui)
     sofware_ui.show()
-    sys.exit(app.exec())
+    sys.exit(app.exec())'''
