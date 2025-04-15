@@ -955,12 +955,3 @@ class Ui_sofware_ui(object):
             self.email_label_t.setText(_translate("sofware_ui", "Email :"))
             self.language_label_t.setText(_translate("sofware_ui", "Language :"))
             self.eventtocome_label_e_3.setText(_translate("sofware_ui", "Taskes to come"))
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    sofware_ui = QtWidgets.QWidget()
-    ui = Ui_sofware_ui()
-    ui.setupUi(sofware_ui)
-    sofware_ui.show()
-    sys.exit(app.exec())
