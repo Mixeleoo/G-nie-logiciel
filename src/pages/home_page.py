@@ -1,5 +1,4 @@
 from PyQt6.QtWidgets import QWidget
-from src.ui.software_ui import Ui_sofware_ui
 from src.main import MainWindow
 
 class HomePage(QWidget) :

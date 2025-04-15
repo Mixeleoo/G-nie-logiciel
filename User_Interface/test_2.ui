@@ -27,7 +27,7 @@
 background-color: rgb(241, 241, 241);</string>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>3</number>
    </property>
    <widget class="QWidget" name="page">
     <widget class="QFrame" name="frame">
