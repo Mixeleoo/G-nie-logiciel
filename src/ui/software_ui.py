@@ -7,12 +7,17 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtCore import QDate
+from PyQt6.QtWidgets import QTableWidgetItem
+import calendar
 
 
 class Ui_sofware_ui(object):
     def setupUi(self, sofware_ui):
         sofware_ui.setObjectName("sofware_ui")
         sofware_ui.resize(1200, 800)
+        self.current_lang = "fr" #langue par défaut
+        
         self.pages_logiciel = QtWidgets.QStackedWidget(parent=sofware_ui)
         self.pages_logiciel.setGeometry(QtCore.QRect(0, 0, 1200, 800))
         self.pages_logiciel.setStyleSheet("background-color: rgb(171, 235, 255);\n"
@@ -751,22 +756,7 @@ class Ui_sofware_ui(object):
         self.error_label2.setText("Veuillez entrer le même mot de passe")
         self.error_label4.setText("Veuillez choisir un mot de passe")
         self.error_label3.setText("Veuillez entrer une adresse mail")
-        item = self.table_week.verticalHeaderItem(0)
-        item.setText(_translate("sofware_ui", "J"))
-        item = self.table_week.horizontalHeaderItem(0)
-        item.setText(_translate("sofware_ui", "Lun"))
-        item = self.table_week.horizontalHeaderItem(1)
-        item.setText(_translate("sofware_ui", "Mar"))
-        item = self.table_week.horizontalHeaderItem(2)
-        item.setText(_translate("sofware_ui", "Mer"))
-        item = self.table_week.horizontalHeaderItem(3)
-        item.setText(_translate("sofware_ui", "Jeu"))
-        item = self.table_week.horizontalHeaderItem(4)
-        item.setText(_translate("sofware_ui", "Ven"))
-        item = self.table_week.horizontalHeaderItem(5)
-        item.setText(_translate("sofware_ui", "Sam"))
-        item = self.table_week.horizontalHeaderItem(6)
-        item.setText(_translate("sofware_ui", "Dim"))
+        self.set_week_headers(QDate.currentDate(),self.current_lang)
         item = self.table_days.verticalHeaderItem(0)
         item.setText(_translate("sofware_ui", "1"))
         item = self.table_days.verticalHeaderItem(1)
@@ -811,7 +801,8 @@ class Ui_sofware_ui(object):
         item.setText(_translate("sofware_ui", "22"))
         item = self.table_days.verticalHeaderItem(21)
         item.setText(_translate("sofware_ui", "24"))
-        item = self.table_days.horizontalHeaderItem(0)
+        self.set_days_headers(QDate.currentDate(), self.current_lang)
+        #item = self.table_days.horizontalHeaderItem(0)
         item.setText(_translate("sofware_ui", "Jour"))
         self.curr_display_date.setText(_translate("sofware_ui", "<annee/semaine/mois>"))
         self.calendar_display_choice.setTitle(_translate("sofware_ui", "Mode d\'affichage"))
@@ -869,22 +860,7 @@ class Ui_sofware_ui(object):
             self.error_label2.setText("Please put the same password")
             self.error_label4.setText("Please choose a password")
             self.error_label3.setText("Please put your email")
-            item = self.table_week.verticalHeaderItem(0)
-            item.setText(_translate("sofware_ui", "D"))
-            item = self.table_week.horizontalHeaderItem(0)
-            item.setText(_translate("sofware_ui", "Mon"))
-            item = self.table_week.horizontalHeaderItem(1)
-            item.setText(_translate("sofware_ui", "Tue"))
-            item = self.table_week.horizontalHeaderItem(2)
-            item.setText(_translate("sofware_ui", "Wen"))
-            item = self.table_week.horizontalHeaderItem(3)
-            item.setText(_translate("sofware_ui", "Thu"))
-            item = self.table_week.horizontalHeaderItem(4)
-            item.setText(_translate("sofware_ui", "Fri"))
-            item = self.table_week.horizontalHeaderItem(5)
-            item.setText(_translate("sofware_ui", "Sat"))
-            item = self.table_week.horizontalHeaderItem(6)
-            item.setText(_translate("sofware_ui", "Sun"))
+            self.set_week_headers(QDate.currentDate(),self.current_lang)
             item = self.table_days.verticalHeaderItem(0)
             item.setText(_translate("sofware_ui", "1"))
             item = self.table_days.verticalHeaderItem(1)
@@ -929,7 +905,8 @@ class Ui_sofware_ui(object):
             item.setText(_translate("sofware_ui", "22"))
             item = self.table_days.verticalHeaderItem(21)
             item.setText(_translate("sofware_ui", "24"))
-            item = self.table_days.horizontalHeaderItem(0)
+            self.set_days_headers(QDate.currentDate(),self.current_lang)
+            #item = self.table_days.horizontalHeaderItem(0)
             item.setText(_translate("sofware_ui", "Day"))
             self.curr_display_date.setText(_translate("sofware_ui", "<annee/semaine/mois>"))
             self.calendar_display_choice.setTitle(_translate("sofware_ui", "Display mode"))
@@ -956,3 +933,41 @@ class Ui_sofware_ui(object):
             self.email_label_t.setText(_translate("sofware_ui", "Email :"))
             self.language_label_t.setText(_translate("sofware_ui", "Language :"))
             self.eventtocome_label_e_3.setText(_translate("sofware_ui", "Taskes to come"))
+
+    def set_week_headers(self, current_date: QDate, lang : str):
+            """Définit les en-têtes de colonnes selon la semaine courante."""
+            week_start = current_date.addDays(-current_date.dayOfWeek() + 1)  # Lundi
+            # self.weekLabel.setText(f"Semaine du {week_start.toString('dd MMM yyyy')}")
+
+            day_names = list(calendar.day_name)  # ['Monday', 'Tuesday', ...]
+            french_days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim']
+            english_days = ['Mon', 'Tue', 'Wen', 'Thu', 'Fri', 'Sat', 'Sun']
+
+            if self.current_lang == "fr" :
+                    for i in range(7):
+                            day = week_start.addDays(i)
+                            header = f"{french_days[i]}\n{day.toString('dd/MM')}"
+                            self.table_week.setHorizontalHeaderItem(i, QTableWidgetItem(header))
+            elif self.current_lang == "en" :
+                    for i in range(7):
+                            day = week_start.addDays(i)
+                            header = f"{english_days[i]}\n{day.toString('dd/MM')}"
+                            self.table_week.setHorizontalHeaderItem(i, QTableWidgetItem(header))
+
+    def set_days_headers(self, current_date: QDate, lang: str):
+            """Définit les en-têtes de colonnes selon la semaine courante."""
+            week_start = current_date.addDays(-current_date.dayOfWeek() + 1)  # Lundi
+            # self.weekLabel.setText(f"Semaine du {week_start.toString('dd MMM yyyy')}")
+
+            day_names = list(calendar.day_name)  # ['Monday', 'Tuesday', ...]
+            french_days = {1 : 'Lun', 2 : 'Mar', 3 : 'Mer', 4 : 'Jeu', 5 : 'Ven', 6 : 'Sam', 7 : 'Dim'}
+            english_days = { 1 : 'Mon', 2 : 'Tue', 3 : 'Wen', 4 : 'Thu', 5 : 'Fri', 6 : 'Sat', 7 : 'Sun'}
+
+            day = current_date
+
+            if self.current_lang == "fr":
+                    header =  f"{french_days[current_date.dayOfWeek()]}\n{day.toString('dd/MM')}"
+                    self.table_days.setHorizontalHeaderItem(0,QTableWidgetItem(header))
+            elif self.current_lang == "en":
+                    header = f"{english_days[current_date.dayOfWeek()]}\n{day.toString('dd/MM')}"
+                    self.table_week.setHorizontalHeaderItem(0, QTableWidgetItem(header))

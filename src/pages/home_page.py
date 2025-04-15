@@ -8,7 +8,7 @@ class HomePage(QWidget) :
         '''
         super().__init__(mainpage)
         self.ui = mainpage.ui
-        self.current_lang = "fr" #langue par défaut du logiciel
+        #self.current_lang = "fr" #langue par défaut du logiciel
 
         # Bouton d'action de changement de langue
         self.ui.french_button.clicked.connect(lambda  : self.change_language("fr"))
@@ -23,12 +23,12 @@ class HomePage(QWidget) :
         :param lang: langue vers laquelle traduire
         :return: None
         '''
-        if lang != self.current_lang :
+        if lang != self.ui.current_lang :
+            self.ui.current_lang = lang
             if lang == "fr":
                 self.ui.retranslateUi_french(self)
             elif lang == "en":
                 self.ui.retranslateUi_english(self)
-            self.current_lang = lang
 
     def goto_login(self):
         '''
