@@ -30,7 +30,10 @@ class LoginPage(QWidget) :
         Connecte l'utilisateur si son identifiant et mot de passe sont corrects
         :return: None
         '''
-        self.ui.error_label1.show()
+        if self.check_connection():
+            self.ui.pages_logiciel.setCurrentIndex(3) #aller à la pages evenement
+        else :
+            self.ui.error_label1.show()
 
     def clear_error(self):
         '''
@@ -39,8 +42,12 @@ class LoginPage(QWidget) :
         '''
         self.ui.error_label1.hide() # suppression du message d'erreur
 
+    #TODO Léo : associer la méthode avec une vérif dans le serveur
     def check_connection(self) -> bool:
         '''
         Verifie que l'identifiant et mot de passe tapé par l'utilisateur sont correct
         :return: retourne True si corrects et False sinon
         '''
+        id_verif = True
+
+        return id_verif
