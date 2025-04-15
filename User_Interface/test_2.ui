@@ -27,7 +27,7 @@
 background-color: rgb(241, 241, 241);</string>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="page">
     <widget class="QFrame" name="frame">
@@ -120,7 +120,7 @@ background-color: rgb(241, 241, 241);</string>
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>../../../Downloads/frenchflag.png</normaloff>../../../Downloads/frenchflag.png</iconset>
+       <normaloff>../icons/frenchflag.jpg</normaloff>../icons/frenchflag.jpg</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -150,7 +150,7 @@ background-color: rgb(241, 241, 241);</string>
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>../../../Downloads/1f1ec-1f1e7.jpg</normaloff>../../../Downloads/1f1ec-1f1e7.jpg</iconset>
+       <normaloff>../icons/ukflag.jpg</normaloff>../icons/ukflag.jpg</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -277,7 +277,7 @@ background-color: rgb(241, 241, 241);</string>
        <rect>
         <x>30</x>
         <y>70</y>
-        <width>121</width>
+        <width>131</width>
         <height>21</height>
        </rect>
       </property>
@@ -297,7 +297,7 @@ background-color: rgb(241, 241, 241);</string>
        <rect>
         <x>30</x>
         <y>160</y>
-        <width>121</width>
+        <width>131</width>
         <height>21</height>
        </rect>
       </property>
@@ -427,7 +427,7 @@ background-color: rgb(241, 241, 241);</string>
        <rect>
         <x>30</x>
         <y>30</y>
-        <width>121</width>
+        <width>521</width>
         <height>21</height>
        </rect>
       </property>
@@ -447,7 +447,7 @@ background-color: rgb(241, 241, 241);</string>
        <rect>
         <x>30</x>
         <y>120</y>
-        <width>121</width>
+        <width>521</width>
         <height>21</height>
        </rect>
       </property>
@@ -483,7 +483,7 @@ background-color: rgb(241, 241, 241);</string>
        <rect>
         <x>30</x>
         <y>200</y>
-        <width>211</width>
+        <width>521</width>
         <height>21</height>
        </rect>
       </property>
@@ -1251,7 +1251,7 @@ background-color: rgb(61, 61, 61);</string>
        </font>
       </property>
       <property name="text">
-       <string>Mes information</string>
+       <string>Mes informations</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -1360,7 +1360,7 @@ selection-background-color: rgb(213, 210, 255);</string>
       <property name="font">
        <font>
         <family>SamsungOneUILatin 700</family>
-        <pointsize>14</pointsize>
+        <pointsize>13</pointsize>
         <bold>true</bold>
        </font>
       </property>

@@ -30,14 +30,40 @@ if __name__ == '__main__':
     execute_from_command_line(['manage.py', 'runserver', '127.0.0.1:8000'])
 '''
 
-from test.connect import*
-from test.pyqt_test import*
 import sys
+from PyQt6.QtWidgets import QApplication, QWidget
+from ui.software_ui import Ui_sofware_ui
 
-app = QtWidgets.QApplication(sys.argv)
-Form = QtWidgets.QWidget()
-ui = Ui_Form()
-ui.setupUi(Form)
-Form.show()
+class MainWindow(QWidget) :
+    def __init__(self):
+        super().__init__()
 
-sys.exit(app.exec())
+        self.ui = Ui_sofware_ui()
+        self.ui.setupUi(self)
+
+        from pages.home_page import HomePage
+        self.homepage = HomePage(self)
+
+        # from pages.login_page import
+        #self.login =
+
+        # from pages.sign_in_page import
+        #self.signin =
+
+        # from pages.event_page import
+        #self.event =
+
+        # from pages.task_page import
+        #self.task =
+
+        #initialisation à la première page du logiciel : homepage
+        self.ui.pages_logiciel.setCurrentIndex(0)
+
+
+
+if __name__ == "__main__":
+    import sys
+    app = QApplication(sys.argv)
+    sofware_ui = MainWindow()
+    sofware_ui.show()
+    sys.exit(app.exec())

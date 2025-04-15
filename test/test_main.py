@@ -1,6 +1,7 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QWidget
-from test_ui3 import Ui_sofware_ui
+from src.ui.software_ui import Ui_sofware_ui
+
 
 class MainApp(QWidget):
     def __init__(self):
@@ -8,7 +9,8 @@ class MainApp(QWidget):
         self.ui = Ui_sofware_ui()
         self.ui.setupUi(self)
 
-        # Connexion des boutons pour le changement de langue
+
+       # Connexion des boutons pour le changement de langue
         self.ui.french_button.clicked.connect(lambda: self.change_language("fr"))
         self.ui.english_button.clicked.connect(lambda: self.change_language("en"))
 

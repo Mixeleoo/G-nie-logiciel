@@ -800,17 +800,17 @@ class Ui_sofware_ui(object):
             self.language_label_t.setText(_translate("sofware_ui", "Langue :"))
             self.eventtocome_label_e_3.setText(_translate("sofware_ui", "Tâches à venir"))
 
-    def retranslateUi_english(self, sofware_ui):
-            '''
-            #Permet de traduire l'entièreté du logiciel du français vers l'anglais
+    '''
+                #Permet de traduire l'entièreté du logiciel du français vers l'anglais
 
-            #:param sofware_ui: QWidget sur lequel la traduction s'applique
-            #:return: None
-            '''
+                #:param sofware_ui: QWidget sur lequel la traduction s'applique
+                #:return: None
+                '''
+    def retranslateUi_english(self, sofware_ui):
             _translate = QtCore.QCoreApplication.translate
             sofware_ui.setWindowTitle(_translate("sofware_ui", "Diary and tasks manager"))
-            self.create_account_button.setText(_translate("sofware_ui", "Create account"))
-            self.connect_button.setText(_translate("sofware_ui", "Sign in"))
+            self.create_account_button.setText(_translate("sofware_ui", "Sign in"))
+            self.connect_button.setText(_translate("sofware_ui", "Login"))
             self.french_button.setText(_translate("sofware_ui", "Français"))
             self.english_button.setText(_translate("sofware_ui", "English"))
             self.label.setText(_translate("sofware_ui", "Sign in"))
@@ -913,13 +913,3 @@ class Ui_sofware_ui(object):
             self.email_label_t.setText(_translate("sofware_ui", "Email :"))
             self.language_label_t.setText(_translate("sofware_ui", "Language :"))
             self.eventtocome_label_e_3.setText(_translate("sofware_ui", "Taskes to come"))
-
-
-'''if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    sofware_ui = QtWidgets.QWidget()
-    ui = Ui_sofware_ui()
-    ui.setupUi(sofware_ui)
-    sofware_ui.show()
-    sys.exit(app.exec())'''
