@@ -27,7 +27,7 @@
 background-color: rgb(241, 241, 241);</string>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="page">
     <widget class="QFrame" name="frame">
@@ -331,6 +331,29 @@ background-color: rgb(241, 241, 241);</string>
        <string>Valider</string>
       </property>
      </widget>
+     <widget class="QLabel" name="error_label">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>80</y>
+        <width>251</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>SamsungOneUILatin 700C</family>
+        <pointsize>11</pointsize>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 0, 0);</string>
+      </property>
+      <property name="text">
+       <string>Mot de passe ou identifiant incorrect</string>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QWidget" name="page_3">
@@ -515,6 +538,52 @@ background-color: rgb(241, 241, 241);</string>
       </property>
       <property name="text">
        <string>Valider</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="error_label_2">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>130</y>
+        <width>251</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>SamsungOneUILatin 700C</family>
+        <pointsize>11</pointsize>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 0, 0);</string>
+      </property>
+      <property name="text">
+       <string>Veuillez entrer le même mot de passe</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="error_label_3">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>40</y>
+        <width>231</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>SamsungOneUILatin 700C</family>
+        <pointsize>11</pointsize>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 0, 0);</string>
+      </property>
+      <property name="text">
+       <string>Veuillez indiquer une adresse mail</string>
       </property>
      </widget>
     </widget>
