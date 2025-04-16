@@ -1,7 +1,6 @@
-from PyQt6.QtCore import QDate
-from PyQt6.QtWidgets import QWidget, QTableWidgetItem
+from PyQt6.QtCore import QDate, Qt, QPoint
+from PyQt6.QtWidgets import QWidget, QMenu, QInputDialog, QMessageBox
 from src.main import MainWindow
-import calendar
 
 class EventPage(QWidget) :
     def __init__(self, mainpage: MainWindow):
@@ -12,9 +11,8 @@ class EventPage(QWidget) :
         self.ui = mainpage.ui
 
         self.current_date = QDate.currentDate() # date d'affichage par défaut
-        print(self.current_date.dayOfWeek())
 
-        #self.set_week_headers(self.current_date)
+        self.ui.task_button.clicked.connect(self.goto_task)
 
         # gestion choix d'affichage
         self.ui.radioYear.setChecked(True) # affichage par défaut Mois
@@ -30,7 +28,24 @@ class EventPage(QWidget) :
         self.ui.next_day.clicked.connect(lambda : self.next_day())
         self.ui.prev_day.clicked.connect(lambda : self.prev_day())
 
+        # gestion liste d'agenda
+        self.ui.myagenda_box.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.ui.myagenda_box.customContextMenuRequested.connect(self.show_diaries_menu)
 
+        # gestion liste favoris
+        self.ui.followedagenda_box.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.ui.followedagenda_box.customContextMenuRequested.connect(self.show_diaries_favorite_menu)
+
+############################# gestion changement event to task page ################################
+
+    def goto_task(self):
+        '''
+        Change la page d'affichage du logiciel à la page des taches
+        :return: None
+        '''
+        self.ui.pages_logiciel.setCurrentIndex(4)
+
+############################# gestion choix affichage #########################################
     def set_months_display(self, checked):
         '''
         Passe l'affichage du calendrier par mois
@@ -108,3 +123,226 @@ class EventPage(QWidget) :
             self.ui.set_days_headers(self.current_date,self.ui.current_lang)
         except Exception as e:
             print(f"Erreur dans next_day: {e}")
+
+    def add_agenda(self):
+        '''
+        Ajouter un agenda à la liste d'agenda
+        :return: None
+        '''
+
+############################# gestion liste agenda #########################################
+
+    def show_diaries_menu(self, pos: QPoint):
+        '''
+        Permet d'ajouter ou supprimer un agenda dans la liste d'agenda de l'utilisateur
+        #TODO Léo: Mémoriser ces ajouts et supression quelque pars
+        :param pos: Position du menu (en fonction du clic droit)
+        :return: None
+        '''
+        menu = QMenu(self.ui.myagenda_box)
+
+        # gestion affichage du menu si la langue est le francais
+        if self.ui.current_lang == "fr" :
+
+            add_action = menu.addAction("Ajouter un agenda")
+            remove_action = None
+            favorite_action = None
+
+            # On n'ajoute l'option de supression ou d'ajout aux favoris que s'il y a un élément sélectionné
+            current_index = self.ui.myagenda_box.currentIndex()
+            if current_index != -1:
+                remove_action = menu.addAction("Supprimer l'agenda sélectionné")
+                favorite_action = menu.addAction("Ajouter l'agenda sélectionné aux favoris")
+
+            action = menu.exec(self.ui.myagenda_box.mapToGlobal(pos))
+
+            if action == add_action:
+                text, ok = QInputDialog.getText(self, "Ajouter un agenda", "Nom de l'agenda :")
+                if ok and text:
+                    self.ui.myagenda_box.addItem(text)
+
+            elif action == favorite_action:
+                item_text = self.ui.myagenda_box.currentText()
+
+                msg = QMessageBox(self)
+                msg.setWindowTitle(f"Confirmer l'ajout aux favoris")
+                msg.setText(f"Voulez-vous ajouter « {item_text} » aux favoris?")
+
+                btn_oui = msg.addButton("Oui", QMessageBox.ButtonRole.YesRole)
+                btn_non = msg.addButton("Non", QMessageBox.ButtonRole.NoRole)
+
+                msg.exec()
+
+                if msg.clickedButton() == btn_oui:
+                    self.ui.followedagenda_box.addItem(item_text)
+
+            elif action == remove_action:
+                item_text = self.ui.myagenda_box.currentText()
+
+                msg = QMessageBox(self)
+                msg.setWindowTitle("Confirmer la suppression")
+                msg.setText(f"Voulez-vous supprimer « {item_text} » ?")
+
+                btn_oui = msg.addButton("Oui", QMessageBox.ButtonRole.YesRole)
+                btn_non = msg.addButton("Non", QMessageBox.ButtonRole.NoRole)
+
+                msg.exec()
+
+                if msg.clickedButton() == btn_oui:
+                    self.ui.myagenda_box.removeItem(current_index)
+
+        # gestion et affichage du menu si la langue est l'anglais
+        elif self.ui.current_lang == "en" :
+            add_action = menu.addAction("Add a diary")
+            remove_action = None
+            favorite_action = None
+
+            # On n'ajoute l'option de supression ou d'ajout aux favoris que s'il y a un élément sélectionné
+            current_index = self.ui.myagenda_box.currentIndex()
+            if current_index != -1:
+                remove_action = menu.addAction("Delete selected diary")
+                favorite_action = menu.addAction("Add selected diary to favorite")
+
+            action = menu.exec(self.ui.myagenda_box.mapToGlobal(pos))
+
+            # gestion de l'action d'ajout
+            if action == add_action:
+                text, ok = QInputDialog.getText(self, "Add a diary", "Diary name :")
+                if ok and text:
+                    self.ui.myagenda_box.addItem(text)
+
+            # gestion de l'action d'ajout aux favoris
+            elif action == favorite_action:
+                item_text = self.ui.myagenda_box.currentText()
+
+                msg = QMessageBox(self)
+                msg.setWindowTitle(f"Add to favorite confirmation")
+                msg.setText(f"Do you want to add « {item_text} » to favorite?")
+
+                btn_yes = msg.addButton("Yes", QMessageBox.ButtonRole.YesRole)
+                btn_no = msg.addButton("No", QMessageBox.ButtonRole.NoRole)
+
+                msg.exec()
+
+                if msg.clickedButton() == btn_yes:
+                    self.ui.followedagenda_box.addItem(item_text)
+
+            # gestion de l'action de supression
+            elif action == remove_action:
+                item_text = self.ui.myagenda_box.currentText()
+
+                msg = QMessageBox(self)
+                msg.setWindowTitle("Delete confirmation")
+                msg.setText(f"Do you want to delete « {item_text} » ?")
+
+                btn_yes = msg.addButton("Yes", QMessageBox.ButtonRole.YesRole)
+                btn_no = msg.addButton("No", QMessageBox.ButtonRole.NoRole)
+
+                msg.exec()
+
+                if msg.clickedButton() == btn_yes:
+                    self.ui.myagenda_box.removeItem(current_index)
+
+    ############################# gestion liste favoris agenda #########################################
+
+    def show_diaries_favorite_menu(self, pos: QPoint):
+        '''
+        Permet d'ajouter ou supprimer un agenda dans la liste des favoris de l'utilisateur
+        #TODO Léo: Mémoriser ces ajouts et supression quelque pars
+        :param pos: Position du menu (en fonction du clic droit)
+        :return: None
+        '''
+        menu = QMenu(self.ui.followedagenda_box)
+
+        # gestion et affichage du menu si la langue est le francais
+        if self.ui.current_lang == "fr":
+
+            remove_action = None
+            remove_favorite_action = None
+
+            # On n'ajoute l'option de supression ou d'ajout aux favoris que s'il y a un élément sélectionné
+            current_index = self.ui.followedagenda_box.currentIndex()
+            if current_index != -1:
+                remove_action = menu.addAction("Supprimer l'agenda sélectionné")
+                remove_favorite_action = menu.addAction("Supprimer l'agenda sélectionné des favoris")
+
+            action = menu.exec(self.ui.followedagenda_box.mapToGlobal(pos))
+
+            # supression d'un élément des favoris
+            if action == remove_favorite_action :
+                item_text = self.ui.followedagenda_box.currentText()
+
+                msg = QMessageBox(self)
+                msg.setWindowTitle(f"Confirmer la suppression des favoris")
+                msg.setText(f"Voulez-vous retirer « {item_text} » des favoris?")
+
+                btn_oui = msg.addButton("Oui", QMessageBox.ButtonRole.YesRole)
+                btn_non = msg.addButton("Non", QMessageBox.ButtonRole.NoRole)
+
+                msg.exec()
+
+                if msg.clickedButton() == btn_oui:
+                    self.ui.followedagenda_box.removeItem(current_index)
+
+            # supression d'un agenda via la liste des favoris
+            elif action == remove_action:
+                item_text = self.ui.followedagenda_box.currentText()
+
+                msg = QMessageBox(self)
+                msg.setWindowTitle("Confirmer la suppression")
+                msg.setText(f"Voulez-vous supprimer l'agenda « {item_text} » ?")
+
+                btn_oui = msg.addButton("Oui", QMessageBox.ButtonRole.YesRole)
+                btn_non = msg.addButton("Non", QMessageBox.ButtonRole.NoRole)
+
+                msg.exec()
+
+                if msg.clickedButton() == btn_oui:
+                    self.ui.myagenda_box.removeItem(self.ui.myagenda_box.findText(item_text)) #suppression des agenda en récupérant son indice à l'aide de son nom
+                    self.ui.followedagenda_box.removeItem(current_index) # suppression des favoris
+
+        # gestion et affichage du menu si la langue est l'anglais
+        elif self.ui.current_lang == "en":
+            remove_action = None
+            remove_favorite_action = None
+
+            # On n'ajoute l'option de supression ou d'ajout aux favoris que s'il y a un élément sélectionné
+            current_index = self.ui.followedagenda_box.currentIndex()
+            if current_index != -1:
+                remove_action = menu.addAction("Delete selected diary")
+                remove_favorite_action = menu.addAction("Remove selected diary from favorite")
+
+            action = menu.exec(self.ui.followedagenda_box.mapToGlobal(pos))
+
+            # gestion de l'action de suppression des favoris
+            if action == remove_favorite_action:
+                item_text = self.ui.followedagenda_box.currentText()
+
+                msg = QMessageBox(self)
+                msg.setWindowTitle(f"Remove from favorite confirmation")
+                msg.setText(f"Do you want to remove « {item_text} » from favorite?")
+
+                btn_yes = msg.addButton("Yes", QMessageBox.ButtonRole.YesRole)
+                btn_no = msg.addButton("No", QMessageBox.ButtonRole.NoRole)
+
+                msg.exec()
+
+                if msg.clickedButton() == btn_yes:
+                    self.ui.followedagenda_box.removeItem(current_index)
+
+            # gestion de l'action de supression de l'agenda via favoris
+            elif action == remove_action:
+                item_text = self.ui.myagenda_box.currentText()
+
+                msg = QMessageBox(self)
+                msg.setWindowTitle("Delete confirmation")
+                msg.setText(f"Do you want to delete diary « {item_text} » ?")
+
+                btn_yes = msg.addButton("Yes", QMessageBox.ButtonRole.YesRole)
+                btn_no = msg.addButton("No", QMessageBox.ButtonRole.NoRole)
+
+                msg.exec()
+
+                if msg.clickedButton() == btn_yes:
+                    self.ui.myagenda_box.removeItem(self.ui.myagenda_box.findText(item_text))  # suppression des agenda en récupérant son indice à l'aide de son nom
+                    self.ui.followedagenda_box.removeItem(current_index)  # suppression des favoris

@@ -8,3 +8,14 @@ class TaskPage(QWidget) :
         '''
         super().__init__(mainpage)
         self.ui = mainpage.ui
+
+        self.ui.event_button_2.clicked.connect(self.goto_event)
+
+
+############################# gestion changement task to event page ################################
+    def goto_event(self):
+        '''
+        Change la page d'affichage du logiciel à la page d'evenement
+        :return: None
+        '''
+        self.ui.pages_logiciel.setCurrentIndex(3)
