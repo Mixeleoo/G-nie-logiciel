@@ -29,6 +29,14 @@ class TaskPage(QWidget) :
         '''
         self.ui.pages_logiciel.setCurrentIndex(3)
 
+############################# gestion ajout evenement ################################
+    def add_task(self,lang : str):
+        '''
+        Permet la création d'une nouvelle tâche et ouverture du menu de parametrage
+        :return: None
+        '''
+        param_task_menu = QMenu()
+
 
 
 ############################# gestion liste taches #########################################

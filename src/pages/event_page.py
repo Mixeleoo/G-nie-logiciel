@@ -1,6 +1,7 @@
 from PyQt6.QtCore import QDate, Qt, QPoint
-from PyQt6.QtWidgets import QWidget, QMenu, QInputDialog, QMessageBox
+from PyQt6.QtWidgets import QWidget, QMenu, QInputDialog, QMessageBox, QDialog, QLineEdit, QVBoxLayout, QLabel
 from src.main import MainWindow
+from src.menus.event_menu import EventMenu
 
 class EventPage(QWidget) :
     def __init__(self, mainpage: MainWindow):
@@ -13,6 +14,9 @@ class EventPage(QWidget) :
         self.current_date = QDate.currentDate() # date d'affichage par défaut
 
         self.ui.task_button.clicked.connect(self.goto_task)
+
+        # ajout evenement
+        self.ui.New_event_button.clicked.connect(lambda : self.add_event(mainpage))
 
         # gestion choix d'affichage
         self.ui.radioYear.setChecked(True) # affichage par défaut Mois
@@ -44,6 +48,16 @@ class EventPage(QWidget) :
         :return: None
         '''
         self.ui.pages_logiciel.setCurrentIndex(4)
+
+############################# gestion ajout evenement ################################
+    def add_event(self, mainpage: MainWindow):
+        '''
+        Permet la création d'un nouvel événement et ouverture du menu de parametrage
+        :return: None
+        '''
+        param_event = EventMenu(mainpage,self)
+        if param_event.exec() :
+            print(param_event.get_data())
 
 ############################# gestion choix affichage #########################################
     def set_months_display(self, checked):
