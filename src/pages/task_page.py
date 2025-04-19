@@ -1,5 +1,7 @@
 from PyQt6.QtCore import QPoint, Qt
 from PyQt6.QtWidgets import QWidget, QMenu, QInputDialog, QMessageBox
+
+from menus.task_menu import TaskMenu
 from src.main import MainWindow
 
 class TaskPage(QWidget) :
@@ -11,6 +13,9 @@ class TaskPage(QWidget) :
         self.ui = mainpage.ui
 
         self.ui.event_button_2.clicked.connect(self.goto_event)
+
+        # ajout tache
+        self.ui.new_task_button.clicked.connect(lambda: self.add_task(mainpage))
 
         # gestion liste d'agenda
         self.ui.mytask_box.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
@@ -30,12 +35,14 @@ class TaskPage(QWidget) :
         self.ui.pages_logiciel.setCurrentIndex(3)
 
 ############################# gestion ajout evenement ################################
-    def add_task(self,lang : str):
+    def add_task(self, mainpage: MainWindow):
         '''
-        Permet la création d'une nouvelle tâche et ouverture du menu de parametrage
+        Permet la création d'un nouvel événement et ouverture du menu de parametrage
         :return: None
         '''
-        param_task_menu = QMenu()
+        param_task = TaskMenu(mainpage, self)
+        if param_task.exec():
+            print(param_task.get_data())
 
 
 

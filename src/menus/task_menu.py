@@ -4,42 +4,42 @@ from PyQt6.QtWidgets import QDialog, QLineEdit, QVBoxLayout, QLabel, QDateEdit, 
 
 
 
-class EventMenu(QDialog):
-    def __init__(self, mainpage , eventpage):
-        super().__init__(parent=eventpage)
+class TaskMenu(QDialog):
+    def __init__(self, mainpage , taskpage):
+        super().__init__(parent=taskpage)
 
         self.ui = mainpage.ui
 
         self.layout = QVBoxLayout(self)
-        self.event_name_label = QLabel() #nom
-        self.event_name = QLineEdit() #nom
-        self.event_location_label = QLabel() #lieu
-        self.event_location = QLineEdit() #lieu
-        self.date_event_label = QLabel() #date
-        self.date_event = QDateEdit() #date
-        self.time_event_label = QLabel() #heure
-        self.time_event = QTimeEdit() #heure
-        self.color_event_label = QLabel() #couleur
-        self.color_event = QComboBox() #couleur
+        self.task_name_label = QLabel() #nom
+        self.task_name = QLineEdit() #nom
+        self.task_details_label = QLabel() #detail
+        self.date_task_label = QLabel() #date
+        self.task_details = QLineEdit()  # detail
+        self.date_task = QDateEdit() #date
+        self.time_task_label = QLabel() #heure
+        self.time_task = QTimeEdit() #heure
+        self.color_task_label = QLabel() #couleur
+        self.color_task = QComboBox() #couleur
         self.colors = {} #choix couleur
-        # TODO : voir quoi mettre dans ces dico
-        self.repeat = {} #choix répétition
-        self.reminder = {} #choix rappel
+        #TODO : voir quoi mettre dans ces dico
+        self.repeat = {}  # choix répétition
+        self.reminder = {}  # choix rappel
 
         self.ok_button = QPushButton()
         self.cancel_button = QPushButton()
 
         # Connection des widgets au layout
-        self.layout.addWidget(self.event_name_label)
-        self.layout.addWidget(self.event_name)
-        self.layout.addWidget(self.event_location_label)
-        self.layout.addWidget(self.event_location)
-        self.layout.addWidget(self.date_event_label)
-        self.layout.addWidget(self.date_event)
-        self.layout.addWidget(self.time_event_label)
-        self.layout.addWidget(self.time_event)
-        self.layout.addWidget(self.color_event_label)
-        self.layout.addWidget(self.color_event)
+        self.layout.addWidget(self.task_name_label)
+        self.layout.addWidget(self.task_name)
+        self.layout.addWidget(self.task_details_label)
+        self.layout.addWidget(self.task_details)
+        self.layout.addWidget(self.date_task_label)
+        self.layout.addWidget(self.date_task)
+        self.layout.addWidget(self.time_task_label)
+        self.layout.addWidget(self.time_task)
+        self.layout.addWidget(self.color_task_label)
+        self.layout.addWidget(self.color_task)
 
         model = QStandardItemModel()
 
@@ -58,12 +58,12 @@ class EventMenu(QDialog):
                            "Bleu": "#342aff",
                            "Violet": "#8723cd",
                            "Rose": "#cd2393"}  # choix couleur
-            self.setWindowTitle("Créer un évenement")
-            self.event_name_label.setText("Nom :")
-            self.event_location_label.setText("Lieu :")
-            self.date_event_label.setText("Date :")
-            self.time_event_label.setText("Heure :")
-            self.color_event_label.setText("Couleur :")
+            self.setWindowTitle("Créer une tâche")
+            self.task_name_label.setText("Nom :")
+            self.task_details_label.setText("Détails :")
+            self.date_task_label.setText("Date :")
+            self.time_task_label.setText("Heure :")
+            self.color_task_label.setText("Couleur :")
 
             self.ok_button.setText("Valider")
             self.cancel_button.setText("Annuler")
@@ -77,12 +77,12 @@ class EventMenu(QDialog):
                            "Blue": "#342aff",
                            "Purple": "#8723cd",
                            "Pink": "#cd2393"}  # choix couleur
-            self.setWindowTitle("Create event")
-            self.event_name_label.setText("Name :")
-            self.event_location_label.setText("Location :")
-            self.date_event_label.setText("Date :")
-            self.time_event_label.setText("Time :")
-            self.color_event_label.setText("Color :")
+            self.setWindowTitle("Create task")
+            self.task_name_label.setText("Name :")
+            self.task_details_label.setText("Details :")
+            self.date_task_label.setText("Date :")
+            self.time_task_label.setText("Time :")
+            self.color_task_label.setText("Color :")
 
             self.ok_button.setText("Ok")
             self.cancel_button.setText("Cancel")
@@ -93,7 +93,7 @@ class EventMenu(QDialog):
             item.setForeground(Qt.GlobalColor.black)  # texte en noir pour une meilleure lisibilité
             model.appendRow(item)
 
-        self.color_event.setModel(model)
+        self.color_task.setModel(model)
 
         self.setLayout(self.layout)
 
@@ -104,9 +104,9 @@ class EventMenu(QDialog):
         Récupère les données de l'utilisateur sous forme de dictionnaire
         :return: Dictionnaire des données
         '''
-        data_dic = {"name" : self.event_name.text(),
-                    "location" : self.event_location.text(),
-                    "date" : self.date_event.text(),
-                    "time" : self.time_event.text(),
-                    "color" : self.colors[self.color_event.currentText()]} #recupération du code ASCII de la couleur choisie
+        data_dic = {"name" : self.task_name.text(),
+                    "details" : self.task_details.text(),
+                    "date" : self.date_task.text(),
+                    "time" : self.time_task.text(),
+                    "color" : self.colors[self.color_task.currentText()]} #recupération du code ASCII de la couleur choisie
         return data_dic
