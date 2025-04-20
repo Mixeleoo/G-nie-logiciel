@@ -83,7 +83,7 @@ class EventPage(QWidget) :
             column).text()  # recuperation de la date de la colonne cliquée
         print(title[4:])
 
-        ############################# gestion choix affichage #########################################
+############################# gestion choix affichage #########################################
     def set_months_display(self, checked):
         '''
         Passe l'affichage du calendrier par mois
