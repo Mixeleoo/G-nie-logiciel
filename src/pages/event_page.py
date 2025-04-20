@@ -18,8 +18,14 @@ class EventPage(QWidget) :
         # ajout evenement
         self.ui.New_event_button.clicked.connect(lambda : self.add_event(mainpage))
 
-        # recuperation date cliquée
-        self.ui.calendarWidget_2.clicked.connect(self.get_date)
+        # recuperation date cliquée affichage mois
+        self.ui.calendarWidget_2.clicked.connect(self.get_date_month)
+
+        # recuperation date cliquée affichage semaines
+        self.ui.table_week.cellClicked.connect(self.get_date_week)
+
+        # recuperation date cliquée affichage jours
+        self.ui.table_days.cellClicked.connect(self.get_date_days)
 
         # gestion choix d'affichage
         self.ui.radioYear.setChecked(True) # affichage par défaut Mois
@@ -63,10 +69,21 @@ class EventPage(QWidget) :
             print(param_event.get_data())
 
 ############################# gestion recuperation date cliquée ################################
-    def get_date(self, date : QDate):
+    def get_date_month(self, date : QDate):
         print(f"{date.toString('dd/MM/yyyy')}")
 
-############################# gestion choix affichage #########################################
+############################# gestion recuperation date cliquée ################################
+    def get_date_week(self, row, column) :
+        title = self.ui.table_week.horizontalHeaderItem(column).text() # recuperation de la date de la colonne cliquée
+        print(title[4:])
+
+############################# gestion recuperation date cliquée ################################
+    def get_date_days(self, row, column):
+        title = self.ui.table_days.horizontalHeaderItem(
+            column).text()  # recuperation de la date de la colonne cliquée
+        print(title[4:])
+
+        ############################# gestion choix affichage #########################################
     def set_months_display(self, checked):
         '''
         Passe l'affichage du calendrier par mois
