@@ -18,6 +18,9 @@ class EventPage(QWidget) :
         # ajout evenement
         self.ui.New_event_button.clicked.connect(lambda : self.add_event(mainpage))
 
+        # recuperation date cliquée
+        self.ui.calendarWidget_2.clicked.connect(self.get_date)
+
         # gestion choix d'affichage
         self.ui.radioYear.setChecked(True) # affichage par défaut Mois
         self.ui.radioYear.toggled.connect(lambda checked: self.set_months_display(checked))
@@ -58,6 +61,10 @@ class EventPage(QWidget) :
         param_event = EventMenu(mainpage,self)
         if param_event.exec() :
             print(param_event.get_data())
+
+############################# gestion recuperation date cliquée ################################
+    def get_date(self, date : QDate):
+        print(f"{date.toString('dd/MM/yyyy')}")
 
 ############################# gestion choix affichage #########################################
     def set_months_display(self, checked):
