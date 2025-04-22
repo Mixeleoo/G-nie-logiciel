@@ -27,14 +27,12 @@ class SignInPage(QWidget) :
         '''
         self.ui.pages_logiciel.setCurrentIndex(0) # homepage
         # suppression des messages d'erreur
-        self.ui.error_label2.hide()
-        self.ui.error_label3.hide()
-        self.ui.error_label4.hide()
+        self.clear_error()
 
     def validate_acccount(self):
         '''
-
-        :return:
+        'Vérifie que les données entrées par l'utilisateur sont correctes et ajoute le compte dans la base de données
+        :return: None
         '''
         if not self.check_password_repeat() :
             self.ui.error_label2.show()
@@ -43,6 +41,7 @@ class SignInPage(QWidget) :
         elif self.ui.password_line_connection_2.text().strip() == "" or self.ui.passwordconfirm_line_connection_2.text().strip() == "":
             self.ui.error_label4.show()
         else :
+            self.ui.pages_logiciel.setCurrentIndex(2) #ouvre le logiciel
             print("compte cree")
 
     def check_password_repeat(self) -> bool:
@@ -54,8 +53,8 @@ class SignInPage(QWidget) :
 
     def clear_error(self):
         '''
-
-        :return:
+        Supprime les messages d'erreur
+        :return: None
         '''
         self.ui.error_label2.hide()
         self.ui.error_label3.hide()

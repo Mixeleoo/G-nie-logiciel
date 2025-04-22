@@ -2,6 +2,7 @@ from PyQt6.QtCore import QDate, Qt, QPoint
 from PyQt6.QtWidgets import QWidget, QMenu, QInputDialog, QMessageBox, QDialog, QLineEdit, QVBoxLayout, QLabel
 from src.main import MainWindow
 from src.menus.event_menu import EventMenu
+from src.menus.event_list_menu import EventListMenu
 
 class EventPage(QWidget) :
     def __init__(self, mainpage: MainWindow):
@@ -9,9 +10,14 @@ class EventPage(QWidget) :
         Initialise la page d'acceuil du logiciel
         '''
         super().__init__(mainpage)
+        self.mainpage = mainpage
         self.ui = mainpage.ui
 
         self.current_date = QDate.currentDate() # date d'affichage par défaut
+
+        # Dictionnaire qui servira à l'affichage du mois courant en fonction du language choisi
+        self.months = { 'fr' : {1 : 'Janvier', 2 : 'Février', 3 : 'Mars', 4 : 'Avril', 5 : 'Mai', 6 : 'Juin', 7 : 'Juillet', 8 : 'Août', 9 : 'Septembre', 10 : 'Octobre', 11 : 'Novembre', 12 : 'Décembre' } ,
+                        'eng' : {1 : 'January', 2 : 'February', 3 : 'March',  4 : 'April', 5 : 'May', 6 : 'June', 7 : 'July', 8 : 'August', 9 : 'September', 10 : 'October', 11 : 'November', 12 : 'Décember'}}
 
         self.ui.task_button.clicked.connect(self.goto_task)
 
@@ -68,20 +74,47 @@ class EventPage(QWidget) :
         if param_event.exec() :
             print(param_event.get_data())
 
+############################# gestion ajout evenement ################################
+    def see_event(self, mainpage : MainWindow, date : QDate):
+        try :
+            display_event = EventListMenu(mainpage,self, date)
+            print(date)
+            if display_event.exec() :
+                print('truc')
+        except Exception as e :
+            print(f"Erreur dans see_event: {e}")
+
 ############################# gestion recuperation date cliquée ################################
     def get_date_month(self, date : QDate):
         print(f"{date.toString('dd/MM/yyyy')}")
+        self.see_event(self.mainpage,date)
 
 ############################# gestion recuperation date cliquée ################################
     def get_date_week(self, row, column) :
+        '''
+        Permet de récupérer la date du jour indiquée dans la colonne cliquée du tableau pour trouver les evenement associés
+
+       :param row: Indice de la ligne cliquée du tableau
+       :param column: Indice de la colonne cliquée du tableau
+       :return: Date de la colonne courante
+       '''
         title = self.ui.table_week.horizontalHeaderItem(column).text() # recuperation de la date de la colonne cliquée
         print(title[4:])
 
 ############################# gestion recuperation date cliquée ################################
     def get_date_days(self, row, column):
-        title = self.ui.table_days.horizontalHeaderItem(
-            column).text()  # recuperation de la date de la colonne cliquée
+        '''
+        Permet de récupérer la date du jour indiquée dans la colonne du tableau pour trouver les evenement associés
+
+        :param row: Indice de la ligne cliquée du tableau
+        :param column: Indice de la colonne cliquée du tableau
+        :return: Date de la colonne courante
+        '''
+        title = self.ui.table_days.horizontalHeaderItem(column).text()  # recuperation de la date de la colonne cliquée
+        date = title[4:] # date courante
         print(title[4:])
+
+        return date
 
 ############################# gestion choix affichage #########################################
     def set_months_display(self, checked):
@@ -91,6 +124,7 @@ class EventPage(QWidget) :
         '''
         try:
             self.ui.pages_calendrier.setCurrentIndex(0)
+            self.ui.curr_display_date.setText(self.current_date.toString('yyyy'))
         except Exception as e:
             print(f"Erreur dans set_months_display: {e}")
 
@@ -101,6 +135,7 @@ class EventPage(QWidget) :
         '''
         try:
             self.ui.pages_calendrier.setCurrentIndex(1)
+            self.ui.curr_display_date.setText(self.months[self.ui.current_lang][int(self.current_date.toString('MM'))])
         except Exception as e:
             print(f"Erreur dans set_weeks_display: {e}")
 
@@ -112,6 +147,7 @@ class EventPage(QWidget) :
         '''
         try:
             self.ui.pages_calendrier.setCurrentIndex(2)
+            self.ui.curr_display_date.setText(self.months[self.ui.current_lang][int(self.current_date.toString('MM'))])
         except Exception as e:
             print(f"Erreur dans set_days_display: {e}")
 
@@ -124,6 +160,7 @@ class EventPage(QWidget) :
         try:
             self.current_date = self.current_date.addDays(-7)
             self.ui.set_week_headers(self.current_date,self.ui.current_lang)
+            self.ui.curr_display_date.setText(self.months[self.ui.current_lang][int(self.current_date.toString('MM'))])
         except Exception as e:
             print(f"Erreur dans prev_week: {e}")
 
@@ -135,6 +172,7 @@ class EventPage(QWidget) :
         try:
             self.current_date = self.current_date.addDays(7)
             self.ui.set_week_headers(self.current_date,self.ui.current_lang)
+            self.ui.curr_display_date.setText(self.months[self.ui.current_lang][int(self.current_date.toString('MM'))])
         except Exception as e:
             print(f"Erreur dans next_week: {e}")
 
@@ -148,6 +186,7 @@ class EventPage(QWidget) :
         try:
             self.current_date = self.current_date.addDays(-1)
             self.ui.set_days_headers(self.current_date,self.ui.current_lang)
+            self.ui.curr_display_date.setText(self.months[self.ui.current_lang][int(self.current_date.toString('MM'))])
         except Exception as e:
             print(f"Erreur dans prev_day: {e}")
 
@@ -159,6 +198,7 @@ class EventPage(QWidget) :
         try:
             self.current_date = self.current_date.addDays(1)
             self.ui.set_days_headers(self.current_date,self.ui.current_lang)
+            self.ui.curr_display_date.setText(self.months[self.ui.current_lang][int(self.current_date.toString('MM'))])
         except Exception as e:
             print(f"Erreur dans next_day: {e}")
 

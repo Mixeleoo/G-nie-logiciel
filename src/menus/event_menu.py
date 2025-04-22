@@ -11,6 +11,7 @@ class EventMenu(QDialog):
         self.ui = mainpage.ui
 
         self.layout = QVBoxLayout(self)
+
         self.event_name_label = QLabel() #nom
         self.event_name = QLineEdit() #nom
         self.event_location_label = QLabel() #lieu

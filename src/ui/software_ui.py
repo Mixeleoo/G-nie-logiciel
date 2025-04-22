@@ -724,7 +724,7 @@ class Ui_sofware_ui(object):
                 item.setText(_translate("sofware_ui", str(i)))
 
         self.set_days_headers(QDate.currentDate(), self.current_lang)
-        self.curr_display_date.setText(_translate("sofware_ui", "<annee/semaine/mois>"))
+        self.curr_display_date.setText(_translate("sofware_ui", QDate.currentDate().toString('yyyy')))
         self.calendar_display_choice.setTitle(_translate("sofware_ui", "Mode d\'affichage"))
         self.radioDay.setText(_translate("sofware_ui", "Jours"))
         self.radioWeek.setText(_translate("sofware_ui", "Semaine"))
@@ -787,7 +787,7 @@ class Ui_sofware_ui(object):
                     item.setText(_translate("sofware_ui", str(i)))
 
             self.set_days_headers(QDate.currentDate(),self.current_lang)
-            self.curr_display_date.setText(_translate("sofware_ui", "<annee/semaine/mois>"))
+            self.curr_display_date.setText(_translate("sofware_ui", QDate.currentDate().toString('yyyy')))
             self.calendar_display_choice.setTitle(_translate("sofware_ui", "Display mode"))
             self.radioDay.setText(_translate("sofware_ui", "Days"))
             self.radioWeek.setText(_translate("sofware_ui", "Weeks"))
