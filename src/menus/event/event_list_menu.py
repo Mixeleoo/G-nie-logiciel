@@ -44,17 +44,19 @@ class EventListMenu(QDialog):
 
 
     def show_event_menu(self, pos : QPoint):
-        a_lang = {'fr' : ['Modifier évenement','Renommer évenement', 'Annuler évenement', 'Supprimer évenement' , 8],
-                'en' : ['Edit event', 'Rename event', 'Cancel event', 'Delete event', 5]}
+        a_lang = {'fr' : ['Modifier évenement','Renommer évenement', 'Annuler évenement', 'Supprimer évenement',"Ajouter à un agenda"],
+                'en' : ['Edit event', 'Rename event', 'Cancel event', 'Delete event',"Add to diary"]}
         try :
             item = self.event_list.itemAt(pos)
             if item:
                 menu = QMenu()
 
                 modifier_action = menu.addAction(a_lang[self.ui.current_lang][0])
+                add_to_diary_action = menu.addAction(a_lang[self.ui.current_lang][4])
                 renommer_action = menu.addAction(a_lang[self.ui.current_lang][1])
                 annuler_action = menu.addAction(a_lang[self.ui.current_lang][2])
                 supprimer_action = menu.addAction(a_lang[self.ui.current_lang][3])
+
 
                 action = menu.exec(self.event_list.mapToGlobal(pos))
 
@@ -67,6 +69,8 @@ class EventListMenu(QDialog):
                     self.delete_event()
                 elif action == annuler_action:
                     self.cancel_event()
+                elif action == add_to_diary_action:
+                    self.add_event_to_diary()
 
         except Exception as e :
             print(f"Erreur dans show_event_menu: {e}")
@@ -106,3 +110,10 @@ class EventListMenu(QDialog):
         '''
         # TODO : voir comment annuler un evenement et l'afficher correctement
         print("évenement annulé")
+
+    def add_event_to_diary(self):
+        '''
+        Crée et ouvre une liste des agenda disponibles pour permettre l'ajout dans l'une d'elle à l'utilisateur
+        :return: None
+        '''
+        print('ajout agenda')
