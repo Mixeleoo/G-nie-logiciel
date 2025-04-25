@@ -1,7 +1,7 @@
 from PyQt6.QtCore import QPoint, Qt
 from PyQt6.QtWidgets import QWidget, QMenu, QInputDialog, QMessageBox
 
-from menus.task_menu import TaskMenu
+from src.menus.task.task_menu import TaskMenu
 from src.main import MainWindow
 
 class TaskPage(QWidget) :
