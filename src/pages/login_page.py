@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import QWidget
 from src.main import MainWindow
+from DAO import UserDAO, User, userdao
 
 class LoginPage(QWidget) :
     def __init__(self, mainpage: MainWindow):
@@ -10,7 +11,7 @@ class LoginPage(QWidget) :
         self.ui = mainpage.ui
 
         self.ui.back_button.clicked.connect(lambda : self.goto_homepage()) # bouton retour
-        self.ui.validate_connect_button.clicked.connect(lambda  : self.validate_connection())
+        self.ui.validate_connect_button.clicked.connect(self.validate_connection)
 
         # supression du message d'erreur
         self.ui.error_label1.hide()
@@ -42,12 +43,18 @@ class LoginPage(QWidget) :
         '''
         self.ui.error_label1.hide() # suppression du message d'erreur
 
-    #TODO Léo : associer la méthode avec une vérif dans le serveur
     def check_connection(self) -> bool:
         '''
         Verifie que l'identifiant et mot de passe tapé par l'utilisateur sont correct
-        :return: retourne True si corrects et False sinon
+        :return: retourne True si correct et False sinon
         '''
-        id_verif = True
 
-        return id_verif
+        # La fonction retourne un user dont l'id est -1 si le compte existe, sinon l'id du compte
+        user = userdao.connect(
+            User(
+                mail=self.ui.email_line_connection.text(),
+                mdp=self.ui.password_line_connection.text()
+            )
+        )
+
+        return user.id != -1

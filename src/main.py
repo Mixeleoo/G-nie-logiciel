@@ -27,8 +27,6 @@ class MainWindow(QWidget) :
         #initialisation à la première page du logiciel : homepage
         self.ui.pages_logiciel.setCurrentIndex(0)
 
-
-
 if __name__ == "__main__":
     import sys
     app = QApplication(sys.argv)
