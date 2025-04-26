@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QWidget
 from src.main import MainWindow
-from DAO import UserDAO, User, userdao
+from DAO import User, userdao
 
 class LoginPage(QWidget) :
     def __init__(self, mainpage: MainWindow):
