@@ -84,17 +84,12 @@ class EventPage(QWidget) :
         :param date: date cliquée
         :return: None
         '''
-        try :
-            display_event = EventListMenu(mainpage,self, date)
-            print(date)
-            if display_event.exec() :
-                print('truc')
-        except Exception as e :
-            print(f"Erreur dans see_event: {e}")
+        display_event = EventListMenu(mainpage,self, date)
+        if display_event.exec():
+            print('truc')
 
 ############################# gestion recuperation date cliquée ################################
     def get_date_month(self, date : QDate):
-        print(f"{date.toString('dd/MM/yyyy')}")
         self.see_event(self.mainpage,date)
 
 ############################# gestion recuperation date cliquée ################################

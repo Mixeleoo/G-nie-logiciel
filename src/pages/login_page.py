@@ -1,8 +1,9 @@
 from PyQt6.QtWidgets import QWidget
 from main import MainWindow
-from DAO import User, userdao, user, agendalist, agendadao
+import DAO
+from dataclass import User
 
-class LoginPage(QWidget) :
+class LoginPage(QWidget):
     def __init__(self, mainpage: MainWindow):
         '''
         Initialise la page d'acceuil du logiciel
@@ -32,6 +33,8 @@ class LoginPage(QWidget) :
         :return: None
         '''
         if self.check_connection():
+            # Si la connexion est validée, alors on va chopper la liste de ses agendas
+            DAO.agendalist = DAO.agendadao.get_list(DAO.user)
             self.ui.pages_logiciel.setCurrentIndex(3) #aller à la pages evenement
         else :
             self.ui.error_label1.show()
@@ -50,13 +53,11 @@ class LoginPage(QWidget) :
         '''
 
         # La fonction retourne un user dont l'id est -1 si le compte existe, sinon l'id du compte
-        user = userdao.connect(
+        DAO.user = DAO.userdao.connect(
             User(
                 mail=self.ui.email_line_connection.text(),
                 mdp=self.ui.password_line_connection.text()
             )
         )
 
-        listagenda = agendadao.get_list(user)
-
-        return user.id != -1
+        return DAO.user.id != -1

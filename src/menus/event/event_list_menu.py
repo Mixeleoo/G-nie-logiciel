@@ -6,9 +6,8 @@ from PyQt6.QtWidgets import QDialog, QVBoxLayout, QMessageBox, QMenu, QLineEdit,
 from menus.event.edit_event_menu import EditEventMenu
 from menus.event.rename_event_menu import RenameEventMenu
 
-from data_test.list_data_test import *
 from datetime import datetime
-from DAO import eventdao, agendalist, Agenda, Event
+import DAO
 
 
 class EventListMenu(QDialog):
@@ -27,13 +26,20 @@ class EventListMenu(QDialog):
 
         self.event_list = QtWidgets.QListWidget(self) # liste des evenement à la date cliquée par l'utilisateur
         # TODO Léo : adpater la boucle au parcours de la base de données
-        for agenda in agendalist:
-            event_list = eventdao.get_list(agenda)
-            for e in event:
-                print("QDate.toString(): ", curr_date.toString('dd/MM/yyyy'), "\ndatetime.fromtimestamp(): ", datetime.fromtimestamp(user.start))
-                if e['date'] == curr_date.toString('dd/MM/yyyy'):
-                    item = QtWidgets.QListWidgetItem(e['name'])
-                    if e['ongoing'] == False :
+
+        for agenda in DAO.agendalist:
+            event_list = DAO.eventdao.get_list(agenda)
+            for e in event_list:
+                # 1. Convertir curr_date (QDate) en datetime
+                curr_timestamp = datetime(
+                    curr_date.year(),
+                    curr_date.month(),
+                    curr_date.day()
+                ).timestamp()
+
+                if e.start <= curr_timestamp <= e.end:
+                    item = QtWidgets.QListWidgetItem(e.name)
+                    if e.cancel == False:
                         font = QFont()
                         font.setStrikeOut(True)
                         item.setFont(font)
