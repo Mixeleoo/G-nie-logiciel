@@ -10,23 +10,42 @@ HOST = '127.0.0.1'
 PORT = 65439
 
 class Request:
-    def __init__(self, query: str, func: Callable[[sqlite3.Cursor], str]):
+    def __init__(self, query: str, func: Callable[[], str]):
         self.query = query
         self.func = func
 
-    def send(self, *args) -> str:
-        return self.func(con.execute(self.query, args))
+    def send(self, *args) -> bytes:
+        return self.func(con.execute(self.query, args)).encode()
 
 requestType_to_query: dict[str, Request] = {
-    "updateUser": Request("update user set mail = ?, mdp = ? where id = ?;", updateUser),
+    "updateUser": Request("update user set mail = ?, mdp = ? where id = ?;", requestSuccess),
 
     "createAgenda": Request("insert into agenda (user_id, name) values (?, ?);", createAgenda),
-    "updateAgenda": Request("update agenda set name = ? where id = ?;", updateAgenda),
+    "updateAgenda": Request("update agenda set name = ? where id = ?;", requestSuccess),
     "getAgendaList": Request("select * from agenda where user_id = ?;", getAgendaList),
 
+    # TODO Récupérer tous les agendas partagés dont la colonne "state" est à 0, pour les mettre dans les demandes d'agenda partagés de l'utilisateur concerné
+    "shareAgenda": Request(
+            "insert into shared_agenda (user_id, agenda_id)"
+            " select id, ? from user where mail = ?;",
+            requestSuccess
+        ),
+    "acceptSharedAgenda": Request("update shared_agenda set state = 1 where user_id = ? and agenda_id = ?;", requestSuccess),
+    "denySharedAgenda": Request("delete from shared_agenda where user_id = ? and agenda_id = ?;", requestSuccess),
+    # TODO En même temps que l'on récupère les agenda de l'utilisateur il faudra récupérer les id des agendas dont il a été partagé
+    "getPendingAgendaList": Request(
+            "select agenda.* from shared_agenda sa, agenda a where user_id = ? and state = 0 and sa.agenda_id = a.id;",
+            getPendingAgendaList
+        ),
+
     "createEvent": Request("insert into event (agenda_id, name) values (?, ?);", createEvent),
-    "updateEvent": Request("update event set name = ?, cancel = ? where id = ?;", updateEvent),
-    "deleteEvent": Request("delete from event where id = ?;", deleteEvent),
+    "updateEvent": Request(
+            "update event"
+            " set name = ?, desc = ?, cancel = ?, start = ?, end = ?, color = ?"
+            " where id = ?;",
+            requestSuccess
+        ),
+    "deleteEvent": Request("delete from event where id = ?;", requestSuccess),
     "getEventList": Request("select * from event where agenda_id = ?;", getEventList)
 }
 
@@ -45,6 +64,15 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             m_json = json.loads(data)
             print("Reçu du client :", m_json)
             
+            """
+            switch op
+            case 1: pour la création de compte
+            case 2: pour la connexion à un compte
+            case 3: requête du client avec comme spécification la catégorie "requestType"
+            case 4: retour serveur positif
+            case 5: retour serveur négatif avec message d'erreur dans la catégorie "errmsg"
+            """
+
             # REGISTER
             if m_json["op"] == 1:
                 auth = m_json["authentification"]
@@ -56,8 +84,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 auth = m_json["authentification"]
                 cur = con.execute("select id from user where mail = ? and mdp = ?;", (auth["mail"], auth["mdp"]))
                 users_info = cur.fetchall()
-                if not users_info:
-                    conn.sendall("{\"errmsg\":\"PAS DE COMPTE\",\"op\":5}".encode())
+                if users_info == []:
+                    conn.sendall("\"errmsg\":\"Pas de compte associant ce mail et mdp\",\"op\":5".encode())
 
                 else:
                     user_info = users_info[0]
@@ -70,10 +98,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
             elif m_json["op"] == 3:
                 try:
-                    data: str = requestType_to_query[m_json["requestType"]].send(*m_json["data"].values())
+                    data: bytes = requestType_to_query[m_json["requestType"]].send(*m_json["data"].values())
                 except sqlite3.Error as e:
                     conn.sendall(("{\"errmsg\":\"" + str(e) + "\",\"op\":5}").encode())
                 else:
-                    conn.sendall(data.encode())
+                    conn.sendall(data)
 
             con.commit()

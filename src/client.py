@@ -57,7 +57,7 @@ if __name__ == "__main__":
                 print("Vous n'êtes toujours pas connectés !")
                 continue
 
-            agendaList = agendadao.get_agenda_list(user)
+            agendaList = agendadao.get_list(user)
             print(agendaList)
 
         #                                               EVENT
