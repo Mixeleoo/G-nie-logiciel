@@ -38,15 +38,15 @@ requestType_to_query: dict[str, Request] = {
             getPendingAgendaList
         ),
 
-    "createEvent": Request("insert into event (agenda_id, name, description, cancel, start, _end, color) values (?, ?, ?, ?, ?, ?, ?);", createEvent),
+    "createEvent": Request("insert into event (agenda_id, name, cancel, start, _end, color) values (?, ?, ?, ?, ?, ?, ?);", createEvent),
     "updateEvent": Request(
             "update event"
-            " set name = ?, description = ?, cancel = ?, start = ?, _end = ?, color = ?"
+            " set name = ?, cancel = ?, start = ?, _end = ?, color = ?"
             " where id = ?;",
             requestSuccess
         ),
     "deleteEvent": Request("delete from event where id = ?;", requestSuccess),
-    "getEventList": Request("select id, name, description, cancel, start, _end, color from event where agenda_id = ?;", getEventList)
+    "getEventList": Request("select id, name, cancel, start, _end, color from event where agenda_id = ?;", getEventList)
 }
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:

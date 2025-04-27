@@ -128,7 +128,6 @@ class EventMenu(QDialog):
         return Event(
             id=self.agenda_event.currentIndex(),
             name=self.event_name.text(),
-            desc="", # TODO Eloïse, il faut rajouter la possibilité de faire une description (jsp si c'est important en vrai)
             start=timestamp,
             end=timestamp + 3600, # Une heure plus tard
             color=hexcolor_to_int(self.colors[self.color_event.currentText()])

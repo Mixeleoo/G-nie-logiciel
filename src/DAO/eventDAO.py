@@ -14,7 +14,6 @@ class EventDAO:
             "data":{
                 "agenda_id": agenda.id,
                 "name": event.name,
-                "desc": event.desc,
                 "cancel": event.cancel,
                 "start": event.start,
                 "end": event.end,
@@ -32,7 +31,6 @@ class EventDAO:
         self.dbcom.sendall({
             "data":{
                 "name": event.name,
-                "desc": event.desc,
                 "cancel": int(event.cancel),
                 "start": event.start,
                 "end": event.end,
@@ -82,7 +80,6 @@ class EventDAO:
                 Event(
                     event["id"],
                     event["name"],
-                    event["desc"],
                     event["cancel"],
                     event["start"],
                     event["end"],

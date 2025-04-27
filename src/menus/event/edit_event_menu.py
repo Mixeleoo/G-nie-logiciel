@@ -126,7 +126,6 @@ class EditEventMenu(QDialog) :
         return Event(
             id=self.event.id,
             name=self.new_name.text(),
-            desc="",
             cancel=self.event.cancel,
             start=timestamp,
             end=timestamp + 3600 # Une heure après

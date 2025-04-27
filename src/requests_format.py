@@ -56,11 +56,10 @@ def getEventList(cur: sqlite3.Cursor) -> str:
             {
                 "id": event[0],
                 "name": event[1],
-                "desc": event[2],
-                "cancel": bool(event[3]),
-                "start": event[4],
-                "end": event[5],
-                "color": event[6]
+                "cancel": bool(event[2]),
+                "start": event[3],
+                "end": event[4],
+                "color": event[5]
             }
         )
 

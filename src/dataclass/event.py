@@ -6,7 +6,6 @@ from .color import Color
 class Event:
     id: int = -1
     name: str = ""
-    desc: str = ""
     cancel: bool = False
 
     # Start et end son en UNIX TIME c'est à dire en secondes à partir de 1/1/1970 UTC, transformable en temps lisible par un humain via ce code:
