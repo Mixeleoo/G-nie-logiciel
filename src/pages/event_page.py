@@ -78,6 +78,12 @@ class EventPage(QWidget) :
 
 ############################# gestion ajout evenement ################################
     def see_event(self, mainpage : MainWindow, date : QDate):
+        '''
+        Affichage des evenements de la date courante
+        :param mainpage: Page event
+        :param date: date cliquée
+        :return: None
+        '''
         try :
             display_event = EventListMenu(mainpage,self, date)
             print(date)

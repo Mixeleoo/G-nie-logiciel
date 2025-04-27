@@ -1,6 +1,7 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QStandardItem, QColor, QStandardItemModel
 from PyQt6.QtWidgets import QDialog, QLineEdit, QVBoxLayout, QLabel, QDateEdit, QTimeEdit, QComboBox, QPushButton
+#from DAO import
 
 
 
@@ -23,6 +24,9 @@ class EventMenu(QDialog):
         self.color_event_label = QLabel() #couleur
         self.color_event = QComboBox() #couleur
         self.colors = {} #choix couleur
+        self.agendas_label = QLabel() # agenda
+        self.agenda_event = QComboBox() # agenda
+        self.agendas = [] #liste des agendas de l'utilisateur
         # TODO : voir quoi mettre dans ces dico
         self.repeat = {} #choix répétition
         self.reminder = {} #choix rappel
@@ -41,6 +45,8 @@ class EventMenu(QDialog):
         self.layout.addWidget(self.time_event)
         self.layout.addWidget(self.color_event_label)
         self.layout.addWidget(self.color_event)
+        self.layout.addWidget(self.agendas_label)
+        self.layout.addWidget(self.agenda_event)
 
         model = QStandardItemModel()
 
@@ -49,6 +55,9 @@ class EventMenu(QDialog):
 
         self.ok_button.clicked.connect(self.accept)
         self.cancel_button.clicked.connect(self.reject)
+
+        # remplissage choix agenda
+
 
         # fenetre en francais
         if self.ui.current_lang == "fr":
