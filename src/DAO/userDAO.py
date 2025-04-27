@@ -16,12 +16,7 @@ class UserDAO:
         })
         return self.dbcom.recv()
 
-    def connect(self, user: User) -> User:
-        """
-        Fonction qui retourne l'user mis en paramètre avec l'id à -1 si le compte existe pas sinon l'id du compte
-        :param user: User avec mail et mdp non vides
-        :return:
-        """
+    def connect(self, user: User) -> str:
         self.dbcom.sendall({
             "authentification":{
                 "mail": user.mail,
@@ -30,10 +25,7 @@ class UserDAO:
             "op": 2
         })
         m_json = self.dbcom.recv()
-        if m_json["op"] == 5:
-            user.id = -1
-        else:
-            user.id = m_json["data"]["id"]
+        user.id = m_json["data"]["id"]
         return user
 
     def update(self, user: User):

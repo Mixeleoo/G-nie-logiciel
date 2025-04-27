@@ -1,10 +1,10 @@
 from PyQt6.QtCore import QDate, Qt, QPoint
 from PyQt6.QtWidgets import QWidget, QMenu, QInputDialog, QMessageBox
-from src.main import MainWindow
-from src.menus.event.event_menu import EventMenu
-from src.menus.event.event_list_menu import EventListMenu
-from src.menus.diaries.diary_menu import DiaryMenu
-from src.menus.diaries.favorite_diary_menu import FavoriteDiaryMenu
+from main import MainWindow
+from menus.event.event_menu import EventMenu
+from menus.event.event_list_menu import EventListMenu
+from menus.diaries.diary_menu import DiaryMenu
+from menus.diaries.favorite_diary_menu import FavoriteDiaryMenu
 
 class EventPage(QWidget) :
     def __init__(self, mainpage: MainWindow):

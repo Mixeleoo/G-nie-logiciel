@@ -3,10 +3,10 @@ from PyQt6.QtCore import QDate, QPoint, Qt
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QMessageBox, QMenu, QLineEdit, QLabel, \
     QPushButton
-from src.menus.event.edit_event_menu import EditEventMenu
-from src.menus.event.rename_event_menu import RenameEventMenu
+from menus.event.edit_event_menu import EditEventMenu
+from menus.event.rename_event_menu import RenameEventMenu
 
-from src.data_test.list_data_test import *
+from data_test.list_data_test import *
 
 
 
