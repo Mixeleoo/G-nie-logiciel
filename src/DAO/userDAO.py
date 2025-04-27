@@ -25,7 +25,10 @@ class UserDAO:
             "op": 2
         })
         m_json = self.dbcom.recv()
-        user.id = m_json["data"]["id"]
+        if m_json["op"] == 5:
+            user.id = -1
+        else:
+            user.id = m_json["data"]["id"]
         return user
 
     def update(self, user: User):
