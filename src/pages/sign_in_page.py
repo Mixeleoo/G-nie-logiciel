@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import QWidget
 from src.main import MainWindow
+from DAO import userdao, User
 
 class SignInPage(QWidget) :
     def __init__(self, mainpage: MainWindow):
@@ -41,8 +42,13 @@ class SignInPage(QWidget) :
         elif self.ui.password_line_connection_2.text().strip() == "" or self.ui.passwordconfirm_line_connection_2.text().strip() == "":
             self.ui.error_label4.show()
         else :
-            self.ui.pages_logiciel.setCurrentIndex(2) #ouvre le logiciel
-            print("compte cree")
+            self.ui.pages_logiciel.setCurrentIndex(1) # ouvre la page de connexion
+            userdao.insert(
+                User(
+                    mail=self.ui.email_line_connection_2.text(),
+                    mdp=self.ui.password_line_connection_2.text()
+                )
+            )
 
     def check_password_repeat(self) -> bool:
         '''
