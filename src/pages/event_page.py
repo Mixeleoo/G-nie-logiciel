@@ -6,6 +6,9 @@ from menus.event.event_list_menu import EventListMenu
 from menus.diaries.diary_menu import DiaryMenu
 from menus.diaries.favorite_diary_menu import FavoriteDiaryMenu
 
+import DAO
+from dataclass import Event
+
 class EventPage(QWidget) :
     def __init__(self, mainpage: MainWindow):
         '''
@@ -73,8 +76,12 @@ class EventPage(QWidget) :
         :return: None
         '''
         param_event = EventMenu(mainpage,self)
-        if param_event.exec() :
-            print(param_event.get_data())
+        if param_event.exec():
+            event: Event = param_event.get_data()
+            DAO.eventdao.insert(
+                agenda=DAO.agendalist[event.id], # Oui j'utilise l'id pour l'index de l'agenda selectionné Y'A QUOI
+                event=event
+            )
 
 ############################# gestion ajout evenement ################################
     def see_event(self, mainpage : MainWindow, date : QDate):

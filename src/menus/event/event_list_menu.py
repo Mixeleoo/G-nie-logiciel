@@ -2,12 +2,13 @@ from PyQt6 import QtWidgets
 from PyQt6.QtCore import QDate, QPoint, Qt
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QMessageBox, QMenu, QLineEdit, QLabel, \
-    QPushButton
+    QPushButton, QListWidgetItem
 from menus.event.edit_event_menu import EditEventMenu
 from menus.event.rename_event_menu import RenameEventMenu
 
 from datetime import datetime
 import DAO
+from dataclass import Event
 
 
 class EventListMenu(QDialog):
@@ -16,6 +17,8 @@ class EventListMenu(QDialog):
 
         self.ui = mainpage.ui
         self.mainpage = mainpage
+        self.cancel_font = QFont()
+        self.cancel_font.setStrikeOut(True)
 
         if self.ui.current_lang == 'fr' :
             self.setWindowTitle(f"Evenement(s) du {curr_date.toString('dd/MM/yyyy')}")
@@ -25,7 +28,7 @@ class EventListMenu(QDialog):
         self.layout = QVBoxLayout(self)
 
         self.event_list = QtWidgets.QListWidget(self) # liste des evenement à la date cliquée par l'utilisateur
-        # TODO Léo : adpater la boucle au parcours de la base de données
+        self.event_listleo: list[Event] = []
 
         for agenda in DAO.agendalist:
             event_list = DAO.eventdao.get_list(agenda)
@@ -36,13 +39,13 @@ class EventListMenu(QDialog):
                     curr_date.month(),
                     curr_date.day()
                 ).timestamp()
+                dt = datetime.fromtimestamp(e.start).replace(hour=0, minute=0, second=0, microsecond=0).timestamp()
 
-                if e.start <= curr_timestamp <= e.end:
+                if curr_timestamp == dt:
+                    self.event_listleo.append(e)
                     item = QtWidgets.QListWidgetItem(e.name)
-                    if e.cancel == False:
-                        font = QFont()
-                        font.setStrikeOut(True)
-                        item.setFont(font)
+                    if e.cancel == True:
+                        item.setFont(self.cancel_font)
                     self.event_list.addItem(item)
 
         self.layout.addWidget(self.event_list)
@@ -67,7 +70,6 @@ class EventListMenu(QDialog):
                 annuler_action = menu.addAction(a_lang[self.ui.current_lang][2])
                 supprimer_action = menu.addAction(a_lang[self.ui.current_lang][3])
 
-
                 action = menu.exec(self.event_list.mapToGlobal(pos))
 
                 # gestion modification de l'évenement
@@ -78,7 +80,7 @@ class EventListMenu(QDialog):
                 elif action == supprimer_action:
                     self.delete_event()
                 elif action == annuler_action:
-                    self.cancel_event()
+                    self.cancel_event(item) # Vachement brut-force le truc
                 elif action == add_to_diary_action:
                     self.add_event_to_diary()
 
@@ -113,12 +115,13 @@ class EventListMenu(QDialog):
         #TODO : voir comment supprimer un evenment
         print("event supp")
 
-    def cancel_event(self):
+    def cancel_event(self, item: QListWidgetItem):
         '''
         Concerve l'évenement mais l'affiche barré dans la liste d'évenement
         :return: None
         '''
-        # TODO : voir comment annuler un evenement et l'afficher correctement
+        DAO.eventdao.cancel(self.event_listleo[self.event_list.row(item)])
+        item.setFont(self.cancel_font)
         print("évenement annulé")
 
     def add_event_to_diary(self):

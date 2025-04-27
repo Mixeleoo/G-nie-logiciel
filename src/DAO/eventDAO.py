@@ -13,7 +13,12 @@ class EventDAO:
         self.dbcom.sendall({
             "data":{
                 "agenda_id": agenda.id,
-                "name": event.name
+                "name": event.name,
+                "desc": event.desc,
+                "cancel": event.cancel,
+                "start": event.start,
+                "end": event.end,
+                "color": (event.color.r << 16) | (event.color.g << 8) | event.color.b
             },
             "requestType": "createEvent",
             "op": 3

@@ -22,7 +22,7 @@ requestType_to_query: dict[str, Request] = {
 
     "createAgenda": Request("insert into agenda (user_id, name) values (?, ?);", createAgenda),
     "updateAgenda": Request("update agenda set name = ? where id = ?;", requestSuccess),
-    "getAgendaList": Request("select * from agenda where user_id = ?;", getAgendaList),
+    "getAgendaList": Request("select id, name from agenda where user_id = ?;", getAgendaList),
 
     # TODO Récupérer tous les agendas partagés dont la colonne "state" est à 0, pour les mettre dans les demandes d'agenda partagés de l'utilisateur concerné
     "shareAgenda": Request(
@@ -38,15 +38,15 @@ requestType_to_query: dict[str, Request] = {
             getPendingAgendaList
         ),
 
-    "createEvent": Request("insert into event (agenda_id, name) values (?, ?);", createEvent),
+    "createEvent": Request("insert into event (agenda_id, name, description, cancel, start, _end, color) values (?, ?, ?, ?, ?, ?, ?);", createEvent),
     "updateEvent": Request(
             "update event"
-            " set name = ?, desc = ?, cancel = ?, start = ?, end = ?, color = ?"
+            " set name = ?, description = ?, cancel = ?, start = ?, _end = ?, color = ?"
             " where id = ?;",
             requestSuccess
         ),
     "deleteEvent": Request("delete from event where id = ?;", requestSuccess),
-    "getEventList": Request("select * from event where agenda_id = ?;", getEventList)
+    "getEventList": Request("select id, name, description, cancel, start, _end, color from event where agenda_id = ?;", getEventList)
 }
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:

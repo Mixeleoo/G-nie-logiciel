@@ -1,9 +1,13 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QStandardItem, QColor, QStandardItemModel
 from PyQt6.QtWidgets import QDialog, QLineEdit, QVBoxLayout, QLabel, QDateEdit, QTimeEdit, QComboBox, QPushButton
-from DAO import agendalist
+import DAO
+from dataclass import Event, Color
+from datetime import datetime
 
-
+def hexcolor_to_int(hexcolor: str) -> Color:
+    hexcolor = hexcolor.lstrip('#')
+    return Color(r=int(hexcolor[0:2], 16), g=int(hexcolor[2:4], 16), b=int(hexcolor[4:6], 16))
 
 class EventMenu(QDialog):
     def __init__(self, mainpage , eventpage):
@@ -26,7 +30,7 @@ class EventMenu(QDialog):
         self.colors = {} #choix couleur
         self.agendas_label = QLabel() # agenda
         self.agenda_event = QComboBox() # agenda
-        self.agendas = agendalist #liste des agendas de l'utilisateur
+        
         # TODO : voir quoi mettre dans ces dico
         self.repeat = {} #choix répétition
         self.reminder = {} #choix rappel
@@ -58,7 +62,8 @@ class EventMenu(QDialog):
         self.cancel_button.clicked.connect(self.reject)
 
         # remplissage choix agenda
-        for agenda in self.agendas:
+        print(DAO.agendalist)
+        for agenda in DAO.agendalist:
             item = QStandardItem(agenda.name)
             model_agenda.appendRow(item)
         self.agenda_event.setModel(model_agenda)
@@ -112,17 +117,20 @@ class EventMenu(QDialog):
 
         self.setLayout(self.layout)
 
-
     # recuperation des données entrée par l'utilisateur
-    def get_data(self):
+    def get_data(self) -> Event:
         '''
         Récupère les données de l'utilisateur sous forme de dictionnaire
         :return: Dictionnaire des données
         '''
-        data_dic = {"name" : self.event_name.text(),
-                    "location" : self.event_location.text(),
-                    "date" : self.date_event.text(),
-                    "time" : self.time_event.text(),
-                    "color" : self.colors[self.color_event.currentText()], #recupération du code ASCII de la couleur choisie
-                    "agenda" : self.agenda_event.currentText()}
-        return data_dic
+        
+        timestamp = datetime.strptime(f"{self.date_event.text()} {self.time_event.text()}", "%m/%d/%y %I:%M %p").timestamp()
+
+        return Event(
+            id=self.agenda_event.currentIndex(),
+            name=self.event_name.text(),
+            desc="", # TODO Eloïse, il faut rajouter la possibilité de faire une description (jsp si c'est important en vrai)
+            start=timestamp,
+            end=timestamp + 3600, # Une heure plus tard
+            color=hexcolor_to_int(self.colors[self.color_event.currentText()])
+        )
