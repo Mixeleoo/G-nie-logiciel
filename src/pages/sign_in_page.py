@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QWidget
-from src.main import MainWindow
+from main import MainWindow
 from DAO import userdao, User
 
 class SignInPage(QWidget) :

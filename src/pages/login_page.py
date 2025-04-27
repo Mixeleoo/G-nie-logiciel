@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QWidget
 from main import MainWindow
-from DAO import User, userdao
+from DAO import User, userdao, user, agendalist, agendadao
 
 class LoginPage(QWidget) :
     def __init__(self, mainpage: MainWindow):
@@ -56,5 +56,7 @@ class LoginPage(QWidget) :
                 mdp=self.ui.password_line_connection.text()
             )
         )
+
+        listagenda = agendadao.get_list(user)
 
         return user.id != -1

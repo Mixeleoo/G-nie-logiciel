@@ -32,3 +32,4 @@ class UserDAO:
         pass
 
 userdao = UserDAO(dbcom)
+user = User()

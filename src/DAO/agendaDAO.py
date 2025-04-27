@@ -106,3 +106,4 @@ class AgendaDAO:
         return r
 
 agendadao = AgendaDAO(dbcom)
+agendalist: list[Agenda] = []
