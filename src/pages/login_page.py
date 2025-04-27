@@ -39,6 +39,12 @@ class LoginPage(QWidget):
             # ajout des agendas de l'utilisateur
             for agenda in DAO.agendalist:
                 self.ui.myagenda_box.addItem(agenda.name)
+
+            # TODO CA MARCHE PAS
+            text: str = self.ui.email_label_e.text()
+            self.ui.email_label_e.setText(text + " " + DAO.user.mail)
+            text: str = self.ui.email_label_t.text()
+            self.ui.email_label_t.setText(text + " " + DAO.user.mail)
                 
             self.ui.pages_logiciel.setCurrentIndex(3) #aller à la pages evenement
         else :

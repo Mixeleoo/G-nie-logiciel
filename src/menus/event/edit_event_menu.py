@@ -1,11 +1,18 @@
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QStandardItem, QStandardItemModel, QColor
-from PyQt6.QtWidgets import QDialog, QLineEdit, QVBoxLayout, QLabel, QDateEdit, QTimeEdit, QPushButton, QComboBox
-from DAO import agendalist
 
+# Import bibliothèques
+from PyQt6.QtCore import Qt, QDate, QTime
+from PyQt6.QtGui import QStandardItem, QStandardItemModel, QColor
+from PyQt6.QtWidgets import QDialog, QLineEdit, QVBoxLayout, QLabel, QDateEdit, QTimeEdit, QPushButton, QComboBox, QListWidgetItem
+from datetime import datetime
+
+# Nos import
+from .event_list_menu import EventListMenu
+
+import DAO
+from dataclass import Event
 
 class EditEventMenu(QDialog) :
-    def __init__(self, mainpage, eventpage):
+    def __init__(self, mainpage, eventpage: EventListMenu, item: QListWidgetItem):
         super().__init__(parent = eventpage)
         
         self.ui = mainpage.ui
@@ -50,15 +57,19 @@ class EditEventMenu(QDialog) :
         model_color = QStandardItemModel()
 
         # remplissage choix agenda
-        for agenda in agendalist:
-            item = QStandardItem(agenda.name)
-            model_agenda.appendRow(item)
+        for agenda in DAO.agendalist:
+            model_agenda.appendRow(QStandardItem(agenda.name))
         self.new_agenda.setModel(model_agenda)
 
         #TODO Léo : mettre les bons textes dans les edit line et combobox
-        # self.new_name.setText()
-        # self.new_date.setDate()
-        # self.new_hour.setTime()
+        self.event: Event = eventpage.get_event_selected(item)
+        self.new_name.setText(self.event.name)
+
+        # 1. Convertir en datetime standard Python
+        dt = datetime.fromtimestamp(self.event.start)
+
+        self.new_date.setDate(QDate(dt.year, dt.month, dt.day))
+        self.new_hour.setTime(QTime(dt.hour, dt.minute, dt.second))
         # self.new_location.setText()
         # self.new_agenda.setCurrentText()
         # self.new_color.setCurrentText()
@@ -108,7 +119,16 @@ class EditEventMenu(QDialog) :
 
         self.setLayout(layout)
 
-    def get_new_data(self):
-        data_dic = {'name': self.new_name.text(), 'date': self.new_date.text(), 'hour': self.new_hour.text(), 'location': self.new_location.text()}
-        return data_dic
+    def get_new_event(self) -> Event:
+        # {'name': self.new_name.text(), 'date': self.new_date.text(), 'hour': self.new_hour.text(), 'location': self.new_location.text()}
+        
+        timestamp = datetime.strptime(f"{self.new_date.text()} {self.new_hour.text()}", "%m/%d/%y %I:%M %p").timestamp()
+        return Event(
+            id=self.event.id,
+            name=self.new_name.text(),
+            desc="",
+            cancel=self.event.cancel,
+            start=timestamp,
+            end=timestamp + 3600 # Une heure après
+        )
         

@@ -3,7 +3,6 @@ from PyQt6.QtCore import QDate, QPoint, Qt
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QMessageBox, QMenu, QLineEdit, QLabel, \
     QPushButton, QListWidgetItem
-from menus.event.edit_event_menu import EditEventMenu
 from menus.event.rename_event_menu import RenameEventMenu
 
 from datetime import datetime
@@ -55,37 +54,36 @@ class EventListMenu(QDialog):
         self.event_list.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.event_list.customContextMenuRequested.connect(self.show_event_menu)
 
+    def get_event_selected(self, item: QListWidgetItem) -> Event:
+        return self.event_listleo[self.event_list.row(item)]
 
-    def show_event_menu(self, pos : QPoint):
+    def show_event_menu(self, pos: QPoint):
         a_lang = {'fr' : ['Modifier évenement','Renommer évenement', 'Annuler évenement', 'Supprimer évenement',"Ajouter à un agenda"],
                 'en' : ['Edit event', 'Rename event', 'Cancel event', 'Delete event',"Add to diary"]}
-        try :
-            item = self.event_list.itemAt(pos)
-            if item:
-                menu = QMenu()
 
-                modifier_action = menu.addAction(a_lang[self.ui.current_lang][0])
-                add_to_diary_action = menu.addAction(a_lang[self.ui.current_lang][4])
-                renommer_action = menu.addAction(a_lang[self.ui.current_lang][1])
-                annuler_action = menu.addAction(a_lang[self.ui.current_lang][2])
-                supprimer_action = menu.addAction(a_lang[self.ui.current_lang][3])
+        item = self.event_list.itemAt(pos)
+        if item:
+            menu = QMenu()
 
-                action = menu.exec(self.event_list.mapToGlobal(pos))
+            modifier_action = menu.addAction(a_lang[self.ui.current_lang][0])
+            add_to_diary_action = menu.addAction(a_lang[self.ui.current_lang][4])
+            renommer_action = menu.addAction(a_lang[self.ui.current_lang][1])
+            annuler_action = menu.addAction(a_lang[self.ui.current_lang][2])
+            supprimer_action = menu.addAction(a_lang[self.ui.current_lang][3])
 
-                # gestion modification de l'évenement
-                if action == modifier_action:
-                    self.edit_event()
-                elif action == renommer_action:
-                    self.rename_event()
-                elif action == supprimer_action:
-                    self.delete_event()
-                elif action == annuler_action:
-                    self.cancel_event(item) # Vachement brut-force le truc
-                elif action == add_to_diary_action:
-                    self.add_event_to_diary()
+            action = menu.exec(self.event_list.mapToGlobal(pos))
 
-        except Exception as e :
-            print(f"Erreur dans show_event_menu: {e}")
+            # gestion modification de l'évenement
+            if action == modifier_action:
+                self.edit_event(item)
+            elif action == renommer_action:
+                self.rename_event()
+            elif action == supprimer_action:
+                self.delete_event(item)
+            elif action == annuler_action:
+                self.cancel_event(item) # Vachement brut-force le truc
+            elif action == add_to_diary_action:
+                self.add_event_to_diary()
 
     def rename_event(self):
         '''
@@ -96,33 +94,32 @@ class EventListMenu(QDialog):
         if rename_page.exec() :
             print(rename_page.get_new_data())
 
-
-    def edit_event(self):
+    def edit_event(self, item: QListWidgetItem):
         '''
         Crée et ouvre une page d'édition pour permettre la modification de l'évenement choisi à l'utilisateur
         :return: None
         '''
         #TODO : voir comment mettre les infos modifiable de l'event dans les editline + comment récupérer les infos modifiée
-        edit_page = EditEventMenu(self.mainpage,self)
-        if edit_page.exec() :
-            print(edit_page.get_new_data())
+        from menus.event.edit_event_menu import EditEventMenu
+        edit_page = EditEventMenu(self.mainpage, self, item)
+        if edit_page.exec():
+            DAO.eventdao.update(edit_page.get_new_event())
 
-    def delete_event(self):
+    def delete_event(self, item: QListWidgetItem):
         '''
         Supprime completement l'évenement de la base de données
         :return: None
         '''
         #TODO : voir comment supprimer un evenment
-        print("event supp")
+        DAO.eventdao.delete(self.get_event_selected(item))
 
     def cancel_event(self, item: QListWidgetItem):
         '''
         Concerve l'évenement mais l'affiche barré dans la liste d'évenement
         :return: None
         '''
-        DAO.eventdao.cancel(self.event_listleo[self.event_list.row(item)])
+        DAO.eventdao.cancel(self.get_event_selected(item))
         item.setFont(self.cancel_font)
-        print("évenement annulé")
 
     def add_event_to_diary(self):
         '''
