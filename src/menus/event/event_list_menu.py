@@ -7,7 +7,8 @@ from menus.event.edit_event_menu import EditEventMenu
 from menus.event.rename_event_menu import RenameEventMenu
 
 from data_test.list_data_test import *
-from DAO import eventdao, Agenda, Event
+from datetime import datetime
+from DAO import eventdao, agendalist, Agenda, Event
 
 
 class EventListMenu(QDialog):
@@ -26,15 +27,17 @@ class EventListMenu(QDialog):
 
         self.event_list = QtWidgets.QListWidget(self) # liste des evenement à la date cliquée par l'utilisateur
         # TODO Léo : adpater la boucle au parcours de la base de données
-        event_list = eventdao.get_list()
-        for e in event:
-            if e['date'] == curr_date.toString('dd/MM/yyyy'):
-                item = QtWidgets.QListWidgetItem(e['name'])
-                if e['ongoing'] == False :
-                    font = QFont()
-                    font.setStrikeOut(True)
-                    item.setFont(font)
-                self.event_list.addItem(item)
+        for agenda in agendalist:
+            event_list = eventdao.get_list(agenda)
+            for e in event:
+                print("QDate.toString(): ", curr_date.toString('dd/MM/yyyy'), "\ndatetime.fromtimestamp(): ", datetime.fromtimestamp(user.start))
+                if e['date'] == curr_date.toString('dd/MM/yyyy'):
+                    item = QtWidgets.QListWidgetItem(e['name'])
+                    if e['ongoing'] == False :
+                        font = QFont()
+                        font.setStrikeOut(True)
+                        item.setFont(font)
+                    self.event_list.addItem(item)
 
         self.layout.addWidget(self.event_list)
 
