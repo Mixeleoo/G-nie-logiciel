@@ -78,6 +78,7 @@ class EventMenu(QDialog):
             self.date_event_label.setText("Date :")
             self.time_event_label.setText("Heure :")
             self.color_event_label.setText("Couleur :")
+            self.agendas_label.setText("Agenda :")
 
             self.ok_button.setText("Valider")
             self.cancel_button.setText("Annuler")
@@ -97,6 +98,7 @@ class EventMenu(QDialog):
             self.date_event_label.setText("Date :")
             self.time_event_label.setText("Time :")
             self.color_event_label.setText("Color :")
+            self.agendas_label.setText("Diary :")
 
             self.ok_button.setText("Ok")
             self.cancel_button.setText("Cancel")
