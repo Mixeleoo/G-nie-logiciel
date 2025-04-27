@@ -6,7 +6,7 @@ class AgendaDAO:
     def __init__(self, s: DBCom):
         self.dbcom = s
         
-    def insert(self, user: User, agenda: Agenda):
+    def insert(self, user: User, agenda: Agenda) -> Agenda:
         self.dbcom.sendall({
             "data":{
                 "user_id": user.id,
@@ -15,7 +15,9 @@ class AgendaDAO:
             "requestType": "createAgenda",
             "op": 3
         })
-        return self.dbcom.recv()
+        r = self.dbcom.recv()
+        agenda.id = r["data"]["agenda_id"]
+        return agenda
 
     def update(self, agenda: Agenda):
         self.dbcom.sendall({

@@ -35,6 +35,11 @@ class LoginPage(QWidget):
         if self.check_connection():
             # Si la connexion est validée, alors on va chopper la liste de ses agendas
             DAO.agendalist = DAO.agendadao.get_list(DAO.user)
+
+            # ajout des agendas de l'utilisateur
+            for agenda in DAO.agendalist:
+                self.ui.myagenda_box.addItem(agenda.name)
+                
             self.ui.pages_logiciel.setCurrentIndex(3) #aller à la pages evenement
         else :
             self.ui.error_label1.show()

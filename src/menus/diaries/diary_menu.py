@@ -1,6 +1,7 @@
 from PyQt6.QtCore import QPoint
 from PyQt6.QtWidgets import QMenu, QInputDialog, QMessageBox
-
+import DAO
+from dataclass import Agenda
 
 class DiaryMenu(QMenu) :
     def __init__(self, agandabox, mainpage, pos : QPoint, eventpage) :
@@ -26,6 +27,13 @@ class DiaryMenu(QMenu) :
         if action == self.add_action:
             text, ok = QInputDialog.getText(self, translate_dic[self.ui.current_lang][4], translate_dic[self.ui.current_lang][5])
             if ok and text:
+                DAO.agendalist.append(
+                    DAO.agendadao.insert(
+                        DAO.user, Agenda(
+                            name=text
+                        )
+                    )
+                )
                 self.ui.myagenda_box.addItem(text)
 
         elif action == self.favorite_action:

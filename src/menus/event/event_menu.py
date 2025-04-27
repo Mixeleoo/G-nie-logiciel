@@ -62,7 +62,6 @@ class EventMenu(QDialog):
         self.cancel_button.clicked.connect(self.reject)
 
         # remplissage choix agenda
-        print(DAO.agendalist)
         for agenda in DAO.agendalist:
             item = QStandardItem(agenda.name)
             model_agenda.appendRow(item)
