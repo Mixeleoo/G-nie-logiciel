@@ -12,7 +12,9 @@ class DBCom:
         self.socket.sendall(json.dumps(data).encode())
 
     def recv(self) -> dict:
-        data = json.loads(self.socket.recv(1024).decode())
+        data_str: str = self.socket.recv(1024).decode()
+        print("Message raw reçu du serveur :", data_str)
+        data: dict = json.loads()
         print("Message reçu du serveur :", data)
         return data
     
