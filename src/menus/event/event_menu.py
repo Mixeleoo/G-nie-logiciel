@@ -1,7 +1,7 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QStandardItem, QColor, QStandardItemModel
 from PyQt6.QtWidgets import QDialog, QLineEdit, QVBoxLayout, QLabel, QDateEdit, QTimeEdit, QComboBox, QPushButton
-#from DAO import
+from DAO import agendalist
 
 
 
@@ -26,7 +26,7 @@ class EventMenu(QDialog):
         self.colors = {} #choix couleur
         self.agendas_label = QLabel() # agenda
         self.agenda_event = QComboBox() # agenda
-        self.agendas = [] #liste des agendas de l'utilisateur
+        self.agendas = agendalist #liste des agendas de l'utilisateur
         # TODO : voir quoi mettre dans ces dico
         self.repeat = {} #choix répétition
         self.reminder = {} #choix rappel
@@ -48,7 +48,8 @@ class EventMenu(QDialog):
         self.layout.addWidget(self.agendas_label)
         self.layout.addWidget(self.agenda_event)
 
-        model = QStandardItemModel()
+        model_color = QStandardItemModel()
+        model_agenda = QStandardItemModel()
 
         self.layout.addWidget(self.ok_button)
         self.layout.addWidget(self.cancel_button)
@@ -57,7 +58,10 @@ class EventMenu(QDialog):
         self.cancel_button.clicked.connect(self.reject)
 
         # remplissage choix agenda
-
+        for agenda in self.agendas:
+            item = QStandardItem(agenda.name)
+            model_agenda.appendRow(item)
+        self.agenda_event.setModel(model_agenda)
 
         # fenetre en francais
         if self.ui.current_lang == "fr":
@@ -101,9 +105,8 @@ class EventMenu(QDialog):
             item = QStandardItem(name)
             item.setBackground(QColor(hex_code))
             item.setForeground(Qt.GlobalColor.black)  # texte en noir pour une meilleure lisibilité
-            model.appendRow(item)
-
-        self.color_event.setModel(model)
+            model_color.appendRow(item)
+        self.color_event.setModel(model_color)
 
         self.setLayout(self.layout)
 
@@ -118,5 +121,6 @@ class EventMenu(QDialog):
                     "location" : self.event_location.text(),
                     "date" : self.date_event.text(),
                     "time" : self.time_event.text(),
-                    "color" : self.colors[self.color_event.currentText()]} #recupération du code ASCII de la couleur choisie
+                    "color" : self.colors[self.color_event.currentText()], #recupération du code ASCII de la couleur choisie
+                    "agenda" : self.agenda_event.currentText()}
         return data_dic
