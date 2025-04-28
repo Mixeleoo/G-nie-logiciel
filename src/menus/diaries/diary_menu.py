@@ -7,10 +7,10 @@ translate_dic = {
     'fr': ["Ajouter un agenda", "Supprimer l'agenda sélectionné", "Ajouter l'agenda sélectionné aux favoris",
            "Modifier l'agenda sélectionné", "Ajouter un agenda", "Nom de l'agenda :", "Confirmer l'ajout aux favoris",
            "Voulez-vous ajouter", "aux favoris?", "Oui", "Non", "Confirmer la suppression", "Voulez-vous supprimer",
-           "Partager l'agenda sélectionné","Email du receveur","Partager agenda","Erreur email","Entrée non valide","Valider","Annuler"],
+           "Partager l'agenda sélectionné","Email du receveur","Partager agenda","Erreur email","Entrée non valide","Modifier agenda"],
     'en': ["Add a diary", "Delete selected diary", "Add selected diary to favorite", "Edit selected diary",
            "Add a diary", "Diary name :", "Add to favorite confirmation", "Do you want to add", "to favorite?", "Yes",
-           "No", "Delete confirmation", "Do you want to delete", "Share selected agenda","Receiver's email","Share diary","Email error","No valide entry","Ok","Cancel"]}
+           "No", "Delete confirmation", "Do you want to delete", "Share selected agenda","Receiver's email","Share diary","Email error","No valide entry","Edit diary"]}
 
 
 
@@ -52,6 +52,15 @@ class DiaryMenu(QMenu) :
                     )
                 )
                 self.ui.myagenda_box.addItem(text)
+
+        elif action == self.edit_action:
+            text, ok = QInputDialog.getText(self, self.phrase[18], self.phrase[5])
+            if ok and text:
+                agenda: Agenda = DAO.agendalist[self.ui.myagenda_box.currentIndex()]
+                agenda.name = text
+                DAO.agendadao.update(agenda)
+
+                self.ui.myagenda_box.setItemText(self.ui.myagenda_box.currentIndex(), text)
 
         elif action == self.favorite_action:
             item_text = self.ui.myagenda_box.currentText()
