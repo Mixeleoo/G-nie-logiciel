@@ -1,31 +1,48 @@
-from PyQt6.QtCore import QPoint
-from PyQt6.QtWidgets import QMenu, QInputDialog, QMessageBox
+from PyQt6.QtCore import QPoint, QTimer
+from PyQt6.QtWidgets import QMenu, QInputDialog, QMessageBox, QDialog, QLineEdit, QLabel
 import DAO
 from dataclass import Agenda
 
+translate_dic = {
+    'fr': ["Ajouter un agenda", "Supprimer l'agenda sélectionné", "Ajouter l'agenda sélectionné aux favoris",
+           "Modifier l'agenda sélectionné", "Ajouter un agenda", "Nom de l'agenda :", "Confirmer l'ajout aux favoris",
+           "Voulez-vous ajouter", "aux favoris?", "Oui", "Non", "Confirmer la suppression", "Voulez-vous supprimer",
+           "Partager l'agenda sélectionné","Email du receveur","Partager agenda","Erreur email","Entrée non valide","Valider","Annuler"],
+    'en': ["Add a diary", "Delete selected diary", "Add selected diary to favorite", "Edit selected diary",
+           "Add a diary", "Diary name :", "Add to favorite confirmation", "Do you want to add", "to favorite?", "Yes",
+           "No", "Delete confirmation", "Do you want to delete", "Share selected agenda","Receiver's email","Share diary","Email error","No valide entry","Ok","Cancel"]}
+
+
+
 class DiaryMenu(QMenu) :
+
+    @property
+    def phrase(self) -> list[str]:
+        return translate_dic[self.ui.current_lang]
+    
     def __init__(self, agandabox, mainpage, pos : QPoint, eventpage) :
         super().__init__(parent = agandabox)
         self.ui = mainpage.ui
 
-        translate_dic = {'fr' : ["Ajouter un agenda","Supprimer l'agenda sélectionné","Ajouter l'agenda sélectionné aux favoris","Modifier l'agenda sélectionné","Ajouter un agenda","Nom de l'agenda :","Confirmer l'ajout aux favoris","Voulez-vous ajouter","aux favoris?","Oui","Non","Confirmer la suppression","Voulez-vous supprimer"],
-                         'en' : ["Add a diary","Delete selected diary","Add selected diary to favorite","Edit selected diary","Add a diary","Diary name :","Add to favorite confirmation","Do you want to add","to favorite?","Yes","No","Delete confirmation","Do you want to delete"]}
+        self.share_input = None
 
-        self.add_action = self.addAction(translate_dic[self.ui.current_lang][0])
+        self.add_action = self.addAction(self.phrase[0])
         self.edit_action = None
         self.remove_action = None
         self.favorite_action = None
+        self.share_action = None
 
         current_index = self.ui.myagenda_box.currentIndex()
         if current_index != -1:
-            self.favorite_action = self.addAction(translate_dic[self.ui.current_lang][2])
-            self.remove_action = self.addAction(translate_dic[self.ui.current_lang][1])
-            self.edit_action = self.addAction(translate_dic[self.ui.current_lang][3])
+            self.favorite_action = self.addAction(self.phrase[2])
+            self.remove_action = self.addAction(self.phrase[1])
+            self.edit_action = self.addAction(self.phrase[3])
+            self.share_action = self.addAction(self.phrase[13])
 
         action = self.exec(self.ui.myagenda_box.mapToGlobal(pos))
 
         if action == self.add_action:
-            text, ok = QInputDialog.getText(self, translate_dic[self.ui.current_lang][4], translate_dic[self.ui.current_lang][5])
+            text, ok = QInputDialog.getText(self, self.phrase[4], self.phrase[5])
             if ok and text:
                 DAO.agendalist.append(
                     DAO.agendadao.insert(
@@ -40,11 +57,11 @@ class DiaryMenu(QMenu) :
             item_text = self.ui.myagenda_box.currentText()
 
             msg = QMessageBox(eventpage)
-            msg.setWindowTitle(translate_dic[self.ui.current_lang][6])
-            msg.setText(f"{translate_dic[self.ui.current_lang][7]} « {item_text} » {translate_dic[self.ui.current_lang][8]}")
+            msg.setWindowTitle(self.phrase[6])
+            msg.setText(f"{self.phrase[7]} « {item_text} » {self.phrase[8]}")
 
-            btn_oui = msg.addButton(translate_dic[self.ui.current_lang][9], QMessageBox.ButtonRole.YesRole)
-            btn_non = msg.addButton(translate_dic[self.ui.current_lang][10], QMessageBox.ButtonRole.NoRole)
+            btn_oui = msg.addButton(self.phrase[9], QMessageBox.ButtonRole.YesRole)
+            btn_non = msg.addButton(self.phrase[10], QMessageBox.ButtonRole.NoRole)
 
             msg.exec()
 
@@ -55,14 +72,30 @@ class DiaryMenu(QMenu) :
             item_text = self.ui.myagenda_box.currentText()
 
             msg = QMessageBox(eventpage)
-            msg.setWindowTitle(translate_dic[self.ui.current_lang][11])
-            msg.setText(f"{translate_dic[self.ui.current_lang][12]} « {item_text} » ?")
+            msg.setWindowTitle(self.phrase[11])
+            msg.setText(f"{self.phrase[12]} « {item_text} » ?")
 
-            btn_oui = msg.addButton(translate_dic[self.ui.current_lang][9], QMessageBox.ButtonRole.YesRole)
-            btn_non = msg.addButton(translate_dic[self.ui.current_lang][10], QMessageBox.ButtonRole.NoRole)
+            btn_oui = msg.addButton(self.phrase[9], QMessageBox.ButtonRole.YesRole)
+            btn_non = msg.addButton(self.phrase[10], QMessageBox.ButtonRole.NoRole)
 
             msg.exec()
 
             if msg.clickedButton() == btn_oui:
                 self.ui.followedagenda_box.removeItem(self.ui.followedagenda_box.findText(item_text))  # suppression des agenda en récupérant son indice à l'aide de son nom
                 self.ui.myagenda_box.removeItem(current_index) # suppression de l'agenda sélectionné
+
+        elif action == self.share_action:
+            text, ok = QInputDialog.getText(self, self.phrase[14], self.phrase[15])
+            if ok :
+                # TODO Léo : gérer la verification du user entré à la place du True
+                if not text or True:
+                    error_message = QMessageBox(self.parent())
+                    error_message.setWindowTitle(self.phrase[16])
+                    error_message.setText(f"{self.phrase[17]}")
+
+                    error_message.setStandardButtons(QMessageBox.StandardButton.Ok)
+                    error_message.exec()
+                # TODO Léo : gérer le partage qd validé (un else suffit peut-être)
+                elif text and True :
+                    print("envoyer")
+

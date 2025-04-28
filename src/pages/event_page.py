@@ -76,12 +76,15 @@ class EventPage(QWidget) :
         :return: None
         '''
         param_event = EventMenu(mainpage,self)
-        if param_event.exec():
-            event: Event = param_event.get_data()
-            DAO.eventdao.insert(
-                agenda=DAO.agendalist[event.id], # Oui j'utilise l'id pour l'index de l'agenda selectionné Y'A QUOI
-                event=event
-            )
+        try :
+            if param_event.exec():
+                event: Event = param_event.get_data()
+                DAO.eventdao.insert(
+                    agenda=DAO.agendalist[event.id], # Oui j'utilise l'id pour l'index de l'agenda selectionné Y'A QUOI
+                    event=event
+                )
+        except Exception as e:
+            print("erreur dans get data event",e)
 
 ############################# gestion ajout evenement ################################
     def see_event(self, mainpage : MainWindow, date : QDate):
