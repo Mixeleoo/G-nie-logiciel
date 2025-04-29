@@ -1,13 +1,13 @@
 from PyQt6.QtCore import QDate, Qt, QPoint
 from PyQt6.QtWidgets import QWidget, QMenu, QInputDialog, QMessageBox
-from main import MainWindow
-from menus.event.event_menu import EventMenu
-from menus.event.event_list_menu import EventListMenu
-from menus.diaries.diary_menu import DiaryMenu
-from menus.diaries.favorite_diary_menu import FavoriteDiaryMenu
+from src.main import MainWindow
+from src.menus.event.event_menu import EventMenu
+from src.menus.event.event_list_menu import EventListMenu
+from src.menus.diaries.diary_menu import DiaryMenu
+from src.menus.diaries.favorite_diary_menu import FavoriteDiaryMenu
 
-import DAO
-from dataclass import Event
+import src.DAO as DAO
+from src.dataclass.event import Event
 
 class EventPage(QWidget) :
     def __init__(self, mainpage: MainWindow):
@@ -226,7 +226,6 @@ class EventPage(QWidget) :
     def show_diaries_menu(self, pos: QPoint):
         '''
         Permet d'ajouter ou supprimer un agenda dans la liste d'agenda de l'utilisateur
-        #TODO Léo: Mémoriser ces ajouts et supression quelque pars
         :param pos: Position du menu (en fonction du clic droit)
         :return: None
         '''
@@ -237,7 +236,6 @@ class EventPage(QWidget) :
     def show_diaries_favorite_menu(self, pos: QPoint):
         '''
         Permet d'ajouter ou supprimer un agenda dans la liste des favoris de l'utilisateur
-        #TODO Léo: Mémoriser ces ajouts et supression quelque pars
         :param pos: Position du menu (en fonction du clic droit)
         :return: None
         '''

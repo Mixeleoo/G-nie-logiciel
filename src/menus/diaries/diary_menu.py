@@ -10,7 +10,7 @@ translate_dic = {
            "Partager l'agenda sélectionné","Email du receveur","Partager agenda","Erreur email","Entrée non valide","Modifier agenda"],
     'en': ["Add a diary", "Delete selected diary", "Add selected diary to favorite", "Edit selected diary",
            "Add a diary", "Diary name :", "Add to favorite confirmation", "Do you want to add", "to favorite?", "Yes",
-           "No", "Delete confirmation", "Do you want to delete", "Share selected agenda","Receiver's email","Share diary","Email error","No valide entry","Edit diary"]}
+           "No", "Delete confirmation", "Do you want to delete", "Share selected diary","Receiver's email","Share diary","Email error","No valide entry","Edit diary"]}
 
 
 

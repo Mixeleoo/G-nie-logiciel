@@ -1,13 +1,10 @@
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import QDate, QPoint, Qt
 from PyQt6.QtGui import QFont
-from PyQt6.QtWidgets import QDialog, QVBoxLayout, QMessageBox, QMenu, QLineEdit, QLabel, \
-    QPushButton, QListWidgetItem
-from menus.event.rename_event_menu import RenameEventMenu
-
+from PyQt6.QtWidgets import QDialog, QVBoxLayout, QMenu, QListWidgetItem
 from datetime import datetime
-import DAO
-from dataclass import Event
+import src.DAO as DAO
+from src.dataclass.event import Event
 
 
 class EventListMenu(QDialog):
@@ -90,6 +87,7 @@ class EventListMenu(QDialog):
         Crée et ouvre une fenêtre pour permettre à l'utilisateur de renommer l'évenement choisi
         :return:
         '''
+        from src.menus.event.rename_event_menu import RenameEventMenu
         rename_page = RenameEventMenu(self.mainpage, self)
         if rename_page.exec() :
             print(rename_page.get_new_data())
@@ -100,7 +98,7 @@ class EventListMenu(QDialog):
         :return: None
         '''
         #TODO : voir comment mettre les infos modifiable de l'event dans les editline + comment récupérer les infos modifiée
-        from menus.event.edit_event_menu import EditEventMenu
+        from src.menus.event.edit_event_menu import EditEventMenu
         edit_page = EditEventMenu(self.mainpage, self, item)
         if edit_page.exec():
             DAO.eventdao.update(edit_page.get_new_event())

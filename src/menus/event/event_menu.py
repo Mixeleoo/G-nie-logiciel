@@ -30,10 +30,12 @@ class EventMenu(QDialog):
         self.colors = {} #choix couleur
         self.agendas_label = QLabel() # agenda
         self.agenda_event = QComboBox() # agenda
-        
-        # TODO : voir quoi mettre dans ces dico
+        self.repeat_label = QLabel() #répétition
         self.repeat = {} #choix répétition
+        self.repeat_event = QComboBox()  #répétition
+        self.reminder_label = QLabel() #rappel
         self.reminder = {} #choix rappel
+        self.reminder_event = QComboBox() #rappel
 
         self.ok_button = QPushButton()
         self.cancel_button = QPushButton()
@@ -51,9 +53,15 @@ class EventMenu(QDialog):
         self.layout.addWidget(self.color_event)
         self.layout.addWidget(self.agendas_label)
         self.layout.addWidget(self.agenda_event)
+        self.layout.addWidget(self.repeat_label)
+        self.layout.addWidget(self.repeat_event)
+        self.layout.addWidget(self.reminder_label)
+        self.layout.addWidget(self.reminder_event)
 
         model_color = QStandardItemModel()
         model_agenda = QStandardItemModel()
+        model_repeat = QStandardItemModel()
+        model_reminder = QStandardItemModel()
 
         self.layout.addWidget(self.ok_button)
         self.layout.addWidget(self.cancel_button)
@@ -83,6 +91,11 @@ class EventMenu(QDialog):
             self.time_event_label.setText("Heure :")
             self.color_event_label.setText("Couleur :")
             self.agendas_label.setText("Agenda :")
+            self.reminder_label.setText("Rappel :")
+            self.reminder = {"Aucun" : 0, "1 jour avant" : 1, "2 jours avant" : 2, "3 jours avant" : 3, "5 jours avant" : 5,
+                           "1 semaine avant" : 7, "10 jours avant" : 10, "2 semaines avant" : 14, "3 semaines avant" : 21, "4 semaines avant" : 28}
+            self.repeat_label.setText("Répétition :")
+            self.repeat = {"Aucun" : 0, "Chaque jour" : 1, "Chaque semaine" : 7, "Chaque mois" : 31, "Chaque année" : 365} #TODO ajuster pour mois et année
 
             self.ok_button.setText("Valider")
             self.cancel_button.setText("Annuler")
@@ -103,10 +116,16 @@ class EventMenu(QDialog):
             self.time_event_label.setText("Time :")
             self.color_event_label.setText("Color :")
             self.agendas_label.setText("Diary :")
+            self.reminder_label.setText("Reminder :")
+            self.reminder = {"None" : 0 ,"1 day before": 1, "2 days before": 2, "3 days before": 3, "5 days before": 5,
+                           "1 week before": 7, "10 days before": 10, "2 weeks before": 14, "3 weeks before": 21,"4 weeks before": 28}
+            self.repeat_label.setText("Repeat :")
+            self.repeat = {"None" : 0,"Every day": 1, "Every week": 7, "Every month": 31, "Every year": 365}  # TODO ajuster pour mois et année
 
             self.ok_button.setText("Ok")
             self.cancel_button.setText("Cancel")
 
+        # remplissage combobox couleurs
         for name, hex_code in self.colors.items():
             item = QStandardItem(name)
             item.setBackground(QColor(hex_code))
@@ -114,15 +133,27 @@ class EventMenu(QDialog):
             model_color.appendRow(item)
         self.color_event.setModel(model_color)
 
+        # remplissage combobox répétitions
+        for name in self.repeat.keys():
+            item = QStandardItem(name)
+            model_repeat.appendRow(item)
+        self.repeat_event.setModel(model_repeat)
+
+        # remplissage combobox rappels
+        for name in self.reminder.keys():
+            item = QStandardItem(name)
+            model_reminder.appendRow(item)
+        self.reminder_event.setModel(model_reminder)
+
         self.setLayout(self.layout)
 
     # recuperation des données entrée par l'utilisateur
     def get_data(self) -> Event:
         '''
         Récupère les données de l'utilisateur sous forme de dictionnaire
-        :return: Dictionnaire des données
+        :return: Le nouvel evenement créé
         '''
-        
+        #TODO Léo réadapter la récupération de données pour intégrer les répétitions et rappels
         timestamp = datetime.strptime(f"{self.date_event.text()} {self.time_event.text()}", "%m/%d/%y %I:%M %p").timestamp()
 
         return Event(

@@ -1,8 +1,12 @@
 from PyQt6.QtCore import QPoint, Qt
 from PyQt6.QtWidgets import QWidget, QMenu, QInputDialog, QMessageBox
 
-from menus.task.task_menu import TaskMenu
-from main import MainWindow
+from src.menus.task.task_menu import TaskMenu
+from src.main import MainWindow
+
+from src.menus.task.task_display import TaskOngoingDisplay, TaskFinishedDisplay
+from src.menus.task.task_list_menu import TaskMenu
+from src.menus.task.favorite_task_menu import FavoriteTaskMenu
 
 class TaskPage(QWidget) :
     def __init__(self, mainpage: MainWindow):
@@ -11,11 +15,21 @@ class TaskPage(QWidget) :
         '''
         super().__init__(mainpage)
         self.ui = mainpage.ui
+        self.mainpage = mainpage
 
+        # initialisation de l'affichage
+        self.show_ongoing_task()
+        self.ui.pages_tasks.setCurrentIndex(0)
+
+        # changement de page vers evenement
         self.ui.event_button_2.clicked.connect(self.goto_event)
 
         # ajout tache
         self.ui.new_task_button.clicked.connect(lambda: self.add_task(mainpage))
+
+        #visualiser tâches terminées ou en cours
+        self.ui.finished_task_button.clicked.connect(self.show_finished_task)
+        self.ui.back_ftask_button.clicked.connect(self.show_ongoing_task)
 
         # gestion liste d'agenda
         self.ui.mytask_box.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
@@ -44,6 +58,17 @@ class TaskPage(QWidget) :
         if param_task.exec():
             print(param_task.get_data())
 
+############################# gestion affichage taches finies ################################
+    def show_finished_task(self):
+        curr_task_list = self.ui.mytask_box.currentText() # récupération de la liste d'event actuellement selectionée par l'utilisateur
+        task_list = TaskFinishedDisplay(self.ui.frame_7, curr_task_list)
+        self.ui.pages_tasks.setCurrentIndex(1)
+
+############################# gestion affichage taches finies ################################
+    def show_ongoing_task(self):
+        curr_task_list = self.ui.mytask_box.currentText()  # récupération de la liste d'event actuellement selectionée par l'utilisateur
+        task_list = TaskOngoingDisplay(self.ui.frame_task,curr_task_list)
+        self.ui.pages_tasks.setCurrentIndex(0)
 
 
 ############################# gestion liste taches #########################################
@@ -55,109 +80,7 @@ class TaskPage(QWidget) :
         :param pos: Position du menu (en fonction du clic droit)
         :return: None
         '''
-        menu = QMenu(self.ui.mytask_box)
-
-        # gestion affichage du menu si la langue est le francais
-        if self.ui.current_lang == "fr" :
-
-            add_action = menu.addAction("Ajouter une liste de tâches")
-            remove_action = None
-            favorite_action = None
-
-            # On n'ajoute l'option de supression ou d'ajout aux favoris que s'il y a un élément sélectionné
-            current_index = self.ui.mytask_box.currentIndex()
-            if current_index != -1:
-                remove_action = menu.addAction("Supprimer la liste de tâches sélectionnée")
-                favorite_action = menu.addAction("Ajouter la liste de tâches sélectionnée aux favoris")
-
-            action = menu.exec(self.ui.mytask_box.mapToGlobal(pos))
-
-            if action == add_action:
-                text, ok = QInputDialog.getText(self, "Ajouter une liste de tâches", "Nom de la liste :")
-                if ok and text:
-                    self.ui.mytask_box.addItem(text)
-
-            elif action == favorite_action:
-                item_text = self.ui.mytask_box.currentText()
-
-                msg = QMessageBox(self)
-                msg.setWindowTitle(f"Confirmer l'ajout aux favoris")
-                msg.setText(f"Voulez-vous ajouter « {item_text} » aux favoris?")
-
-                btn_oui = msg.addButton("Oui", QMessageBox.ButtonRole.YesRole)
-                btn_non = msg.addButton("Non", QMessageBox.ButtonRole.NoRole)
-
-                msg.exec()
-
-                if msg.clickedButton() == btn_oui:
-                    self.ui.followedtask_box.addItem(item_text)
-
-            elif action == remove_action:
-                item_text = self.ui.mytask_box.currentText()
-
-                msg = QMessageBox(self)
-                msg.setWindowTitle("Confirmer la suppression")
-                msg.setText(f"Voulez-vous supprimer « {item_text} » ?")
-
-                btn_oui = msg.addButton("Oui", QMessageBox.ButtonRole.YesRole)
-                btn_non = msg.addButton("Non", QMessageBox.ButtonRole.NoRole)
-
-                msg.exec()
-
-                if msg.clickedButton() == btn_oui:
-                    self.ui.mytask_box.removeItem(current_index)
-
-        # gestion et affichage du menu si la langue est l'anglais
-        elif self.ui.current_lang == "en" :
-            add_action = menu.addAction("Add a task list")
-            remove_action = None
-            favorite_action = None
-
-            # On n'ajoute l'option de supression ou d'ajout aux favoris que s'il y a un élément sélectionné
-            current_index = self.ui.mytask_box.currentIndex()
-            if current_index != -1:
-                remove_action = menu.addAction("Delete selected task list")
-                favorite_action = menu.addAction("Add selected task list to favorite")
-
-            action = menu.exec(self.ui.mytask_box.mapToGlobal(pos))
-
-            # gestion de l'action d'ajout
-            if action == add_action:
-                text, ok = QInputDialog.getText(self, "Add a task list", "Task list name :")
-                if ok and text:
-                    self.ui.mytask_box.addItem(text)
-
-            # gestion de l'action d'ajout aux favoris
-            elif action == favorite_action:
-                item_text = self.ui.mytask_box.currentText()
-
-                msg = QMessageBox(self)
-                msg.setWindowTitle(f"Add to favorite confirmation")
-                msg.setText(f"Do you want to add « {item_text} » to favorite?")
-
-                btn_yes = msg.addButton("Yes", QMessageBox.ButtonRole.YesRole)
-                btn_no = msg.addButton("No", QMessageBox.ButtonRole.NoRole)
-
-                msg.exec()
-
-                if msg.clickedButton() == btn_yes:
-                    self.ui.followedtask_box.addItem(item_text)
-
-            # gestion de l'action de supression
-            elif action == remove_action:
-                item_text = self.ui.mytask_box.currentText()
-
-                msg = QMessageBox(self)
-                msg.setWindowTitle("Delete confirmation")
-                msg.setText(f"Do you want to delete « {item_text} » ?")
-
-                btn_yes = msg.addButton("Yes", QMessageBox.ButtonRole.YesRole)
-                btn_no = msg.addButton("No", QMessageBox.ButtonRole.NoRole)
-
-                msg.exec()
-
-                if msg.clickedButton() == btn_yes:
-                    self.ui.mytask_box.removeItem(current_index)
+        menu = TaskMenu(self.ui.mytask_box,self.mainpage,pos,self)
 
     ############################# gestion liste favoris agenda #########################################
 
@@ -168,97 +91,4 @@ class TaskPage(QWidget) :
         :param pos: Position du menu (en fonction du clic droit)
         :return: None
         '''
-        menu = QMenu(self.ui.followedtask_box)
-
-        # gestion et affichage du menu si la langue est le francais
-        if self.ui.current_lang == "fr":
-
-            remove_action = None
-            remove_favorite_action = None
-
-            # On n'ajoute l'option de supression ou d'ajout aux favoris que s'il y a un élément sélectionné
-            current_index = self.ui.followedtask_box.currentIndex()
-            if current_index != -1:
-                remove_action = menu.addAction("Supprimer la liste de tâche sélectionnée")
-                remove_favorite_action = menu.addAction("Supprimer liste de tâche sélectionnée des favoris")
-
-            action = menu.exec(self.ui.followedtask_box.mapToGlobal(pos))
-
-            # supression d'un élément des favoris
-            if action == remove_favorite_action :
-                item_text = self.ui.followedtask_box.currentText()
-
-                msg = QMessageBox(self)
-                msg.setWindowTitle(f"Confirmer la suppression des favoris")
-                msg.setText(f"Voulez-vous retirer « {item_text} » des favoris?")
-
-                btn_oui = msg.addButton("Oui", QMessageBox.ButtonRole.YesRole)
-                btn_non = msg.addButton("Non", QMessageBox.ButtonRole.NoRole)
-
-                msg.exec()
-
-                if msg.clickedButton() == btn_oui:
-                    self.ui.followedtask_box.removeItem(current_index)
-
-            # supression d'un agenda via la liste des favoris
-            elif action == remove_action:
-                item_text = self.ui.followedtask_box.currentText()
-
-                msg = QMessageBox(self)
-                msg.setWindowTitle("Confirmer la suppression")
-                msg.setText(f"Voulez-vous supprimer la liste de tâche « {item_text} » ?")
-
-                btn_oui = msg.addButton("Oui", QMessageBox.ButtonRole.YesRole)
-                btn_non = msg.addButton("Non", QMessageBox.ButtonRole.NoRole)
-
-                msg.exec()
-
-                if msg.clickedButton() == btn_oui:
-                    self.ui.mytask_box.removeItem(self.ui.mytask_box.findText(item_text)) #suppression des liste de taches en récupérant son indice à l'aide de son nom
-                    self.ui.followedtask_box.removeItem(current_index) # suppression des favoris
-
-        # gestion et affichage du menu si la langue est l'anglais
-        elif self.ui.current_lang == "en":
-            remove_action = None
-            remove_favorite_action = None
-
-            # On n'ajoute l'option de supression ou d'ajout aux favoris que s'il y a un élément sélectionné
-            current_index = self.ui.followedtask_box.currentIndex()
-            if current_index != -1:
-                remove_action = menu.addAction("Delete selected task list")
-                remove_favorite_action = menu.addAction("Remove selected task list from favorite")
-
-            action = menu.exec(self.ui.followedtask_box.mapToGlobal(pos))
-
-            # gestion de l'action de suppression des favoris
-            if action == remove_favorite_action:
-                item_text = self.ui.followedtask_box.currentText()
-
-                msg = QMessageBox(self)
-                msg.setWindowTitle(f"Remove from favorite confirmation")
-                msg.setText(f"Do you want to remove « {item_text} » from favorite?")
-
-                btn_yes = msg.addButton("Yes", QMessageBox.ButtonRole.YesRole)
-                btn_no = msg.addButton("No", QMessageBox.ButtonRole.NoRole)
-
-                msg.exec()
-
-                if msg.clickedButton() == btn_yes:
-                    self.ui.followedtask_box.removeItem(current_index)
-
-            # gestion de l'action de supression de l'agenda via favoris
-            elif action == remove_action:
-                item_text = self.ui.mytask_box.currentText()
-
-                msg = QMessageBox(self)
-                msg.setWindowTitle("Delete confirmation")
-                msg.setText(f"Do you want to delete task list « {item_text} » ?")
-
-                btn_yes = msg.addButton("Yes", QMessageBox.ButtonRole.YesRole)
-                btn_no = msg.addButton("No", QMessageBox.ButtonRole.NoRole)
-
-                msg.exec()
-
-                if msg.clickedButton() == btn_yes:
-                    self.ui.mytask_box.removeItem(self.ui.mytask_box.findText(item_text))  # suppression des agenda en récupérant son indice à l'aide de son nom
-                    self.ui.followedtask_box.removeItem(current_index)  # suppression des favoris
+        menu = FavoriteTaskMenu(self.ui.followedtask_box,self.mainpage,pos,self)
