@@ -4,6 +4,9 @@ import json
 
 requestSuccess = lambda cur=None: "{\"op\":4}"
 
+def isUserValid(cur: sqlite3.Cursor) -> str:
+    return "{\"data\":{\"is_valid\":" + str(int(bool(cur.fetchone()))) + "},\"op\":4}"
+
 def createAgenda(cur: sqlite3.Cursor) -> str:
     return "{\"data\":{\"agenda_id\":" + str(cur.lastrowid) + "},\"op\":4}"
 

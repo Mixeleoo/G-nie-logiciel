@@ -19,6 +19,7 @@ class Request:
 
 requestType_to_query: dict[str, Request] = {
     "updateUser": Request("update user set mail = ?, mdp = ? where id = ?;", requestSuccess),
+    "isUserValid": Request("select 1 from user where mail = ?", isUserValid),
 
     "createAgenda": Request("insert into agenda (user_id, name) values (?, ?);", createAgenda),
     "updateAgenda": Request("update agenda set name = ? where id = ?;", requestSuccess),

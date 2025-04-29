@@ -77,6 +77,7 @@ class TaskPage(QWidget) :
         '''
         Permet d'ajouter ou supprimer une liste de tâche dans la liste des tâches de l'utilisateur
         #TODO Léo: Mémoriser ces ajouts et supression quelque pars
+        #TODO dire à Eloise: Elle est où la fonction de suppression ? je vois add_task mais pas delete_task ?
         :param pos: Position du menu (en fonction du clic droit)
         :return: None
         '''

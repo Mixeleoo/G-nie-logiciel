@@ -1,8 +1,13 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QStandardItem, QColor, QStandardItemModel
 from PyQt6.QtWidgets import QDialog, QLineEdit, QVBoxLayout, QLabel, QDateEdit, QTimeEdit, QComboBox, QPushButton
+from dataclass import Task, Color
+import datetime
 
 
+def hexcolor_to_int(hexcolor: str) -> Color:
+    hexcolor = hexcolor.lstrip('#')
+    return Color(r=int(hexcolor[0:2], 16), g=int(hexcolor[2:4], 16), b=int(hexcolor[4:6], 16))
 
 class TaskMenu(QDialog):
     def __init__(self, mainpage , taskpage):
@@ -97,16 +102,18 @@ class TaskMenu(QDialog):
 
         self.setLayout(self.layout)
 
-
     # recuperation des données entrée par l'utilisateur
-    def get_data(self):
+    def get_data(self) -> Task:
         '''
         Récupère les données de l'utilisateur sous forme de dictionnaire
         :return: Dictionnaire des données
         '''
-        data_dic = {"name" : self.task_name.text(),
-                    "details" : self.task_details.text(),
-                    "date" : self.date_task.text(),
-                    "time" : self.time_task.text(),
-                    "color" : self.colors[self.color_task.currentText()]} #recupération du code ASCII de la couleur choisie
-        return data_dic
+
+        timestamp = datetime.strptime(f"{self.date_task.text()} {self.time_task.text()}", "%m/%d/%y %I:%M %p").timestamp()
+        
+        return Task(
+            name=self.task_name.text(),
+            details=self.task_details.text(),
+            date=timestamp,
+            color=hexcolor_to_int(self.colors[self.color_event.currentText()])
+        )

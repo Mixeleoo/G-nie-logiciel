@@ -73,7 +73,6 @@ class EditEventMenu(QDialog) :
             model_agenda.appendRow(QStandardItem(agenda.name))
         self.new_agenda.setModel(model_agenda)
 
-        #TODO Léo : mettre les bons textes dans les edit line et combobox
         self.event: Event = eventpage.get_event_selected(item)
         self.new_name.setText(self.event.name)
 
