@@ -318,7 +318,7 @@ class Ui_sofware_ui(object):
         self.table_week.horizontalHeader().setVisible(True)
         self.table_week.horizontalHeader().setDefaultSectionSize(116)
         self.table_week.horizontalHeader().setHighlightSections(True)
-        self.table_week.verticalHeader().setDefaultSectionSize(378)
+        self.table_week.verticalHeader().setDefaultSectionSize(100)
         font = QtGui.QFont()
         font.setFamily("SamsungOneUILatin 700C")
         font.setPointSize(60)
