@@ -28,6 +28,7 @@ class FavoriteTaskMenu(QMenu):
 
         # supression d'un élément des favoris
         if action == self.remove_favorite_action:
+            # TODO Léo: Mémoriser ces supression quelque pars
             item_text = self.ui.followedtask_box.currentText()
 
             msg = QMessageBox(taskpage)
@@ -45,6 +46,7 @@ class FavoriteTaskMenu(QMenu):
 
         # supression d'un agenda via la liste des favoris
         elif action == self.remove_action:
+            # TODO Léo: Mémoriser ces supression quelque pars
             item_text = self.ui.followedtask_box.currentText()
 
             msg = QMessageBox(taskpage)

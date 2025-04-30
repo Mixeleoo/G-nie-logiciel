@@ -10,8 +10,7 @@ translate_dic = {
            "No", "Delete confirmation", "Do you want to delete"]}
 
 
-class TaskMenu(QMenu):
-
+class TaskListMenu(QMenu):
     @property
     def phrase(self) -> list[str]:
         return translate_dic[self.ui.current_lang]
@@ -38,7 +37,7 @@ class TaskMenu(QMenu):
         if action == self.add_action:
             text, ok = QInputDialog.getText(self, self.phrase[4], self.phrase[5])
             if ok and text:
-                # TODO : gérer ajout liste tâches
+                #TODO Léo: Mémoriser ces ajouts quelque pars
                 self.ui.mytask_box.addItem(text)
 
         elif action == self.edit_action:
@@ -66,6 +65,8 @@ class TaskMenu(QMenu):
                 self.ui.followedtask_box.addItem(item_text)
 
         elif action == self.remove_action:
+            # TODO Léo: Mémoriser ces supression quelque pars
+
             item_text = self.ui.mytask_box.currentText()
 
             msg = QMessageBox(taskpage)
