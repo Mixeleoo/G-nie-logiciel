@@ -1,7 +1,7 @@
 from PyQt6.QtCore import QPoint, QTimer
 from PyQt6.QtWidgets import QMenu, QInputDialog, QMessageBox, QDialog, QLineEdit, QLabel
 import DAO
-from dataclass import Agenda
+from dataclass import Agenda, User
 
 translate_dic = {
     'fr': ["Ajouter un agenda", "Supprimer l'agenda sélectionné", "Ajouter l'agenda sélectionné aux favoris",
@@ -63,6 +63,7 @@ class DiaryMenu(QMenu) :
                 self.ui.myagenda_box.setItemText(self.ui.myagenda_box.currentIndex(), text)
 
         elif action == self.favorite_action:
+            # TODO Léo: Mémoriser ces ajouts quelque pars
             item_text = self.ui.myagenda_box.currentText()
 
             msg = QMessageBox(eventpage)
@@ -96,15 +97,15 @@ class DiaryMenu(QMenu) :
         elif action == self.share_action:
             text, ok = QInputDialog.getText(self, self.phrase[14], self.phrase[15])
             if ok :
-                # TODO Léo : gérer la verification du user entré à la place du True
-                if not text or True:
+                if not text or (text and not DAO.userdao.is_valid(User(mail=text))):
                     error_message = QMessageBox(self.parent())
                     error_message.setWindowTitle(self.phrase[16])
                     error_message.setText(f"{self.phrase[17]}")
 
                     error_message.setStandardButtons(QMessageBox.StandardButton.Ok)
                     error_message.exec()
-                # TODO Léo : gérer le partage qd validé (un else suffit peut-être)
-                elif text and True :
+                    
+                # TODO Léo : gérer le partage qd validé
+                else :
                     print("envoyer")
 

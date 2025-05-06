@@ -5,7 +5,7 @@ from src.menus.task.task_menu import TaskMenu
 from src.main import MainWindow
 
 from src.menus.task.task_display import TaskOngoingDisplay, TaskFinishedDisplay
-from src.menus.task.task_list_menu import TaskMenu
+from src.menus.task.task_list_menu import TaskListMenu
 from src.menus.task.favorite_task_menu import FavoriteTaskMenu
 
 class TaskPage(QWidget) :
@@ -76,18 +76,16 @@ class TaskPage(QWidget) :
     def show_task_menu(self, pos: QPoint):
         '''
         Permet d'ajouter ou supprimer une liste de tâche dans la liste des tâches de l'utilisateur
-        #TODO Léo: Mémoriser ces ajouts et supression quelque pars
         :param pos: Position du menu (en fonction du clic droit)
         :return: None
         '''
-        menu = TaskMenu(self.ui.mytask_box,self.mainpage,pos,self)
+        menu = TaskListMenu(self.ui.mytask_box,self.mainpage,pos,self)
 
     ############################# gestion liste favoris agenda #########################################
 
     def show_task_favorite_menu(self, pos: QPoint):
         '''
         Permet d'ajouter ou supprimer une liste de tâche dans la liste des favoris de l'utilisateur
-        #TODO Léo: Mémoriser ces ajouts et supression quelque pars
         :param pos: Position du menu (en fonction du clic droit)
         :return: None
         '''

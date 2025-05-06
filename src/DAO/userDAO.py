@@ -34,5 +34,16 @@ class UserDAO:
     def update(self, user: User):
         pass
 
+    def is_valid(self, user: User) -> bool:
+        self.dbcom.sendall({
+            "data":{
+                "mail": user.mail,
+            },
+            "requestType": "isUserValid",
+            "op": 3
+        })
+        m_json = self.dbcom.recv()
+        return m_json["op"] == 4 and m_json["data"]["is_valid"]
+
 userdao = UserDAO(dbcom)
 user = User()
