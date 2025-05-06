@@ -33,19 +33,24 @@ requestType_to_query: dict[str, Request] = {
     "denySharedAgenda": Request("delete from shared_agenda where user_id = ? and agenda_id = ?;", requestSuccess),
     # TODO En même temps que l'on récupère les agenda de l'utilisateur il faudra récupérer les id des agendas dont il a été partagé
     "getPendingAgendaList": Request(
-            "select agenda.* from shared_agenda sa, agenda a where user_id = ? and state = 0 and sa.agenda_id = a.id;",
+            "select a.id, a.name from shared_agenda sa, agenda a where sa.user_id = ? and state = 0 and sa.agenda_id = a.id;",
             getPendingAgendaList
         ),
 
-    "createEvent": Request("insert into event (agenda_id, name, cancel, start, _end, color) values (?, ?, ?, ?, ?, ?);", createEvent),
+    "createEvent": Request(
+            "insert into event"
+            " (agenda_id, name, cancel, start, 'end', color, frequency, interval, by_day, by_month_day, until)"
+            " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+            createEvent
+        ),
     "updateEvent": Request(
             "update event"
-            " set name = ?, cancel = ?, start = ?, _end = ?, color = ?"
+            " set name = ?, cancel = ?, start = ?, 'end' = ?, color = ?"
             " where id = ?;",
             requestSuccess
         ),
     "deleteEvent": Request("delete from event where id = ?;", requestSuccess),
-    "getEventList": Request("select id, name, cancel, start, _end, color from event where agenda_id = ?;", getEventList)
+    "getEventList": Request("select id, name, cancel, start, 'end', color, frequency, interval, by_day, by_month_day, until from event where agenda_id = ?;", getEventList)
 }
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:

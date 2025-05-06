@@ -60,6 +60,8 @@ class EventPage(QWidget) :
         self.ui.followedagenda_box.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.ui.followedagenda_box.customContextMenuRequested.connect(self.show_diaries_favorite_menu)
 
+        self.ui.shared_agenda_button.clicked.connect(lambda : self.see_shared_agenda(mainpage))
+
 ############################# gestion changement event to task page ################################
 
     def goto_task(self):
@@ -76,16 +78,13 @@ class EventPage(QWidget) :
         :return: None
         '''
         param_event = EventMenu(mainpage,self)
-        try :
-            if param_event.exec():
-                event: Event = param_event.get_data()
+        if param_event.exec():
+            event: Event = param_event.get_data()
 
-                DAO.eventdao.insert(
-                    agenda=DAO.agendalist[event.id], # Oui j'utilise l'id pour l'index de l'agenda selectionné Y'A QUOI
-                    event=event
-                )
-        except Exception as e:
-            print("erreur dans get data event",e)
+            DAO.eventdao.insert(
+                agenda=DAO.agendalist[event.id], # Oui j'utilise l'id pour l'index de l'agenda selectionné Y'A QUOI
+                event=event
+            )
 
 ############################# gestion ajout evenement ################################
     def see_event(self, mainpage : MainWindow, date : QDate):
@@ -97,6 +96,17 @@ class EventPage(QWidget) :
         '''
         display_event = EventListMenu(mainpage,self, date)
         if display_event.exec():
+            print('truc')
+
+############################# gestion agenda partagés ################################
+    def see_shared_agenda(self, mainpage: MainWindow):
+        '''
+        Affichage des evenements de la date courante
+        :param mainpage: Page event
+        :return: None
+        '''
+        display_shared_agenda = SharedAgendaMenu(mainpage, self)
+        if display_shared_agenda.exec():
             print('truc')
 
 ############################# gestion recuperation date cliquée ################################

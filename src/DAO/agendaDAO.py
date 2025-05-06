@@ -109,3 +109,4 @@ class AgendaDAO:
 
 agendadao = AgendaDAO(dbcom)
 agendalist: list[Agenda] = []
+pendingsharedagendalist: list[Agenda] = []

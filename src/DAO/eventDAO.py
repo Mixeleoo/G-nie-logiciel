@@ -17,7 +17,12 @@ class EventDAO:
                 "cancel": event.cancel,
                 "start": event.start,
                 "end": event.end,
-                "color": (event.color.r << 16) | (event.color.g << 8) | event.color.b
+                "color": (event.color.r << 16) | (event.color.g << 8) | event.color.b,
+                "frequency": event.frequency,
+                "interval": event.interval,
+                "by_day": event.by_day,
+                "by_month_day": event.by_month_day,
+                "until": event.until
             },
             "requestType": "createEvent",
             "op": 3
@@ -87,7 +92,12 @@ class EventDAO:
                         r=(event["color"] >> 16) & 0xFF,
                         g=(event["color"] >> 8) & 0xFF,
                         b=event["color"] & 0xFF
-                    )
+                    ),
+                    event["frequency"],
+                    event["interval"],
+                    event["by_day"],
+                    event["by_month_day"],
+                    event["until"]
                 )
             )
 

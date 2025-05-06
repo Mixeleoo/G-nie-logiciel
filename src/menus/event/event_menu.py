@@ -4,10 +4,19 @@ from PyQt6.QtWidgets import QDialog, QLineEdit, QVBoxLayout, QLabel, QDateEdit, 
 import src.DAO as DAO
 from src.dataclass import Event, Color
 from datetime import datetime
+from dataclasses import field
 
 def hexcolor_to_int(hexcolor: str) -> Color:
     hexcolor = hexcolor.lstrip('#')
     return Color(r=int(hexcolor[0:2], 16), g=int(hexcolor[2:4], 16), b=int(hexcolor[4:6], 16))
+
+def get_day_of_week(date_str):
+    # Convertir la chaîne de caractères en objet datetime
+    date_obj = datetime.strptime(date_str, "%m/%d/%y")
+    
+    # Récupérer le jour de la semaine sous forme de numéro : 0= lundi, 6= dimanche
+    day_num = date_obj.weekday() + 1  # on ajoute 1 pour que 1= lundi, 7= dimanche
+    return day_num
 
 class EventMenu(QDialog):
     def __init__(self, mainpage , eventpage):
@@ -73,17 +82,21 @@ class EventMenu(QDialog):
         for agenda in DAO.agendalist:
             item = QStandardItem(agenda.name)
             model_agenda.appendRow(item)
+            
         self.agenda_event.setModel(model_agenda)
+
+        self.colors = {
+            "Red": "#b41d1d",
+            "Orange": "#cd8423",
+            "Yellow": "#bfcd23",
+            "Gree,": "#1c9d1c",
+            "Blue": "#342aff",
+            "Purple": "#8723cd",
+            "Pink": "#cd2393"
+        }  # choix couleur
 
         # fenetre en francais
         if self.ui.current_lang == "fr":
-            self.colors = {"Rouge": "#b41d1d",
-                           "Orange": "#cd8423",
-                           "Jaune": "#bfcd23",
-                           "Vert": "#1c9d1c",
-                           "Bleu": "#342aff",
-                           "Violet": "#8723cd",
-                           "Rose": "#cd2393"}  # choix couleur
             self.setWindowTitle("Créer un évenement")
             self.event_name_label.setText("Nom :")
             self.event_location_label.setText("Lieu :")
@@ -92,23 +105,32 @@ class EventMenu(QDialog):
             self.color_event_label.setText("Couleur :")
             self.agendas_label.setText("Agenda :")
             self.reminder_label.setText("Rappel :")
-            self.reminder = {"Aucun" : 0, "1 jour avant" : 1, "2 jours avant" : 2, "3 jours avant" : 3, "5 jours avant" : 5,
-                           "1 semaine avant" : 7, "10 jours avant" : 10, "2 semaines avant" : 14, "3 semaines avant" : 21, "4 semaines avant" : 28}
+            self.reminder = {
+                "Aucun" : 0,
+                "1 jour avant" : 1,
+                "2 jours avant" : 2,
+                "3 jours avant" : 3,
+                "5 jours avant" : 5,
+                "1 semaine avant" : 7,
+                "10 jours avant" : 10,
+                "2 semaines avant" : 14,
+                "3 semaines avant" : 21,
+                "4 semaines avant" : 28
+            }
             self.repeat_label.setText("Répétition :")
-            self.repeat = {"Aucun" : 0, "Chaque jour" : 1, "Chaque semaine" : 7, "Chaque mois" : 31, "Chaque année" : 365} #TODO ajuster pour mois et année
+            self.repeat = {            
+                "Aucun" : Event(id=0),
+                "Chaque jour": Event(frequency='daily', interval=1),
+                "Chaque semaine": field(default_factory=lambda: Event(frequency='weekly', interval=1, by_day=get_day_of_week(self.date_event.text()))),
+                "Chaque mois": field(default_factory=lambda: Event(frequency='monthly', interval=1, by_month_day=self.date_event.text().split("/")[1])),
+                "Chaque année": field(default_factory=lambda: Event(frequency='yearly', interval=1, by_day=self.date_event.text().split("/")[0], by_month_day=self.date_event.text().split("/")[1]))
+            }
 
             self.ok_button.setText("Valider")
             self.cancel_button.setText("Annuler")
 
         # fenetre en anglais
         elif self.ui.current_lang == "en":
-            self.colors = {"Red": "#b41d1d",
-                           "Orange": "#cd8423",
-                           "Yellow": "#bfcd23",
-                           "Gree,": "#1c9d1c",
-                           "Blue": "#342aff",
-                           "Purple": "#8723cd",
-                           "Pink": "#cd2393"}  # choix couleur
             self.setWindowTitle("Create event")
             self.event_name_label.setText("Name :")
             self.event_location_label.setText("Location :")
@@ -117,10 +139,26 @@ class EventMenu(QDialog):
             self.color_event_label.setText("Color :")
             self.agendas_label.setText("Diary :")
             self.reminder_label.setText("Reminder :")
-            self.reminder = {"None" : 0 ,"1 day before": 1, "2 days before": 2, "3 days before": 3, "5 days before": 5,
-                           "1 week before": 7, "10 days before": 10, "2 weeks before": 14, "3 weeks before": 21,"4 weeks before": 28}
+            self.reminder = {
+                "None" : 0,
+                "1 day before": 1,
+                "2 days before": 2,
+                "3 days before": 3,
+                "5 days before": 5,
+                "1 week before": 7,
+                "10 days before": 10,
+                "2 weeks before": 14,
+                "3 weeks before": 21,
+                "4 weeks before": 28
+            }
             self.repeat_label.setText("Repeat :")
-            self.repeat = {"None" : 0,"Every day": 1, "Every week": 7, "Every month": 31, "Every year": 365}  # TODO ajuster pour mois et année
+            self.repeat = {
+                "None" : Event(id=0),
+                "Every day": Event(frequency='daily', interval=1),
+                "Every week": Event(frequency='weekly', interval=1, by_day=get_day_of_week(self.date_event.text())),
+                "Every month": Event(frequency='monthly', interval=1, by_month_day=self.date_event.text().split("/")[1]),
+                "Every year": Event(frequency='yearly', interval=1, by_day=self.date_event.text().split("/")[0], by_month_day=self.date_event.text().split("/")[1])
+            }
 
             self.ok_button.setText("Ok")
             self.cancel_button.setText("Cancel")
@@ -147,6 +185,22 @@ class EventMenu(QDialog):
 
         self.setLayout(self.layout)
 
+    @property
+    def current_repeat(self) -> Event:
+        '''
+        Retourne la récurrence actuelle de l'événement
+        :return: La récurrence actuelle
+        '''
+        return self.repeat[self.repeat_event.currentText()]
+    
+    @property
+    def current_color(self) -> Color:
+        '''
+        Retourne la couleur actuelle de l'événement
+        :return: La couleur actuelle
+        '''
+        return hexcolor_to_int(self.colors[self.color_event.currentText()])
+
     # recuperation des données entrée par l'utilisateur
     def get_data(self) -> Event:
         '''
@@ -154,12 +208,18 @@ class EventMenu(QDialog):
         :return: Le nouvel evenement créé
         '''
         #TODO Léo réadapter la récupération de données pour intégrer les répétitions et rappels
-        timestamp = int(datetime.strptime(f"{self.date_event.text()} {self.time_event.text()}", "%m/%d/%Y %H:%M").timestamp())
-
+        timestamp = int(datetime.strptime(f"{self.date_event.text()} {self.time_event.text()}", "%m/%d/%y %I:%M %p").timestamp())
+        current_repeat = self.current_repeat
+        
         return Event(
             id=self.agenda_event.currentIndex(),
             name=self.event_name.text(),
             start=timestamp,
             end=timestamp + 3600, # Une heure plus tard
-            color=hexcolor_to_int(self.colors[self.color_event.currentText()])
+            color=self.current_color,
+            frequency=current_repeat.frequency,
+            interval=current_repeat.interval,
+            by_day=current_repeat.by_day,
+            by_month_day=current_repeat.by_month_day,
+            until=current_repeat.until
         )

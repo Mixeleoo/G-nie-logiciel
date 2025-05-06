@@ -38,7 +38,7 @@ class EventListMenu(QDialog):
                     ).timestamp()
                     dt = datetime.fromtimestamp(e.start).replace(hour=0, minute=0, second=0, microsecond=0).timestamp()
 
-                    if curr_timestamp == dt:
+                    if curr_timestamp == dt or matches_date(e, curr_date.toPyDate()):
                         self.event_listleo.append(e)
                         item = QtWidgets.QListWidgetItem(e.name)
                         if e.cancel:
