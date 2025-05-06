@@ -16,40 +16,43 @@ class EventListMenu(QDialog):
         self.cancel_font = QFont()
         self.cancel_font.setStrikeOut(True)
 
-        if self.ui.current_lang == 'fr' :
-            self.setWindowTitle(f"Evenement(s) du {curr_date.toString('dd/MM/yyyy')}")
-        elif self.ui.current_lang == 'en' :
-            self.setWindowTitle(f"{curr_date.toString('dd/MM/yyyy')} event(s)")
+        try:
+            if self.ui.current_lang == 'fr' :
+                self.setWindowTitle(f"Evenement(s) du {curr_date.toString('dd/MM/yyyy')}")
+            elif self.ui.current_lang == 'en' :
+                self.setWindowTitle(f"{curr_date.toString('dd/MM/yyyy')} event(s)")
 
-        self.layout = QVBoxLayout(self)
+            self.layout = QVBoxLayout(self)
 
-        self.event_list = QtWidgets.QListWidget(self) # liste des evenement à la date cliquée par l'utilisateur
-        self.event_listleo: list[Event] = []
+            self.event_list = QtWidgets.QListWidget(self) # liste des evenement à la date cliquée par l'utilisateur
+            self.event_listleo: list[Event] = []
 
-        for agenda in DAO.agendalist:
-            event_list = DAO.eventdao.get_list(agenda)
-            for e in event_list:
-                # 1. Convertir curr_date (QDate) en datetime
-                curr_timestamp = datetime(
-                    curr_date.year(),
-                    curr_date.month(),
-                    curr_date.day()
-                ).timestamp()
-                dt = datetime.fromtimestamp(e.start).replace(hour=0, minute=0, second=0, microsecond=0).timestamp()
+            for agenda in DAO.agendalist:
+                event_list = DAO.eventdao.get_list(agenda)
+                for e in event_list:
+                    # 1. Convertir curr_date (QDate) en datetime
+                    curr_timestamp = datetime(
+                        curr_date.year(),
+                        curr_date.month(),
+                        curr_date.day()
+                    ).timestamp()
+                    dt = datetime.fromtimestamp(e.start).replace(hour=0, minute=0, second=0, microsecond=0).timestamp()
 
-                if curr_timestamp == dt:
-                    self.event_listleo.append(e)
-                    item = QtWidgets.QListWidgetItem(e.name)
-                    if e.cancel == True:
-                        item.setFont(self.cancel_font)
-                    self.event_list.addItem(item)
+                    if curr_timestamp == dt:
+                        self.event_listleo.append(e)
+                        item = QtWidgets.QListWidgetItem(e.name)
+                        if e.cancel:
+                            item.setFont(self.cancel_font)
+                        self.event_list.addItem(item)
 
-        self.layout.addWidget(self.event_list)
+            self.layout.addWidget(self.event_list)
 
-        self.setLayout(self.layout)
+            self.setLayout(self.layout)
 
-        self.event_list.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
-        self.event_list.customContextMenuRequested.connect(self.show_event_menu)
+            self.event_list.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+            self.event_list.customContextMenuRequested.connect(self.show_event_menu)
+        except Exception as e:
+            raise e
 
     def get_event_selected(self, item: QListWidgetItem) -> Event:
         return self.event_listleo[self.event_list.row(item)]

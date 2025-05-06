@@ -1,7 +1,7 @@
 from PyQt6.QtCore import QPoint, QTimer
 from PyQt6.QtWidgets import QMenu, QInputDialog, QMessageBox, QDialog, QLineEdit, QLabel
-import DAO
-from dataclass import Agenda, User
+import src.DAO as DAO
+from src.dataclass import Agenda, User
 
 translate_dic = {
     'fr': ["Ajouter un agenda", "Supprimer l'agenda sélectionné", "Ajouter l'agenda sélectionné aux favoris",
@@ -104,8 +104,7 @@ class DiaryMenu(QMenu) :
 
                     error_message.setStandardButtons(QMessageBox.StandardButton.Ok)
                     error_message.exec()
-                    
-                # TODO Léo : gérer le partage qd validé
-                else :
-                    print("envoyer")
 
+                # TODO Léo : gérer le partage qd validé
+                else:
+                    DAO.agendadao.share(text, DAO.agendalist[self.ui.myagenda_box.currentIndex()])
