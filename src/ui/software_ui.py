@@ -479,8 +479,18 @@ class Ui_sofware_ui(object):
 "border-bottom-color: rgb(165, 165, 165);\n"
 "background-color: rgb(61, 61, 61);")
         self.task_button.setObjectName("task_button")
+
+        self.shared_agenda_button = QtWidgets.QPushButton(parent=self.page_9)
+        self.shared_agenda_button.setGeometry(QtCore.QRect(1024, 80, 161, 61))
+        font = QtGui.QFont()
+        font.setFamily("SamsungOneUILatin 700C")
+        font.setPointSize(12)
+        font.setBold(True)
+        self.shared_agenda_button.setFont(font)
+        self.shared_agenda_button.setObjectName("shared_agenda_button")
+
         self.info_frame_e = QtWidgets.QFrame(parent=self.page_9)
-        self.info_frame_e.setGeometry(QtCore.QRect(1020, 40, 171, 211))
+        self.info_frame_e.setGeometry(QtCore.QRect(1020, 150, 171, 101))
         self.info_frame_e.setFrameShape(QtWidgets.QFrame.Shape.Panel)
         self.info_frame_e.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
         self.info_frame_e.setLineWidth(3)
@@ -717,6 +727,7 @@ class Ui_sofware_ui(object):
         self.error_label2.setText("Veuillez entrer le même mot de passe")
         self.error_label4.setText("Veuillez choisir un mot de passe")
         self.error_label3.setText("Veuillez entrer une adresse mail")
+        self.shared_agenda_button.setText("Agendas partagés")
         self.set_week_headers(QDate.currentDate(),self.current_lang)
 
         for i in range(24) :
@@ -736,7 +747,7 @@ class Ui_sofware_ui(object):
         self.task_button.setText(_translate("sofware_ui", "T"))
         self.myinfo_label_e.setText(_translate("sofware_ui", "Mes informations"))
         self.email_label_e.setText(_translate("sofware_ui", "Email :"))
-        self.language_label_e.setText(_translate("sofware_ui", "Langue :"))
+        self.language_label_e.setText(_translate("sofware_ui", "Langue : Français"))
         self.eventtocome_label_e_2.setText(_translate("sofware_ui", "Evènement à venir"))
         self.event_button_2.setText(_translate("sofware_ui", "E"))
         self.task_button_2.setText(_translate("sofware_ui", "T"))
@@ -747,7 +758,7 @@ class Ui_sofware_ui(object):
         self.back_ftask_button.setText(_translate("sofware_ui", "Tâches en cours"))
         self.myinfo_label_t.setText(_translate("sofware_ui", "Mes information"))
         self.email_label_t.setText(_translate("sofware_ui", "Email :"))
-        self.language_label_t.setText(_translate("sofware_ui", "Langue :"))
+        self.language_label_t.setText(_translate("sofware_ui", "Langue : Français"))
         self.eventtocome_label_e_3.setText(_translate("sofware_ui", "Tâches à venir"))
 
     def retranslateUi_english(self, sofware_ui):
@@ -781,6 +792,7 @@ class Ui_sofware_ui(object):
             self.error_label4.setText("Please choose a password")
             self.error_label3.setText("Please put your email")
             self.set_week_headers(QDate.currentDate(),self.current_lang)
+            self.shared_agenda_button.setText("Shared diaries")
 
             for i in range(24):
                     item = self.table_days.verticalHeaderItem(i)
@@ -799,7 +811,7 @@ class Ui_sofware_ui(object):
             self.task_button.setText(_translate("sofware_ui", "T"))
             self.myinfo_label_e.setText(_translate("sofware_ui", "My information"))
             self.email_label_e.setText(_translate("sofware_ui", "Email :"))
-            self.language_label_e.setText(_translate("sofware_ui", "Language :"))
+            self.language_label_e.setText(_translate("sofware_ui", "Language : English"))
             self.eventtocome_label_e_2.setText(_translate("sofware_ui", "Event to comme"))
             self.event_button_2.setText(_translate("sofware_ui", "E"))
             self.task_button_2.setText(_translate("sofware_ui", "T"))
@@ -810,7 +822,7 @@ class Ui_sofware_ui(object):
             self.back_ftask_button.setText(_translate("sofware_ui", "Ongoing tasks"))
             self.myinfo_label_t.setText(_translate("sofware_ui", "My information"))
             self.email_label_t.setText(_translate("sofware_ui", "Email :"))
-            self.language_label_t.setText(_translate("sofware_ui", "Language :"))
+            self.language_label_t.setText(_translate("sofware_ui", "Language : English"))
             self.eventtocome_label_e_3.setText(_translate("sofware_ui", "Taskes to come"))
 
     def set_week_headers(self, current_date: QDate, lang : str):
