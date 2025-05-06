@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import QWidget
 from main import MainWindow
-from DAO import userdao, User
+import src.DAO as DAO
+from src.dataclass import User
 
 class SignInPage(QWidget) :
     def __init__(self, mainpage: MainWindow):
@@ -35,15 +36,18 @@ class SignInPage(QWidget) :
         'Vérifie que les données entrées par l'utilisateur sont correctes et ajoute le compte dans la base de données
         :return: None
         '''
-        if not self.check_password_repeat() :
+
+        if not self.check_password_repeat():
             self.ui.error_label2.show()
-        elif self.ui.email_line_connection_2.text().strip() == "" :
+
+        # TODO CR2ER SON PROPRE MESSAGE DERREUR A LADRESSE MAIL DEJA EXISTANTE
+        elif self.ui.email_line_connection_2.text().strip() == "" and DAO.userdao.:
             self.ui.error_label3.show()
         elif self.ui.password_line_connection_2.text().strip() == "" or self.ui.passwordconfirm_line_connection_2.text().strip() == "":
             self.ui.error_label4.show()
         else :
             self.ui.pages_logiciel.setCurrentIndex(1) # ouvre la page de connexion
-            userdao.insert(
+            DAO.userdao.insert(
                 User(
                     mail=self.ui.email_line_connection_2.text(),
                     mdp=self.ui.password_line_connection_2.text()

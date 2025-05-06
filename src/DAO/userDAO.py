@@ -1,6 +1,6 @@
 
-from dbcom import DBCom, dbcom
-from dataclass import User
+from src.dbcom import DBCom, dbcom
+from src.dataclass import User
 
 class UserDAO:
     def __init__(self, s: DBCom):

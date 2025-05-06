@@ -1,8 +1,8 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QStandardItem, QColor, QStandardItemModel
 from PyQt6.QtWidgets import QDialog, QLineEdit, QVBoxLayout, QLabel, QDateEdit, QTimeEdit, QComboBox, QPushButton
-import DAO
-from dataclass import Event, Color
+import src.DAO as DAO
+from src.dataclass import Event, Color
 from datetime import datetime
 
 def hexcolor_to_int(hexcolor: str) -> Color:
@@ -154,7 +154,7 @@ class EventMenu(QDialog):
         :return: Le nouvel evenement créé
         '''
         #TODO Léo réadapter la récupération de données pour intégrer les répétitions et rappels
-        timestamp = datetime.strptime(f"{self.date_event.text()} {self.time_event.text()}", "%m/%d/%y %I:%M %p").timestamp()
+        timestamp = int(datetime.strptime(f"{self.date_event.text()} {self.time_event.text()}", "%m/%d/%Y %H:%M").timestamp())
 
         return Event(
             id=self.agenda_event.currentIndex(),

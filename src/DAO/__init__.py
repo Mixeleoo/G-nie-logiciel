@@ -1,6 +1,6 @@
 
-from DAO.agendaDAO import *
-from DAO.eventDAO import *
-from DAO.userDAO import *
+from .agendaDAO import *
+from .eventDAO import *
+from .userDAO import *
 
 __all__ = []

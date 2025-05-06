@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QWidget
 from main import MainWindow
-import DAO
-from dataclass import User
+import src.DAO as DAO
+from src.dataclass import User
 
 class LoginPage(QWidget):
     def __init__(self, mainpage: MainWindow):
@@ -35,6 +35,8 @@ class LoginPage(QWidget):
         if self.check_connection():
             # Si la connexion est validée, alors on va chopper la liste de ses agendas
             DAO.agendalist = DAO.agendadao.get_list(DAO.user)
+            print("DEBUG")
+            print(DAO.agendalist)
 
             # ajout des agendas de l'utilisateur
             for agenda in DAO.agendalist:

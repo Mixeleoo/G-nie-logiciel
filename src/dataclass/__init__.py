@@ -1,6 +1,6 @@
 
-from dataclass.user import *
-from dataclass.agenda import *
-from dataclass.event import *
+from .user import *
+from .agenda import *
+from .event import *
 
 __all__ = []

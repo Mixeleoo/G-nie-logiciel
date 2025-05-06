@@ -79,6 +79,7 @@ class EventPage(QWidget) :
         try :
             if param_event.exec():
                 event: Event = param_event.get_data()
+
                 DAO.eventdao.insert(
                     agenda=DAO.agendalist[event.id], # Oui j'utilise l'id pour l'index de l'agenda selectionné Y'A QUOI
                     event=event

@@ -10,7 +10,7 @@ HOST = '127.0.0.1'
 PORT = 65439
 
 class Request:
-    def __init__(self, query: str, func: Callable[[], str]):
+    def __init__(self, query: str, func: Callable[[sqlite3.Cursor], str]):
         self.query = query
         self.func = func
 
@@ -38,7 +38,7 @@ requestType_to_query: dict[str, Request] = {
             getPendingAgendaList
         ),
 
-    "createEvent": Request("insert into event (agenda_id, name, cancel, start, _end, color) values (?, ?, ?, ?, ?, ?, ?);", createEvent),
+    "createEvent": Request("insert into event (agenda_id, name, cancel, start, _end, color) values (?, ?, ?, ?, ?, ?);", createEvent),
     "updateEvent": Request(
             "update event"
             " set name = ?, cancel = ?, start = ?, _end = ?, color = ?"
