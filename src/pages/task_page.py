@@ -1,12 +1,12 @@
 from PyQt6.QtCore import QPoint, Qt
 from PyQt6.QtWidgets import QWidget, QMenu, QInputDialog, QMessageBox
 
-from ..menus.task.task_menu import TaskMenu
-from ..main import MainWindow
+from src.menus.task.task_menu import TaskMenu
+from src.main import MainWindow
 
-from ..menus.task.task_display import TaskOngoingDisplay, TaskFinishedDisplay
-from ..menus.task.task_list_menu import TaskListMenu
-from ..menus.task.favorite_task_menu import FavoriteTaskMenu
+from src.menus.task.task_display import TaskOngoingDisplay, TaskFinishedDisplay
+from src.menus.task.task_list_menu import TaskListMenu
+from src.menus.task.favorite_task_menu import FavoriteTaskMenu
 
 class TaskPage(QWidget) :
     def __init__(self, mainpage: MainWindow):

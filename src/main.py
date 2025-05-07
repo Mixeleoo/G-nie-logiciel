@@ -1,6 +1,6 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QWidget
-from .ui.software_ui import Ui_sofware_ui
+from ui.software_ui import Ui_sofware_ui
 
 class MainWindow(QWidget) :
     def __init__(self):
@@ -9,19 +9,19 @@ class MainWindow(QWidget) :
         self.ui = Ui_sofware_ui()
         self.ui.setupUi(self)
 
-        from .pages.home_page import HomePage
+        from pages.home_page import HomePage
         self.homepage = HomePage(self)
 
-        from .pages.login_page import LoginPage
+        from pages.login_page import LoginPage
         self.login = LoginPage(self)
 
-        from .pages.sign_in_page import SignInPage
+        from pages.sign_in_page import SignInPage
         self.signin = SignInPage(self)
 
-        from .pages.event_page import EventPage
+        from pages.event_page import EventPage
         self.event = EventPage(self)
 
-        from .pages.task_page import TaskPage
+        from pages.task_page import TaskPage
         self.task = TaskPage(self)
 
         #initialisation à la première page du logiciel : homepage

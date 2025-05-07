@@ -8,13 +8,8 @@ from datetime import datetime
 # Nos import
 from event_list_menu import EventListMenu
 
-<<<<<<< HEAD
 import src.DAO as DAO
 from src.dataclass.event import Event
-=======
-from ... import DAO
-from ...dataclass import Event
->>>>>>> 0ed2231 (on va prier)
 
 class EditEventMenu(QDialog) :
     def __init__(self, mainpage, eventpage: EventListMenu, item: QListWidgetItem):
