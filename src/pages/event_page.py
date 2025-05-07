@@ -1,11 +1,20 @@
 from PyQt6.QtCore import QDate, Qt, QPoint
 from PyQt6.QtWidgets import QWidget, QMenu, QInputDialog, QMessageBox
+<<<<<<< HEAD
+from src.main import MainWindow
+from src.menus.event.event_menu import EventMenu
+from src.menus.event.event_list_menu import EventListMenu
+from src.menus.diaries.diary_menu import DiaryMenu
+from src.menus.diaries.favorite_diary_menu import FavoriteDiaryMenu
+from src.menus.event.shared_agenda_page import SharedAgendaMenu
+=======
 from ..main import MainWindow
 from ..menus.event import EventMenu
 from ..menus.event import EventListMenu
 from ..menus.diaries import DiaryMenu
 from ..menus.diaries import FavoriteDiaryMenu
 from ..menus.event import SharedAgendaMenu
+>>>>>>> 0ed2231 (on va prier)
 
 from .. import DAO
 from ..dataclass import Event

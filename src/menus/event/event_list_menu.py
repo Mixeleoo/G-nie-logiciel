@@ -3,8 +3,13 @@ from PyQt6.QtCore import QDate, QPoint, Qt
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QMenu, QListWidgetItem
 from datetime import datetime
+<<<<<<< HEAD
+import src.DAO as DAO
+from src.dataclass.event import Event, matches_date
+=======
 from ... import DAO
 from ...dataclass.event import Event, matches_date
+>>>>>>> 0ed2231 (on va prier)
 
 
 class EventListMenu(QDialog):
