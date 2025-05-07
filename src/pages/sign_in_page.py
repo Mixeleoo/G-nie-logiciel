@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QWidget
-from src.main import MainWindow
-import src.DAO as DAO
-from src.dataclass.user import User
+from ..main import MainWindow
+from .. import DAO
+from ..dataclass import User
 
 class SignInPage(QWidget) :
     def __init__(self, mainpage: MainWindow):

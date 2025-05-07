@@ -1,9 +1,8 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QStandardItem, QColor, QStandardItemModel
 from PyQt6.QtWidgets import QDialog, QLineEdit, QVBoxLayout, QLabel, QDateEdit, QTimeEdit, QComboBox, QPushButton
-import src.DAO as DAO
-from src.dataclass.color import Color
-from src.dataclass.event import Event
+from ... import DAO
+from ...dataclass import Event, Color, Event
 from datetime import datetime
 from dataclasses import field, Field
 
@@ -119,7 +118,7 @@ class EventMenu(QDialog):
                 "4 semaines avant" : 28
             }
             self.repeat_label.setText("Répétition :")
-            self.repeat: [str, Field] = {
+            self.repeat: dict[str, Field] = {
                 "Aucun" : field(default_factory=lambda: Event(id=0)),
                 "Chaque jour": field(default_factory=lambda: Event(frequency='daily', interval=1)),
                 "Chaque semaine": field(default_factory=lambda: Event(frequency='weekly', interval=1, by_day=get_day_of_week(self.date_event.text()))),
@@ -153,7 +152,7 @@ class EventMenu(QDialog):
                 "4 weeks before": 28
             }
             self.repeat_label.setText("Repeat :")
-            self.repeat: [str, Field] = {
+            self.repeat: dict[str, Field] = {
                 "None" : field(default_factory=lambda: Event(id=0)),
                 "Every day": field(default_factory=lambda: Event(frequency='daily', interval=1)),
                 "Every week": field(default_factory=lambda: Event(frequency='weekly', interval=1, by_day=get_day_of_week(self.date_event.text()))),

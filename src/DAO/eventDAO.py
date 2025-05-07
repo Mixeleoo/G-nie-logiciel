@@ -1,8 +1,6 @@
 
-from src.dataclass.event import Event
-from src.dataclass.agenda import Agenda
-from src.dataclass.color import Color
-from src.dbcom import DBCom, dbcom
+from ..dataclass import Event, Agenda, Color
+from ..dbcom import DBCom, dbcom
 
 class EventDAO:
     def __init__(self, s: DBCom):

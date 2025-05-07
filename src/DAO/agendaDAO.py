@@ -1,7 +1,6 @@
 
-from src.dataclass.agenda import Agenda
-from ..dataclass.user import User
-from src.dbcom import DBCom, dbcom
+from ..dataclass import Agenda, User
+from ..dbcom import DBCom, dbcom
 
 class AgendaDAO:
     def __init__(self, s: DBCom):

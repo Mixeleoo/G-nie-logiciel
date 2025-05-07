@@ -1,8 +1,7 @@
 from PyQt6.QtCore import QPoint, QTimer
 from PyQt6.QtWidgets import QMenu, QInputDialog, QMessageBox, QDialog, QLineEdit, QLabel
-import src.DAO as DAO
-from src.dataclass.agenda import Agenda
-from src.dataclass.user import User
+from ... import DAO
+from ...dataclass import Agenda, User
 
 translate_dic = {
     'fr': ["Ajouter un agenda", "Supprimer l'agenda sélectionné", "Ajouter l'agenda sélectionné aux favoris",

@@ -2,7 +2,7 @@ from PyQt6 import QtCore, QtWidgets, QtGui
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QListWidget
-from src.data_test.list_data_test import *
+from ...data_test.list_data_test import *
 
 
 class TaskOngoingDisplay(QtWidgets.QListWidget):

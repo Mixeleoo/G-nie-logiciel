@@ -1,8 +1,9 @@
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import QDate, QPoint, Qt
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QMenu, QListWidgetItem
-import src.DAO as DAO
-from src.dataclass.agenda import Agenda
+from datetime import datetime
+from ... import DAO
+from ...dataclass import Event, Agenda
 
 
 class SharedAgendaMenu(QDialog):
