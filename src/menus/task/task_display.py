@@ -24,7 +24,6 @@ class TaskOngoingDisplay(QtWidgets.QListWidget):
                 self.addItem(item)
 
 
-
 class TaskFinishedDisplay(QtWidgets.QListWidget):
     def __init__(self, taskpage, task_list):
         super(TaskFinishedDisplay, self).__init__(taskpage)
