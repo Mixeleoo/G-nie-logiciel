@@ -65,7 +65,6 @@ class SharedAgendaMenu(QDialog):
         Ajoute l'agenda accepté dans la liste des agenda de l'utilisateur
         :return: None
         '''
-        #TODO Léo : gérer l'ajout
         DAO.agendadao.accept_shared_agenda(
             DAO.user, self.selected_agenda
         )
@@ -76,7 +75,6 @@ class SharedAgendaMenu(QDialog):
         Refuse l'agenda partagé et le supprime des agenda en attente
         :return: None
         '''
-        #TODO Léo : gérer supression de shared dans la bd
         DAO.agendadao.deny_shared_agenda(
             DAO.user, self.selected_agenda
         )

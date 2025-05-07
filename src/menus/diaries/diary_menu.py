@@ -20,6 +20,10 @@ class DiaryMenu(QMenu) :
     def phrase(self) -> list[str]:
         return translate_dic[self.ui.current_lang]
     
+    @property
+    def agenda_selected(self) -> Agenda:
+        return DAO.agendalist[self.ui.myagenda_box.currentIndex()]
+    
     def __init__(self, agandabox, mainpage, pos : QPoint, eventpage) :
         super().__init__(parent = agandabox)
         self.ui = mainpage.ui
@@ -56,7 +60,7 @@ class DiaryMenu(QMenu) :
         elif action == self.edit_action:
             text, ok = QInputDialog.getText(self, self.phrase[18], self.phrase[5])
             if ok and text:
-                agenda: Agenda = DAO.agendalist[self.ui.myagenda_box.currentIndex()]
+                agenda: Agenda = self.agenda_selected
                 agenda.name = text
                 DAO.agendadao.update(agenda)
 
@@ -93,6 +97,9 @@ class DiaryMenu(QMenu) :
             if msg.clickedButton() == btn_oui:
                 self.ui.followedagenda_box.removeItem(self.ui.followedagenda_box.findText(item_text))  # suppression des agenda en récupérant son indice à l'aide de son nom
                 self.ui.myagenda_box.removeItem(current_index) # suppression de l'agenda sélectionné
+                
+                # suppression de l'agenda dans la base de données
+                DAO.agendadao.delete(self.agenda_selected)
 
         elif action == self.share_action:
             text, ok = QInputDialog.getText(self, self.phrase[14], self.phrase[15])
@@ -105,6 +112,5 @@ class DiaryMenu(QMenu) :
                     error_message.setStandardButtons(QMessageBox.StandardButton.Ok)
                     error_message.exec()
 
-                # TODO Léo : gérer le partage qd validé
                 else:
                     DAO.agendadao.share(text, DAO.agendalist[self.ui.myagenda_box.currentIndex()])
