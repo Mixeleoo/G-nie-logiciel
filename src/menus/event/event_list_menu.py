@@ -4,7 +4,7 @@ from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QMenu, QListWidgetItem
 from datetime import datetime
 import src.DAO as DAO
-from src.dataclass.event import Event
+from src.dataclass.event import Event, matches_date
 
 
 class EventListMenu(QDialog):
@@ -52,6 +52,7 @@ class EventListMenu(QDialog):
             self.event_list.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
             self.event_list.customContextMenuRequested.connect(self.show_event_menu)
         except Exception as e:
+            print(e)
             raise e
 
     def get_event_selected(self, item: QListWidgetItem) -> Event:

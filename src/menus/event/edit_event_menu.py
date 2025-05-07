@@ -6,10 +6,10 @@ from PyQt6.QtWidgets import QDialog, QLineEdit, QVBoxLayout, QLabel, QDateEdit, 
 from datetime import datetime
 
 # Nos import
-from .event_list_menu import EventListMenu
+from event_list_menu import EventListMenu
 
 import src.DAO as DAO
-from src.dataclass import Event
+from src.dataclass.event import Event
 
 class EditEventMenu(QDialog) :
     def __init__(self, mainpage, eventpage: EventListMenu, item: QListWidgetItem):

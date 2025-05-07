@@ -2,9 +2,10 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QStandardItem, QColor, QStandardItemModel
 from PyQt6.QtWidgets import QDialog, QLineEdit, QVBoxLayout, QLabel, QDateEdit, QTimeEdit, QComboBox, QPushButton
 import src.DAO as DAO
-from src.dataclass import Event, Color
+from src.dataclass.color import Color
+from src.dataclass.event import Event
 from datetime import datetime
-from dataclasses import field
+from dataclasses import field, Field
 
 def hexcolor_to_int(hexcolor: str) -> Color:
     hexcolor = hexcolor.lstrip('#')
@@ -12,7 +13,7 @@ def hexcolor_to_int(hexcolor: str) -> Color:
 
 def get_day_of_week(date_str):
     # Convertir la chaîne de caractères en objet datetime
-    date_obj = datetime.strptime(date_str, "%m/%d/%y")
+    date_obj = datetime.strptime(date_str, "%d/%m/%Y")
     
     # Récupérer le jour de la semaine sous forme de numéro : 0= lundi, 6= dimanche
     day_num = date_obj.weekday() + 1  # on ajoute 1 pour que 1= lundi, 7= dimanche
@@ -118,9 +119,9 @@ class EventMenu(QDialog):
                 "4 semaines avant" : 28
             }
             self.repeat_label.setText("Répétition :")
-            self.repeat = {            
-                "Aucun" : Event(id=0),
-                "Chaque jour": Event(frequency='daily', interval=1),
+            self.repeat: [str, Field] = {
+                "Aucun" : field(default_factory=lambda: Event(id=0)),
+                "Chaque jour": field(default_factory=lambda: Event(frequency='daily', interval=1)),
                 "Chaque semaine": field(default_factory=lambda: Event(frequency='weekly', interval=1, by_day=get_day_of_week(self.date_event.text()))),
                 "Chaque mois": field(default_factory=lambda: Event(frequency='monthly', interval=1, by_month_day=self.date_event.text().split("/")[1])),
                 "Chaque année": field(default_factory=lambda: Event(frequency='yearly', interval=1, by_day=self.date_event.text().split("/")[0], by_month_day=self.date_event.text().split("/")[1]))
@@ -152,12 +153,12 @@ class EventMenu(QDialog):
                 "4 weeks before": 28
             }
             self.repeat_label.setText("Repeat :")
-            self.repeat = {
-                "None" : Event(id=0),
-                "Every day": Event(frequency='daily', interval=1),
-                "Every week": Event(frequency='weekly', interval=1, by_day=get_day_of_week(self.date_event.text())),
-                "Every month": Event(frequency='monthly', interval=1, by_month_day=self.date_event.text().split("/")[1]),
-                "Every year": Event(frequency='yearly', interval=1, by_day=self.date_event.text().split("/")[0], by_month_day=self.date_event.text().split("/")[1])
+            self.repeat: [str, Field] = {
+                "None" : field(default_factory=lambda: Event(id=0)),
+                "Every day": field(default_factory=lambda: Event(frequency='daily', interval=1)),
+                "Every week": field(default_factory=lambda: Event(frequency='weekly', interval=1, by_day=get_day_of_week(self.date_event.text()))),
+                "Every month": field(default_factory=lambda: Event(frequency='monthly', interval=1, by_month_day=self.date_event.text().split("/")[1])),
+                "Every year": field(default_factory=lambda: Event(frequency='yearly', interval=1, by_day=self.date_event.text().split("/")[0], by_month_day=self.date_event.text().split("/")[1]))
             }
 
             self.ok_button.setText("Ok")
@@ -191,7 +192,7 @@ class EventMenu(QDialog):
         Retourne la récurrence actuelle de l'événement
         :return: La récurrence actuelle
         '''
-        return self.repeat[self.repeat_event.currentText()]
+        return self.repeat[self.repeat_event.currentText()].default_factory()
     
     @property
     def current_color(self) -> Color:
@@ -207,19 +208,26 @@ class EventMenu(QDialog):
         Récupère les données de l'utilisateur sous forme de dictionnaire
         :return: Le nouvel evenement créé
         '''
-        #TODO Léo réadapter la récupération de données pour intégrer les répétitions et rappels
-        timestamp = int(datetime.strptime(f"{self.date_event.text()} {self.time_event.text()}", "%m/%d/%y %I:%M %p").timestamp())
-        current_repeat = self.current_repeat
-        
-        return Event(
-            id=self.agenda_event.currentIndex(),
-            name=self.event_name.text(),
-            start=timestamp,
-            end=timestamp + 3600, # Une heure plus tard
-            color=self.current_color,
-            frequency=current_repeat.frequency,
-            interval=current_repeat.interval,
-            by_day=current_repeat.by_day,
-            by_month_day=current_repeat.by_month_day,
-            until=current_repeat.until
-        )
+        #TODO Léo réadapter la récupération de données pour intégrer les rappels
+        try:
+            timestamp = int(
+                datetime.strptime(f"{self.date_event.text()} {self.time_event.text()}", "%d/%m/%Y %H:%M").timestamp())
+
+            current_repeat = self.current_repeat
+            print(current_repeat)
+
+            return Event(
+                id=self.agenda_event.currentIndex(),
+                name=self.event_name.text(),
+                start=timestamp,
+                end=timestamp + 3600, # Une heure plus tard
+                color=self.current_color,
+                frequency=current_repeat.frequency,
+                interval=current_repeat.interval,
+                by_day=current_repeat.by_day,
+                by_month_day=current_repeat.by_month_day,
+                until=current_repeat.until
+            )
+        except Exception as e:
+            print(e)
+            raise e

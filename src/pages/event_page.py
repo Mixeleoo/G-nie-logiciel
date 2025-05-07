@@ -5,6 +5,7 @@ from src.menus.event.event_menu import EventMenu
 from src.menus.event.event_list_menu import EventListMenu
 from src.menus.diaries.diary_menu import DiaryMenu
 from src.menus.diaries.favorite_diary_menu import FavoriteDiaryMenu
+from src.menus.event.shared_agenda_page import SharedAgendaMenu
 
 import src.DAO as DAO
 from src.dataclass.event import Event
@@ -25,6 +26,8 @@ class EventPage(QWidget) :
                         'eng' : {1 : 'January', 2 : 'February', 3 : 'March',  4 : 'April', 5 : 'May', 6 : 'June', 7 : 'July', 8 : 'August', 9 : 'September', 10 : 'October', 11 : 'November', 12 : 'Décember'}}
 
         self.ui.task_button.clicked.connect(self.goto_task)
+
+        self.ui.deconnect_button_e.clicked.connect(self.goto_login)
 
         # ajout evenement
         self.ui.New_event_button.clicked.connect(lambda : self.add_event(mainpage))
@@ -71,6 +74,18 @@ class EventPage(QWidget) :
         '''
         self.ui.pages_logiciel.setCurrentIndex(4)
 
+############################# gestion changement task to event page ################################
+    def goto_login(self):
+        '''
+        Change la page d'affichage du logiciel à la page d'acceuil
+        :return: None
+        '''
+        self.ui.pages_logiciel.setCurrentIndex(0)
+        self.ui.mytask_box.clear()
+        self.ui.myagenda_box.clear()
+        self.ui.followedtask_box.clear()
+        self.ui.followedagenda_box.clear()
+
 ############################# gestion ajout evenement ################################
     def add_event(self, mainpage: MainWindow):
         '''
@@ -94,9 +109,11 @@ class EventPage(QWidget) :
         :param date: date cliquée
         :return: None
         '''
-        display_event = EventListMenu(mainpage,self, date)
-        if display_event.exec():
-            print('truc')
+        try :
+            display_event = EventListMenu(mainpage,self, date)
+            display_event.exec()
+        except Exception as e :
+            raise e
 
 ############################# gestion agenda partagés ################################
     def see_shared_agenda(self, mainpage: MainWindow):
@@ -105,13 +122,19 @@ class EventPage(QWidget) :
         :param mainpage: Page event
         :return: None
         '''
-        display_shared_agenda = SharedAgendaMenu(mainpage, self)
-        if display_shared_agenda.exec():
-            print('truc')
+        try :
+            display_shared_agenda = SharedAgendaMenu(mainpage, self)
+            if display_shared_agenda.exec():
+                print('truc')
+        except Exception as e :
+            raise e
 
 ############################# gestion recuperation date cliquée ################################
     def get_date_month(self, date : QDate):
-        self.see_event(self.mainpage,date)
+        try :
+            self.see_event(self.mainpage,date)
+        except Exception as e:
+            raise e
 
 ############################# gestion recuperation date cliquée ################################
     def get_date_week(self, row, column) :

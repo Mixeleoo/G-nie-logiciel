@@ -1,6 +1,6 @@
 
 from dataclasses import dataclass, field
-from .color import Color
+from src.dataclass.color import Color
 
 @dataclass
 class Task:

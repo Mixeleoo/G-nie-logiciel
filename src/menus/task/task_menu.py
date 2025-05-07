@@ -1,7 +1,8 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QStandardItem, QColor, QStandardItemModel
 from PyQt6.QtWidgets import QDialog, QLineEdit, QVBoxLayout, QLabel, QDateEdit, QTimeEdit, QComboBox, QPushButton
-from src.dataclass import Task, Color
+from src.dataclass.color import Color
+from src.dataclass.task import Task
 import datetime
 
 

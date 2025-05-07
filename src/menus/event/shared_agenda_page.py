@@ -1,10 +1,8 @@
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import QDate, QPoint, Qt
-from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QMenu, QListWidgetItem
-from datetime import datetime
 import src.DAO as DAO
-from src.dataclass.event import Event
+from src.dataclass.agenda import Agenda
 
 
 class SharedAgendaMenu(QDialog):
@@ -13,8 +11,9 @@ class SharedAgendaMenu(QDialog):
 
         self.ui = mainpage.ui
         self.mainpage = mainpage
-        self.cancel_font = QFont()
-        self.cancel_font.setStrikeOut(True)
+        trans_dic = {"en" : "Shared diary", "fr" : "Agenda partagés"}
+
+        self.setWindowTitle(trans_dic[self.ui.current_lang])
 
         self.layout = QVBoxLayout(self)
         self.shared_list = QtWidgets.QListWidget(self) # liste des agenda partagé en attente d'acceptation

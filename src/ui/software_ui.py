@@ -531,11 +531,21 @@ class Ui_sofware_ui(object):
 "selection-background-color: rgb(213, 210, 255);")
         self.mini_calendar_e.setObjectName("mini_calendar_e")
         self.info_frame_e_3 = QtWidgets.QFrame(parent=self.page_9)
-        self.info_frame_e_3.setGeometry(QtCore.QRect(1020, 500, 171, 211))
+        self.info_frame_e_3.setGeometry(QtCore.QRect(1020, 500, 171, 171))
         self.info_frame_e_3.setFrameShape(QtWidgets.QFrame.Shape.Panel)
         self.info_frame_e_3.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
         self.info_frame_e_3.setLineWidth(3)
         self.info_frame_e_3.setObjectName("info_frame_e_3")
+
+        self.deconnect_button_e = QtWidgets.QPushButton(parent=self.page_9)
+        self.deconnect_button_e.setGeometry(QtCore.QRect(1020, 690, 171, 61))
+        font = QtGui.QFont()
+        font.setFamily("SamsungOneUILatin 700C")
+        font.setPointSize(12)
+        font.setBold(True)
+        self.deconnect_button_e.setFont(font)
+        self.deconnect_button_e.setObjectName("deconnect_button_e")
+
         self.eventtocome_label_e_2 = QtWidgets.QLabel(parent=self.info_frame_e_3)
         self.eventtocome_label_e_2.setGeometry(QtCore.QRect(5, 5, 161, 21))
         font = QtGui.QFont()
@@ -681,7 +691,7 @@ class Ui_sofware_ui(object):
 "selection-background-color: rgb(213, 210, 255);")
         self.mini_calendar_t.setObjectName("mini_calendar_t")
         self.info_frame_t_3 = QtWidgets.QFrame(parent=self.page_5)
-        self.info_frame_t_3.setGeometry(QtCore.QRect(1020, 500, 171, 211))
+        self.info_frame_t_3.setGeometry(QtCore.QRect(1020, 500, 171, 171))
         self.info_frame_t_3.setFrameShape(QtWidgets.QFrame.Shape.Panel)
         self.info_frame_t_3.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
         self.info_frame_t_3.setLineWidth(3)
@@ -696,6 +706,16 @@ class Ui_sofware_ui(object):
         self.eventtocome_label_e_3.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.eventtocome_label_e_3.setObjectName("eventtocome_label_e_3")
         self.pages_logiciel.addWidget(self.page_5)
+
+        self.deconnect_button_t = QtWidgets.QPushButton(parent=self.page_5)
+        self.deconnect_button_t.setGeometry(QtCore.QRect(1020, 690, 171, 61))
+        font = QtGui.QFont()
+        font.setFamily("SamsungOneUILatin 700C")
+        font.setPointSize(12)
+        font.setBold(True)
+        self.deconnect_button_t.setFont(font)
+        self.deconnect_button_t.setObjectName("deconnect_button_t")
+
 
         self.retranslateUi_french(sofware_ui)
         self.pages_logiciel.setCurrentIndex(2)
@@ -728,6 +748,8 @@ class Ui_sofware_ui(object):
         self.error_label4.setText("Veuillez choisir un mot de passe")
         self.error_label3.setText("Veuillez entrer une adresse mail")
         self.shared_agenda_button.setText("Agendas partagés")
+        self.deconnect_button_e.setText("Déconnexion")
+        self.deconnect_button_t.setText("Déconnexion")
         self.set_week_headers(QDate.currentDate(),self.current_lang)
 
         for i in range(24) :
@@ -793,6 +815,8 @@ class Ui_sofware_ui(object):
             self.error_label3.setText("Please put your email")
             self.set_week_headers(QDate.currentDate(),self.current_lang)
             self.shared_agenda_button.setText("Shared diaries")
+            self.deconnect_button_e.setText("Sign out")
+            self.deconnect_button_t.setText("Sign out")
 
             for i in range(24):
                     item = self.table_days.verticalHeaderItem(i)

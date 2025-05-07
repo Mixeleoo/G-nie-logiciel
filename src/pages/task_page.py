@@ -24,6 +24,9 @@ class TaskPage(QWidget) :
         # changement de page vers evenement
         self.ui.event_button_2.clicked.connect(self.goto_event)
 
+        # deconnexion
+        self.ui.deconnect_button_t.clicked.connect(self.goto_login)
+
         # ajout tache
         self.ui.new_task_button.clicked.connect(lambda: self.add_task(mainpage))
 
@@ -47,6 +50,18 @@ class TaskPage(QWidget) :
         :return: None
         '''
         self.ui.pages_logiciel.setCurrentIndex(3)
+
+############################# gestion changement task to event page ################################
+    def goto_login(self):
+        '''
+        Change la page d'affichage du logiciel à la page d'acceuil
+        :return: None
+        '''
+        self.ui.pages_logiciel.setCurrentIndex(0)
+        self.ui.mytask_box.clear()
+        self.ui.myagenda_box.clear()
+        self.ui.followedtask_box.clear()
+        self.ui.followedagenda_box.clear()
 
 ############################# gestion ajout evenement ################################
     def add_task(self, mainpage: MainWindow):

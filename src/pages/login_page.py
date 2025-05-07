@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QWidget
-from main import MainWindow
+from src.main import MainWindow
 import src.DAO as DAO
-from src.dataclass import User
+from src.dataclass.user import User
 
 class LoginPage(QWidget):
     def __init__(self, mainpage: MainWindow):
@@ -26,6 +26,11 @@ class LoginPage(QWidget):
         '''
         self.ui.pages_logiciel.setCurrentIndex(0) # homepage
         self.ui.error_label1.hide() #suppression du message d'erreur
+        self.clear_all()
+
+    def clear_all(self):
+        self.ui.email_line_connection.clear()
+        self.ui.password_line_connection.clear()
 
     def validate_connection(self):
         '''
@@ -41,13 +46,13 @@ class LoginPage(QWidget):
             for agenda in DAO.agendalist:
                 self.ui.myagenda_box.addItem(agenda.name)
 
-            # TODO CA MARCHE PAS
             text: str = self.ui.email_label_e.text()
             self.ui.email_label_e.setText(text + " " + DAO.user.mail)
             text: str = self.ui.email_label_t.text()
             self.ui.email_label_t.setText(text + " " + DAO.user.mail)
                 
             self.ui.pages_logiciel.setCurrentIndex(3) #aller à la pages evenement
+            self.clear_all()
         else :
             self.ui.error_label1.show()
 

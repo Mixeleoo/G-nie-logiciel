@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QWidget
-from main import MainWindow
+from src.main import MainWindow
 import src.DAO as DAO
-from src.dataclass import User
+from src.dataclass.user import User
 
 class SignInPage(QWidget) :
     def __init__(self, mainpage: MainWindow):
@@ -28,8 +28,8 @@ class SignInPage(QWidget) :
         :return: None
         '''
         self.ui.pages_logiciel.setCurrentIndex(0) # homepage
-        # suppression des messages d'erreur
-        self.clear_error()
+        # suppression des messages d'erreur et contenu input
+        self.clear_all()
 
     def validate_acccount(self):
         '''
@@ -47,6 +47,7 @@ class SignInPage(QWidget) :
             self.ui.error_label4.show()
         else :
             self.ui.pages_logiciel.setCurrentIndex(1) # ouvre la page de connexion
+            self.clear_all()
             DAO.userdao.insert(
                 User(
                     mail=self.ui.email_line_connection_2.text(),
@@ -60,6 +61,12 @@ class SignInPage(QWidget) :
         :return: True si oui et False sinon
         '''
         return self.ui.password_line_connection_2.text() == self.ui.passwordconfirm_line_connection_2.text()
+
+    def clear_all(self):
+        self.ui.password_line_connection_2.clear()
+        self.ui.passwordconfirm_line_connection_2.clear()
+        self.ui.email_line_connection_2.clear()
+        self.clear_error()
 
     def clear_error(self):
         '''

@@ -1,5 +1,6 @@
 
-from src.dataclass import Agenda, User
+from src.dataclass.agenda import Agenda
+from src.dataclass.user import User
 from src.dbcom import DBCom, dbcom
 
 class AgendaDAO:
