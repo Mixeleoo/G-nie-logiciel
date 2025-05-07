@@ -1,5 +1,9 @@
 from PyQt6.QtWidgets import QWidget
+<<<<<<< HEAD
 from src.main import MainWindow
+=======
+from ..main import MainWindow
+>>>>>>> 0ed2231 (on va prier)
 
 class HomePage(QWidget) :
     def __init__(self, mainpage : MainWindow):
