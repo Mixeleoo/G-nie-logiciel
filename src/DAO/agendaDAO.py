@@ -1,12 +1,6 @@
 
-<<<<<<< HEAD
-from src.dataclass.agenda import Agenda
-from src.dataclass.user import User
-from src.dbcom import DBCom, dbcom
-=======
 from ..dataclass import Agenda, User
 from ..dbcom import DBCom, dbcom
->>>>>>> 0ed2231 (on va prier)
 
 class AgendaDAO:
     def __init__(self, s: DBCom):

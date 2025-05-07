@@ -1,14 +1,8 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QStandardItem, QColor, QStandardItemModel
 from PyQt6.QtWidgets import QDialog, QLineEdit, QVBoxLayout, QLabel, QDateEdit, QTimeEdit, QComboBox, QPushButton
-<<<<<<< HEAD
-import src.DAO as DAO
-from src.dataclass.color import Color
-from src.dataclass.event import Event
-=======
 from ... import DAO
 from ...dataclass import Event, Color, Event
->>>>>>> 0ed2231 (on va prier)
 from datetime import datetime
 from dataclasses import field, Field
 

@@ -1,6 +1,6 @@
 
 from dataclasses import dataclass, field
-from src.dataclass.color import Color
+from .color import Color
 
 @dataclass
 class Agenda:

@@ -1,11 +1,6 @@
 
-<<<<<<< HEAD
-from src.dbcom import DBCom, dbcom
-from src.dataclass.user import User
-=======
 from ..dbcom import DBCom, dbcom
 from ..dataclass import User
->>>>>>> 0ed2231 (on va prier)
 
 class UserDAO:
     def __init__(self, s: DBCom):
