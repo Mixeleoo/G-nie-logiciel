@@ -47,13 +47,13 @@ class SignInPage(QWidget) :
             self.ui.error_label4.show()
         else :
             self.ui.pages_logiciel.setCurrentIndex(1) # ouvre la page de connexion
-            self.clear_all()
             DAO.userdao.insert(
                 User(
                     mail=self.ui.email_line_connection_2.text(),
                     mdp=self.ui.password_line_connection_2.text()
                 )
             )
+            self.clear_all()
 
     def check_password_repeat(self) -> bool:
         '''

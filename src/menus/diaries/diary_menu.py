@@ -101,6 +101,7 @@ class DiaryMenu(QMenu) :
                 
                 # suppression de l'agenda dans la base de données
                 DAO.agendadao.delete(self.agenda_selected)
+                DAO.agendalist.remove(self.agenda_selected)
 
         elif action == self.share_action:
             text, ok = QInputDialog.getText(self, self.phrase[14], self.phrase[15])
