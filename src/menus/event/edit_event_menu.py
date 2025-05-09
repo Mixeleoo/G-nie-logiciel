@@ -84,10 +84,10 @@ class EditEventMenu(QDialog) :
         # 1. Convertir en datetime standard Python
         dt = datetime.fromtimestamp(self.event.start)
 
-        # TODO Léo : mettre les infos courantes de l'event
         self.new_date.setDate(QDate(dt.year, dt.month, dt.day))
         self.new_hour.setTime(QTime(dt.hour, dt.minute, dt.second))
-        # self.new_location.setText()
+
+        # TODO Léo :self.new_location.setText()
         self.new_agenda.setCurrentText(
             next((agenda.name for agenda in DAO.agendalist if (agenda.id == self.event.agenda_id)), "WAZAZA")
         )
