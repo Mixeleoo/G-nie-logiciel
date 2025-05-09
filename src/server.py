@@ -90,7 +90,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 auth = m_json["authentification"]
                 cur = con.execute("select id from user where mail = ? and mdp = ?;", (auth["mail"], auth["mdp"]))
                 users_info = cur.fetchall()
-                if users_info == []:
+                if not users_info:
                     conn.sendall("{\"errmsg\":\"Pas de compte associant ce mail et mdp\",\"op\":5}".encode())
 
                 else:

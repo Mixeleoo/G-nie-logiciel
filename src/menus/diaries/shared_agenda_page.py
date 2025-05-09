@@ -2,6 +2,7 @@ from PyQt6 import QtWidgets
 from PyQt6.QtCore import QDate, QPoint, Qt
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QMenu, QListWidgetItem
 import src.DAO as DAO
+from DAO import pendingsharedagendalist
 from src.dataclass.agenda import Agenda
 
 
@@ -33,6 +34,7 @@ class SharedAgendaMenu(QDialog):
         self.shared_list.customContextMenuRequested.connect(self.show_shared_menu)
 
     def show_shared_menu(self, pos: QPoint):
+        print(pendingsharedagendalist)
         a_lang = {'fr' : ['Accepter','Refuser'],
                 'en' : ['Accept', 'Deny']}
 
@@ -45,11 +47,19 @@ class SharedAgendaMenu(QDialog):
 
             action = menu.exec(self.shared_list.mapToGlobal(pos))
 
+            # On supprime l'agenda dans la liste
+            print(pendingsharedagendalist)
+            DAO.pendingsharedagendalist.remove(self.selected_agenda)
+            print(pendingsharedagendalist)
+
             # gestion modification de l'évenement
             if action == accepter_action:
                 self.accept_agenda(item)
             elif action == refuser_action:
                 self.deny_agenda(item)
+
+            # Dans tous les cas on supprime l'agenda des choix visuels
+            self.shared_list.takeItem(self.shared_list.row(item))
 
     @property
     def selected_agenda(self) -> Agenda:
@@ -67,7 +77,6 @@ class SharedAgendaMenu(QDialog):
         DAO.agendadao.accept_shared_agenda(
             DAO.user, self.selected_agenda
         )
-        self.shared_list.takeItem(self.shared_list.row(item))
 
     def deny_agenda(self, item : QListWidgetItem):
         '''
@@ -77,4 +86,3 @@ class SharedAgendaMenu(QDialog):
         DAO.agendadao.deny_shared_agenda(
             DAO.user, self.selected_agenda
         )
-        self.shared_list.takeItem(self.shared_list.row(item))

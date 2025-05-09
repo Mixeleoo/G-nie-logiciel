@@ -1,11 +1,11 @@
 from PyQt6.QtCore import QDate, Qt, QPoint
-from PyQt6.QtWidgets import QWidget, QMenu, QInputDialog, QMessageBox
+from PyQt6.QtWidgets import QWidget
 from src.main import MainWindow
 from src.menus.event.event_menu import EventMenu
 from src.menus.event.event_list_menu import EventListMenu
 from src.menus.diaries.diary_menu import DiaryMenu
-from src.menus.diaries.favorite_diary_menu import FavoriteDiaryMenu
-from src.menus.event.shared_agenda_page import SharedAgendaMenu
+from src.menus.diaries.shared_diary_menu import SharedDiaryMenu
+from menus.diaries.shared_agenda_page import SharedAgendaMenu
 
 import src.DAO as DAO
 from src.dataclass.event import Event
@@ -61,7 +61,7 @@ class EventPage(QWidget) :
 
         # gestion liste favoris
         self.ui.followedagenda_box.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
-        self.ui.followedagenda_box.customContextMenuRequested.connect(self.show_diaries_favorite_menu)
+        self.ui.followedagenda_box.customContextMenuRequested.connect(self.show_diaries_shared_menu)
 
         self.ui.shared_agenda_button.clicked.connect(lambda : self.see_shared_agenda(mainpage))
 
@@ -85,6 +85,13 @@ class EventPage(QWidget) :
         self.ui.myagenda_box.clear()
         self.ui.followedtask_box.clear()
         self.ui.followedagenda_box.clear()
+
+        # on réintialise l'email écrit dans les carrés "info"
+        text = self.ui.email_label_e.text()
+        self.ui.email_label_e.setText(text[:len(text)-len(DAO.user.mail)])
+
+        text = self.ui.email_label_t.text()
+        self.ui.email_label_t.setText(text[:len(text) - len(DAO.user.mail)])
 
 ############################# gestion ajout evenement ################################
     def add_event(self, mainpage: MainWindow):
@@ -267,10 +274,10 @@ class EventPage(QWidget) :
 
     ############################# gestion liste favoris agenda #########################################
 
-    def show_diaries_favorite_menu(self, pos: QPoint):
+    def show_diaries_shared_menu(self, pos: QPoint):
         '''
         Permet d'ajouter ou supprimer un agenda dans la liste des favoris de l'utilisateur
         :param pos: Position du menu (en fonction du clic droit)
         :return: None
         '''
-        menu = FavoriteDiaryMenu(self.ui.followedagenda_box,self.mainpage,pos,self)
+        menu = SharedDiaryMenu(self.ui.followedagenda_box,self.mainpage,pos,self)

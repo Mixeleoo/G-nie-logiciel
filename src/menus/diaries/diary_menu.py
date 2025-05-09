@@ -34,12 +34,10 @@ class DiaryMenu(QMenu) :
         self.add_action = self.addAction(self.phrase[0])
         self.edit_action = None
         self.remove_action = None
-        self.favorite_action = None
         self.share_action = None
 
         current_index = self.ui.myagenda_box.currentIndex()
         if current_index != -1:
-            self.favorite_action = self.addAction(self.phrase[2])
             self.remove_action = self.addAction(self.phrase[1])
             self.edit_action = self.addAction(self.phrase[3])
             self.share_action = self.addAction(self.phrase[13])
@@ -66,22 +64,6 @@ class DiaryMenu(QMenu) :
                 DAO.agendadao.update(agenda)
 
                 self.ui.myagenda_box.setItemText(self.ui.myagenda_box.currentIndex(), text)
-
-        elif action == self.favorite_action:
-            # TODO Léo: Mémoriser ces ajouts quelque pars
-            item_text = self.ui.myagenda_box.currentText()
-
-            msg = QMessageBox(eventpage)
-            msg.setWindowTitle(self.phrase[6])
-            msg.setText(f"{self.phrase[7]} « {item_text} » {self.phrase[8]}")
-
-            btn_oui = msg.addButton(self.phrase[9], QMessageBox.ButtonRole.YesRole)
-            btn_non = msg.addButton(self.phrase[10], QMessageBox.ButtonRole.NoRole)
-
-            msg.exec()
-
-            if msg.clickedButton() == btn_oui:
-                self.ui.followedagenda_box.addItem(item_text)
 
         elif action == self.remove_action:
             item_text = self.ui.myagenda_box.currentText()

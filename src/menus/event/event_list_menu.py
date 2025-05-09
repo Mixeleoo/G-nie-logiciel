@@ -1,11 +1,13 @@
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import QDate, QPoint, Qt
-from PyQt6.QtGui import QFont
+from PyQt6.QtGui import QFont, QColor
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QMenu, QListWidgetItem
 from datetime import datetime
 import src.DAO as DAO
-from src.dataclass.event import Event, matches_date
+from src.dataclass.event import Event, matches_date, Color
 
+def int_to_hexcolor(color: Color) -> str:
+    return f"#{color.r:02X}{color.g:02X}{color.b:02X}"
 
 class EventListMenu(QDialog):
     def __init__(self, mainpage , eventpage, curr_date : QDate):
@@ -27,6 +29,7 @@ class EventListMenu(QDialog):
             self.event_list = QtWidgets.QListWidget(self) # liste des evenement à la date cliquée par l'utilisateur
             self.event_listleo: list[Event] = []
 
+            #remplissage de la page d'evenement à la date séléctionnée par l'utilisateur
             for agenda in DAO.agendalist:
                 event_list = DAO.eventdao.get_list(agenda)
                 for e in event_list:
@@ -43,6 +46,8 @@ class EventListMenu(QDialog):
                         item = QtWidgets.QListWidgetItem(e.name)
                         if e.cancel:
                             item.setFont(self.cancel_font)
+
+                        item.setBackground(QColor(int_to_hexcolor(e.color))) # on applique la couleur de l'évenement à l'affic
                         self.event_list.addItem(item)
 
             self.layout.addWidget(self.event_list)
@@ -66,11 +71,24 @@ class EventListMenu(QDialog):
         if item:
             menu = QMenu()
 
-            modifier_action = menu.addAction(a_lang[self.ui.current_lang][0])
-            add_to_diary_action = menu.addAction(a_lang[self.ui.current_lang][4])
-            renommer_action = menu.addAction(a_lang[self.ui.current_lang][1])
-            annuler_action = menu.addAction(a_lang[self.ui.current_lang][2])
-            supprimer_action = menu.addAction(a_lang[self.ui.current_lang][3])
+            modifier_action = None
+            add_to_diary_action = None
+            renommer_action = None
+            annuler_action = None
+            supprimer_action = None
+
+            if item.font() != self.cancel_font:
+                modifier_action = menu.addAction(a_lang[self.ui.current_lang][0])
+                add_to_diary_action = menu.addAction(a_lang[self.ui.current_lang][4])
+                renommer_action = menu.addAction(a_lang[self.ui.current_lang][1])
+                annuler_action = menu.addAction(a_lang[self.ui.current_lang][2])
+                supprimer_action = menu.addAction(a_lang[self.ui.current_lang][3])
+
+            elif item.font() == self.cancel_font:
+                modifier_action = menu.addAction(a_lang[self.ui.current_lang][0])
+                add_to_diary_action = menu.addAction(a_lang[self.ui.current_lang][4])
+                renommer_action = menu.addAction(a_lang[self.ui.current_lang][1])
+                supprimer_action = menu.addAction(a_lang[self.ui.current_lang][3])
 
             action = menu.exec(self.event_list.mapToGlobal(pos))
 
@@ -112,8 +130,9 @@ class EventListMenu(QDialog):
         Supprime completement l'évenement de la base de données
         :return: None
         '''
-        #TODO : voir comment supprimer un evenment
         DAO.eventdao.delete(self.get_event_selected(item))
+        self.event_list.takeItem(self.event_list.currentRow()) #suppression de l'evenement dans la liste affichée
+
 
     def cancel_event(self, item: QListWidgetItem):
         '''
@@ -121,7 +140,7 @@ class EventListMenu(QDialog):
         :return: None
         '''
         DAO.eventdao.cancel(self.get_event_selected(item))
-        item.setFont(self.cancel_font)
+        item.setFont(self.cancel_font) # affichage de l'evenment barré
 
     def add_event_to_diary(self):
         '''
