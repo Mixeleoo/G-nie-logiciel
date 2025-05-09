@@ -70,18 +70,18 @@ class TaskDAO:
         })
         r: list[Task] = []
         data: dict = self.dbcom.recv()
-        for event in data["data"]["taskList"]:
+        for task in data["data"]["taskList"]:
             r.append(
                 Task(
-                    event["id"],
-                    event["name"],
-                    event["desc"],
-                    bool(event["done"]),
-                    event["deadline"],
+                    task["id"],
+                    task["name"],
+                    task["desc"],
+                    bool(task["done"]),
+                    task["deadline"],
                     Color(
-                        r=(event["color"] >> 16) & 0xFF,
-                        g=(event["color"] >> 8) & 0xFF,
-                        b=event["color"] & 0xFF
+                        r=(task["color"] >> 16) & 0xFF,
+                        g=(task["color"] >> 8) & 0xFF,
+                        b=task["color"] & 0xFF
                     )
                 )
             )

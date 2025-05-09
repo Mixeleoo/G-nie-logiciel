@@ -22,7 +22,9 @@ class TaskOngoingDisplay(QtWidgets.QListWidget):
         self.setFont(font)
 
         # J'imagine que c'est ça que je dois faire
+        print("TAMER\n\n", DAO.tasklist)
         for task in DAO.tasklist:
+            print(task)
             item = QtWidgets.QListWidgetItem(task.name)
             item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.addItem(item)

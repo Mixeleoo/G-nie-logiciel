@@ -5,7 +5,7 @@ from src.menus.event.event_menu import EventMenu
 from src.menus.event.event_list_menu import EventListMenu
 from src.menus.diaries.diary_menu import DiaryMenu
 from src.menus.diaries.shared_diary_menu import SharedDiaryMenu
-from menus.diaries.shared_agenda_page import SharedAgendaMenu
+from src.menus.diaries.shared_agenda_page import SharedAgendaMenu
 
 import src.DAO as DAO
 from src.dataclass.event import Event

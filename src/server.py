@@ -1,5 +1,4 @@
 import socket
-from imp import get_tag
 from typing import Callable
 from requests_format import *
 

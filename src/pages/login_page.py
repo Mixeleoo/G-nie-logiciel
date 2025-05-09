@@ -51,7 +51,6 @@ class LoginPage(QWidget):
             for agenda in DAO.agendalist:
                 self.ui.myagenda_box.addItem(agenda.name)
 
-            print(DAO.sharedagendalist)
             # remplissage de la liste des agendas suivis
             for agenda in DAO.sharedagendalist:
                 self.ui.followedagenda_box.addItem(agenda.name)
