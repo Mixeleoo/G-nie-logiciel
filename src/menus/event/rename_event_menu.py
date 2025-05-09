@@ -23,8 +23,6 @@ class RenameEventMenu(QDialog) :
         self.ok_button.clicked.connect(self.accept)
         self.cancel_button.clicked.connect(self.reject)
 
-
-
         if self.ui.current_lang == 'fr':
             self.setWindowTitle('Renommer évenement')
             self.new_name_label.setText("Nom")
@@ -37,6 +35,5 @@ class RenameEventMenu(QDialog) :
             self.ok_button.setText("Ok")
             self.cancel_button.setText("Cancel")
 
-    def get_new_data(self):
-        data_dic = {'name': self.new_name.text()}
-        return data_dic
+    def get_new_data(self) -> str:
+        return self.new_name.text()

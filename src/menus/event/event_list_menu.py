@@ -96,7 +96,7 @@ class EventListMenu(QDialog):
             if action == modifier_action:
                 self.edit_event(item)
             elif action == renommer_action:
-                self.rename_event()
+                self.rename_event(item)
             elif action == supprimer_action:
                 self.delete_event(item)
             elif action == annuler_action:
@@ -104,7 +104,7 @@ class EventListMenu(QDialog):
             elif action == add_to_diary_action:
                 self.add_event_to_diary()
 
-    def rename_event(self):
+    def rename_event(self, item: QListWidgetItem):
         '''
         Crée et ouvre une fenêtre pour permettre à l'utilisateur de renommer l'évenement choisi
         :return:
@@ -112,7 +112,10 @@ class EventListMenu(QDialog):
         from src.menus.event.rename_event_menu import RenameEventMenu
         rename_page = RenameEventMenu(self.mainpage, self)
         if rename_page.exec() :
-            print(rename_page.get_new_data())
+            event = self.get_event_selected(item)
+            event.name = rename_page.get_new_data()
+            DAO.eventdao.update(event)
+            item.setText(event.name)
 
     def edit_event(self, item: QListWidgetItem):
         '''
