@@ -7,6 +7,8 @@ import src.DAO as DAO
 from src.dataclass.task import Task
 from src.menus.task.edit_task_menu import EditTaskMenu
 
+# TODO Léo : maj la tasklist pour prendre en compte les modif
+
 class TaskOngoingDisplay(QtWidgets.QListWidget):
     def __init__(self,mainpage, taskpage):
         super(TaskOngoingDisplay, self).__init__(taskpage)
@@ -21,12 +23,7 @@ class TaskOngoingDisplay(QtWidgets.QListWidget):
         font.setPointSize(15)
         self.setFont(font)
 
-        # TODO Léo : afficher que les tâches en cours ici, là tu les mets toutes sans distinction
-        for task in DAO.tasklist:
-            print(task)
-            item = QtWidgets.QListWidgetItem(task.name)
-            item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-            self.addItem(item)
+        self.refresh() #remplissage de la page
 
         self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.customContextMenuRequested.connect(self.show_task_menu)
@@ -61,10 +58,10 @@ class TaskOngoingDisplay(QtWidgets.QListWidget):
                 self.edit_task(item)
 
             elif action == supprimer_action:
-                #TODO Léo : voir si ça marche parce que ça m'a pas l'air
                 DAO.taskdao.delete(task)
                 self.takeItem(self.currentRow())
-                print('s')
+
+                self.refresh()
 
     def rename_task(self, task: Task):
         '''
@@ -78,11 +75,21 @@ class TaskOngoingDisplay(QtWidgets.QListWidget):
             DAO.taskdao.update(task)
             print(rename_page.get_new_name())
 
+            self.refresh()
+
     def edit_task(self,item):
         edit_menu = EditTaskMenu(self.mainpage, self, item)
         if edit_menu.exec():
-            print("merde")
+            self.refresh()
 
+    def refresh(self):
+        self.clear()
+        # TODO Léo : afficher que les tâches en cours ici, là tu les mets toutes sans distinction
+        for task in DAO.tasklist:
+            print(task)
+            item = QtWidgets.QListWidgetItem(task.name)
+            item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.addItem(item)
 
 
 
@@ -102,11 +109,7 @@ class TaskFinishedDisplay(QtWidgets.QListWidget):
         font.setStrikeOut(True)
         self.setFont(font)
 
-        for task in DAO.tasklist:
-            if task.done:
-                item = QtWidgets.QListWidgetItem(task.name)
-                item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-                self.addItem(item)
+        self.refresh() #remplissage de la page
 
         self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.customContextMenuRequested.connect(self.show_task_menu)
@@ -129,3 +132,15 @@ class TaskFinishedDisplay(QtWidgets.QListWidget):
                 task.done = True
                 DAO.taskdao.update(task)
 
+                self.takeItem(self.currentRow())
+                self.refresh()
+
+
+    def refresh(self):
+        self.clear()
+
+        for task in DAO.tasklist:
+            if task.done:
+                item = QtWidgets.QListWidgetItem(task.name)
+                item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+                self.addItem(item)

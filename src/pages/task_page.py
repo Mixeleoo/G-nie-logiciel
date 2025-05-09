@@ -19,6 +19,8 @@ class TaskPage(QWidget) :
 
 
         # initialisation de l'affichage
+        self.ui.ongoing_task_display = TaskOngoingDisplay(self.mainpage, self.ui.frame_task)
+        self.ui.finished_task_display = TaskFinishedDisplay(self.mainpage, self.ui.frame_7)
         self.show_ongoing_task()
 
 
@@ -80,9 +82,9 @@ class TaskPage(QWidget) :
 ############################# gestion affichage taches finies ################################
     def show_finished_task(self):
         self.ui.pages_tasks.setCurrentIndex(1)
-        self.ui.finished_task_display = (self.mainpage, self.ui.frame_7)
+
 
 ############################# gestion affichage taches finies ################################
     def show_ongoing_task(self):
         self.ui.pages_tasks.setCurrentIndex(0)
-        self.ui.ongoing_task_display = TaskOngoingDisplay(self.mainpage, self.ui.frame_task)
+        self.ui.ongoing_task_display.refresh()
