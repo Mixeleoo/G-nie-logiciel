@@ -28,7 +28,6 @@ class TaskMenu(QDialog):
         self.color_task_label = QLabel() #couleur
         self.color_task = QComboBox() #couleur
         self.colors = {} #choix couleur
-        #TODO : voir quoi mettre dans ces dico
         self.repeat = {}  # choix répétition
         self.reminder = {}  # choix rappel
 
