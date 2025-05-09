@@ -21,8 +21,7 @@ class TaskOngoingDisplay(QtWidgets.QListWidget):
         font.setPointSize(15)
         self.setFont(font)
 
-        # J'imagine que c'est ça que je dois faire
-        print("TAMER\n\n", DAO.tasklist)
+        # TODO Léo : afficher que les tâches en cours ici, là tu les mets toutes sans distinction
         for task in DAO.tasklist:
             print(task)
             item = QtWidgets.QListWidgetItem(task.name)
@@ -47,22 +46,24 @@ class TaskOngoingDisplay(QtWidgets.QListWidget):
 
             action = menu.exec(self.mapToGlobal(pos))
 
-            task = DAO.tasklist[pos]
+            task = DAO.tasklist[self.row((item))]
 
             # gestion actions sur les tâches en cours
             if action == terminee_action:
                 task.done = True
                 DAO.taskdao.update(task)
-                print('t')
+                self.takeItem(self.currentRow())
 
             elif action == renommer_action:
                 self.rename_task(task)
 
             elif action == modifier_action:
-                self.edit_task()
+                self.edit_task(item)
 
             elif action == supprimer_action:
+                #TODO Léo : voir si ça marche parce que ça m'a pas l'air
                 DAO.taskdao.delete(task)
+                self.takeItem(self.currentRow())
                 print('s')
 
     def rename_task(self, task: Task):
@@ -77,8 +78,8 @@ class TaskOngoingDisplay(QtWidgets.QListWidget):
             DAO.taskdao.update(task)
             print(rename_page.get_new_name())
 
-    def edit_task(self):
-        edit_menu = EditTaskMenu(self.mainpage, self)
+    def edit_task(self,item):
+        edit_menu = EditTaskMenu(self.mainpage, self, item)
         if edit_menu.exec():
             print("merde")
 
@@ -115,7 +116,7 @@ class TaskFinishedDisplay(QtWidgets.QListWidget):
                   'en': ['Ongoing']}
 
         item = self.itemAt(pos)
-        task: Task = DAO.tasklist[pos]
+        task: Task = DAO.tasklist[self.row((item))]
         if item:
             menu = QMenu()
 

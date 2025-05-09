@@ -3,7 +3,7 @@ from PyQt6.QtCore import Qt, QDate, QTime
 from PyQt6.QtGui import QStandardItem, QStandardItemModel, QColor
 from PyQt6.QtWidgets import QDialog, QLineEdit, QVBoxLayout, QLabel, QDateEdit, QTimeEdit, QPushButton, QComboBox, \
     QListWidgetItem
-from datetime import datetime as dt
+from datetime import datetime
 
 # Nos import
 from src.menus.event.event_list_menu import EventListMenu
@@ -13,8 +13,9 @@ from src.dataclass.event import Event
 
 
 class EditTaskMenu(QDialog):
-    def __init__(self, mainpage, eventpage: EventListMenu, item: QListWidgetItem):
-        super().__init__(parent=eventpage)
+    def __init__(self, mainpage, taskpage, item: QListWidgetItem):
+
+        super().__init__(parent=taskpage)
 
         self.ui = mainpage.ui
 
@@ -52,18 +53,16 @@ class EditTaskMenu(QDialog):
         self.ok_button.clicked.connect(self.accept)
         self.cancel_button.clicked.connect(self.reject)
 
-        model_agenda = QStandardItemModel()
         model_color = QStandardItemModel()
-        model_repeat = QStandardItemModel()
-        model_reminder = QStandardItemModel()
 
-        #self.event: Event = eventpage.get_event_selected(item)
-        self.new_name.setText(self.event.name)
+
 
         # 1. Convertir en datetime standard Python
         #dt = datetime.fromtimestamp(self.event.start)
 
-        # TODO Léo : mettre les infos courantes de la task
+        # TODO Léo : mettre les infos courantes de la task comme pour event (c'est un copié collé que j'ai fait)
+        # self.event: Event = eventpage.get_event_selected(item)
+        # self.new_name.setText(self.event.name)
         #self.new_date.setDate(QDate(dt.year, dt.month, dt.day))
         #self.new_hour.setTime(QTime(dt.hour, dt.minute, dt.second))
         # self.new_details.setText()
@@ -77,7 +76,7 @@ class EditTaskMenu(QDialog):
                            "Bleu": "#342aff",
                            "Violet": "#8723cd",
                            "Rose": "#cd2393"}  # choix couleur
-            self.setWindowTitle("Modifier évenement")
+            self.setWindowTitle("Modifier tâche")
             self.new_name_label.setText("Nom")
             self.new_date_label.setText("Date")
             self.new_hour_label.setText("Heure")
@@ -90,11 +89,11 @@ class EditTaskMenu(QDialog):
             self.colors = {"Red": "#b41d1d",
                            "Orange": "#cd8423",
                            "Yellow": "#bfcd23",
-                           "Gree,": "#1c9d1c",
+                           "Green": "#1c9d1c",
                            "Blue": "#342aff",
                            "Purple": "#8723cd",
                            "Pink": "#cd2393"}  # choix couleur
-            self.setWindowTitle("Edit event")
+            self.setWindowTitle("Edit Task")
             self.new_name_label.setText("Name")
             self.new_date_label.setText("Date")
             self.new_hour_label.setText("Hour")
@@ -104,10 +103,10 @@ class EditTaskMenu(QDialog):
             self.new_details_label.setText("Details")
 
         for name, hex_code in self.colors.items():
-            item = QStandardItem(name)
-            item.setBackground(QColor(hex_code))
-            item.setForeground(Qt.GlobalColor.black)  # texte en noir pour une meilleure lisibilité
-            model_color.appendRow(item)
+            item_c = QStandardItem(name)
+            item_c.setBackground(QColor(hex_code))
+            item_c.setForeground(Qt.GlobalColor.black)  # texte en noir pour une meilleure lisibilité
+            model_color.appendRow(item_c)
         self.new_color.setModel(model_color)
 
         self.setLayout(layout)
@@ -118,10 +117,10 @@ class EditTaskMenu(QDialog):
         :return: None
         '''
         # {'name': self.new_name.text(), 'date': self.new_date.text(), 'hour': self.new_hour.text(), 'location': self.new_location.text()}
-        '''
         # TODO Léo réadapter la récupération de données pour intégrer les répétitions et rappels voir comment gérer modif
-        timestamp = datetime.strptime(f"{self.new_date.text()} {self.new_hour.text()}", "%d/%m/%Y %H:%M").timestamp()
-        return Event(
+        #timestamp = datetime.strptime(f"{self.new_date.text()} {self.new_hour.text()}", "%d/%m/%Y %H:%M").timestamp()
+        print("truc")
+        '''return Event(
             id=self.event.id,
             name=self.new_name.text(),
             cancel=self.event.cancel,
