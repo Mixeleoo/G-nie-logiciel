@@ -81,9 +81,7 @@ class EventPage(QWidget) :
         :return: None
         '''
         self.ui.pages_logiciel.setCurrentIndex(0)
-        self.ui.mytask_box.clear()
         self.ui.myagenda_box.clear()
-        self.ui.followedtask_box.clear()
         self.ui.followedagenda_box.clear()
 
         # on réintialise l'email écrit dans les carrés "info"

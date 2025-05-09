@@ -110,7 +110,7 @@ class TaskMenu(QDialog):
         :return: Dictionnaire des données
         '''
 
-        timestamp = datetime.strptime(f"{self.date_task.text()} {self.time_task.text()}", "%m/%d/%y %I:%M %p").timestamp()
+        timestamp = int(datetime.strptime(f"{self.date_task.text()} {self.time_task.text()}", "%d/%m/%Y %H:%M").timestamp())
         
         return Task(
             name=self.task_name.text(),

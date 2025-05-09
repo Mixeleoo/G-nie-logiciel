@@ -34,9 +34,14 @@ requestType_to_query: dict[str, Request] = {
     "denySharedAgenda": Request("delete from shared_agenda where user_id = ? and agenda_id = ?;", requestSuccess),
     # TODO En même temps que l'on récupère les agenda de l'utilisateur il faudra récupérer les id des agendas dont il a été partagé
     "getPendingAgendaList": Request(
-            "select a.id, a.name from shared_agenda sa, agenda a where sa.user_id = ? and state = 0 and sa.agenda_id = a.id;",
-            getPendingAgendaList
-        ),
+        "select a.id, a.name from shared_agenda sa, agenda a where sa.user_id = ? and state = 0 and sa.agenda_id = a.id;",
+        getPendingAgendaList
+    ),
+    "getSharedAgendaList": Request(
+        "select a.id, a.name from shared_agenda sa, agenda a where sa.user_id = ? and state = 1 and sa.agenda_id = a.id;",
+        getSharedAgendaList
+    ),
+    "deleteSharedAgenda": Request("delete from shared_agenda where user_id = ? and agenda_id = ?;"),
 
     "createEvent": Request(
             "insert into event"

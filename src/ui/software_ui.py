@@ -586,9 +586,9 @@ class Ui_sofware_ui(object):
         font.setBold(True)
         self.new_task_button.setFont(font)
         self.new_task_button.setObjectName("new_task_button")
-        self.mytask_box = QtWidgets.QComboBox(parent=self.page_5)
+        '''self.mytask_box = QtWidgets.QComboBox(parent=self.page_5)
         self.mytask_box.setGeometry(QtCore.QRect(10, 180, 161, 44))
-        self.mytask_box.setObjectName("mytask_box")
+        self.mytask_box.setObjectName("mytask_box")'''
         self.task_labrl = QtWidgets.QLabel(parent=self.page_5)
         self.task_labrl.setGeometry(QtCore.QRect(20, 150, 131, 21))
         font = QtGui.QFont()
@@ -598,9 +598,9 @@ class Ui_sofware_ui(object):
         self.task_labrl.setFont(font)
         self.task_labrl.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.task_labrl.setObjectName("task_labrl")
-        self.followedtask_box = QtWidgets.QComboBox(parent=self.page_5)
+        '''self.followedtask_box = QtWidgets.QComboBox(parent=self.page_5)
         self.followedtask_box.setGeometry(QtCore.QRect(10, 330, 161, 44))
-        self.followedtask_box.setObjectName("followedtask_box")
+        self.followedtask_box.setObjectName("followedtask_box")'''
         self.task_label_2 = QtWidgets.QLabel(parent=self.page_5)
         self.task_label_2.setGeometry(QtCore.QRect(20, 300, 131, 21))
         font = QtGui.QFont()
