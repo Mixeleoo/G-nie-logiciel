@@ -122,9 +122,12 @@ class EventListMenu(QDialog):
         #TODO Léo : voir comment mettre les infos modifiable de l'event dans les editline + comment récupérer les infos modifiée
 
         from src.menus.event.edit_event_menu import EditEventMenu
-        edit_page = EditEventMenu(self.mainpage, self, item)
-        if edit_page.exec():
-            DAO.eventdao.update(edit_page.get_new_event())
+        try:
+            edit_page = EditEventMenu(self.mainpage, self, item)
+            if edit_page.exec():
+                    DAO.eventdao.update(edit_page.get_new_event())
+        except Exception as e:
+            print(e)
 
     def delete_event(self, item: QListWidgetItem):
         '''

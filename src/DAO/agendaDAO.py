@@ -108,6 +108,34 @@ class AgendaDAO:
 
         return r
 
+    def get_shared_agenda_list(self, user: User) -> list[Agenda]:
+        self.dbcom.sendall({
+            "data": {
+                "user_id": user.id
+            },
+            "requestType": "getSharedAgendaList",
+            "op": 3
+        })
+
+        r: list[Agenda] = []
+        data: dict = self.dbcom.recv()
+        for agenda in data["data"]["agendaList"]:
+            r.append(Agenda(agenda["id"], agenda["name"]))
+
+        return r
+
+    def delete_shared_agenda(self, user: User, agenda: Agenda) -> dict:
+        self.dbcom.sendall({
+            "data": {
+                "user_id": user.id,
+                "agenda_id": agenda.id
+            },
+            "requestType": "deleteSharedAgenda",
+            "op": 3
+        })
+
+        return self.dbcom.recv()
+
 agendadao = AgendaDAO(dbcom)
 agendalist: list[Agenda] = []
 pendingsharedagendalist: list[Agenda] = []

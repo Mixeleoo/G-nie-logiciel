@@ -1,4 +1,5 @@
 from PyQt6.QtWidgets import QWidget
+
 from src.main import MainWindow
 import src.DAO as DAO
 from src.dataclass.user import User
@@ -41,10 +42,19 @@ class LoginPage(QWidget):
             # Si la connexion est validée, alors on va chopper la liste de ses agendas
             DAO.agendalist = DAO.agendadao.get_list(DAO.user)
             DAO.pendingsharedagendalist = DAO.agendadao.get_pending_agenda_list(DAO.user)
+            DAO.sharedagendalist = DAO.agendadao.get_shared_agenda_list(DAO.user)
+
+            # Récupérer toutes les tâches de l'utilisateur
+            DAO.tasklist = DAO.taskdao.get_task_list(DAO.user)
 
             # ajout des agendas de l'utilisateur
             for agenda in DAO.agendalist:
                 self.ui.myagenda_box.addItem(agenda.name)
+
+            print(DAO.sharedagendalist)
+            # remplissage de la liste des agendas suivis
+            for agenda in DAO.sharedagendalist:
+                self.ui.followedagenda_box.addItem(agenda.name)
 
             text: str = self.ui.email_label_e.text()
             self.ui.email_label_e.setText(text + " " + DAO.user.mail)

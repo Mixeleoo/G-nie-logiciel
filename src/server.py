@@ -1,4 +1,5 @@
 import socket
+from imp import get_tag
 from typing import Callable
 from requests_format import *
 
@@ -8,7 +9,7 @@ HOST = '127.0.0.1'
 PORT = 65439
 
 class Request:
-    def __init__(self, query: str, func: Callable[[sqlite3.Cursor], str]):
+    def __init__(self, query: str, func: Callable[[sqlite3.Cursor], str] = requestSuccess):
         self.query = query
         self.func = func
 
@@ -16,22 +17,21 @@ class Request:
         return self.func(con.execute(self.query, args)).encode()
 
 requestType_to_query: dict[str, Request] = {
-    "updateUser": Request("update user set mail = ?, mdp = ? where id = ?;", requestSuccess),
+    "updateUser": Request("update user set mail = ?, mdp = ? where id = ?;"),
     "isUserValid": Request("select 1 from user where mail = ?", isUserValid),
 
     "createAgenda": Request("insert into agenda (user_id, name) values (?, ?);", createAgenda),
-    "updateAgenda": Request("update agenda set name = ? where id = ?;", requestSuccess),
+    "updateAgenda": Request("update agenda set name = ? where id = ?;"),
     "getAgendaList": Request("select id, name from agenda where user_id = ?;", getAgendaList),
-    "deleteAgenda": Request("delete from agenda where id = ?;", requestSuccess),
+    "deleteAgenda": Request("delete from agenda where id = ?;"),
 
     # TODO Récupérer tous les agendas partagés dont la colonne "state" est à 0, pour les mettre dans les demandes d'agenda partagés de l'utilisateur concerné
     "shareAgenda": Request(
             "insert into shared_agenda (user_id, agenda_id)"
-            " select id, ? from user where mail = ?;",
-            requestSuccess
+            " select id, ? from user where mail = ?;"
         ),
-    "acceptSharedAgenda": Request("update shared_agenda set state = 1 where user_id = ? and agenda_id = ?;", requestSuccess),
-    "denySharedAgenda": Request("delete from shared_agenda where user_id = ? and agenda_id = ?;", requestSuccess),
+    "acceptSharedAgenda": Request("update shared_agenda set state = 1 where user_id = ? and agenda_id = ?;"),
+    "denySharedAgenda": Request("delete from shared_agenda where user_id = ? and agenda_id = ?;"),
     # TODO En même temps que l'on récupère les agenda de l'utilisateur il faudra récupérer les id des agendas dont il a été partagé
     "getPendingAgendaList": Request(
         "select a.id, a.name from shared_agenda sa, agenda a where sa.user_id = ? and state = 0 and sa.agenda_id = a.id;",
@@ -53,13 +53,18 @@ requestType_to_query: dict[str, Request] = {
             "update event"
             " set name = ?, cancel = ?, start = ?, 'end' = ?, color = ?"
             " where id = ?;",
-            requestSuccess
         ),
-    "deleteEvent": Request("delete from event where id = ?;", requestSuccess),
-    "getEventList": Request("select id, name, cancel, start, 'end', color, frequency, interval, by_day, by_month_day, until from event where agenda_id = ?;", getEventList)
+    "deleteEvent": Request("delete from event where id = ?;"),
+    "getEventList": Request("select id, name, cancel, start, 'end', color, frequency, interval, by_day, by_month_day, until from event where agenda_id = ?;", getEventList),
+
+    "createTask": Request("insert into task (user_id, name, desc, done, deadline, color) values (?, ?, ?, ?, ?, ?);"),
+    "updateTask": Request("update task set name = ?, desc = ?, done = ?, deadline = ?, color = ? where id = ?;"),
+    "deleteTask": Request("delete from task where id = ?;"),
+    "getTaskList": Request("select id, name, desc, done, color, deadline from task where user_id = ?;", getTaskList)
 }
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    con.execute("create table if not exists task (id integer primary key, user_id integer references user(id), name text not null default '', desc text not null default '', done bit not null default 0, color integer, deadline integer);")
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     s.bind((HOST, PORT))
     s.listen()

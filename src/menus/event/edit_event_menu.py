@@ -9,7 +9,10 @@ from datetime import datetime
 from src.menus.event.event_list_menu import EventListMenu
 
 import src.DAO as DAO
-from src.dataclass.event import Event
+from src.dataclass.event import Event, Color
+
+def int_to_hexcolor(color: Color) -> str:
+    return f"#{color.r:02X}{color.g:02X}{color.b:02X}"
 
 class EditEventMenu(QDialog) :
     def __init__(self, mainpage, eventpage: EventListMenu, item: QListWidgetItem):
@@ -99,6 +102,15 @@ class EditEventMenu(QDialog) :
                            "Bleu": "#342aff",
                            "Violet": "#8723cd",
                            "Rose": "#cd2393"}  # choix couleur
+
+            for couleur, hexcolor in self.colors.items():
+                print(hexcolor, int_to_hexcolor(self.event.color).lower())
+
+            self.new_color.setCurrentText(
+                next((couleur for couleur, hexcolor in self.colors.items() if
+                      hexcolor == int_to_hexcolor(self.event.color).lower()), "Rouge")
+            )
+
             self.setWindowTitle("Modifier évenement")
             self.new_name_label.setText("Nom")
             self.new_date_label.setText("Date")
@@ -124,6 +136,12 @@ class EditEventMenu(QDialog) :
                            "Blue": "#342aff",
                            "Purple": "#8723cd",
                            "Pink": "#cd2393"}  # choix couleur
+
+            self.new_color.setCurrentText(
+                next((couleur for couleur, hexcolor in enumerate(self.colors) if
+                      hexcolor == int_to_hexcolor(self.event.color).lower()), "Red")
+            )
+
             self.setWindowTitle("Edit event")
             self.new_name_label.setText("Name")
             self.new_date_label.setText("Date")

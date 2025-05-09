@@ -5,8 +5,8 @@ from src.menus.task.task_menu import TaskMenu
 from src.main import MainWindow
 
 from src.menus.task.task_display import TaskOngoingDisplay, TaskFinishedDisplay
-from src.menus.task.task_list_menu import TaskListMenu
-from src.menus.task.favorite_task_menu import FavoriteTaskMenu
+
+import src.DAO as DAO
 
 class TaskPage(QWidget) :
     def __init__(self, mainpage: MainWindow):
@@ -72,6 +72,13 @@ class TaskPage(QWidget) :
         param_task = TaskMenu(mainpage, self)
         if param_task.exec():
             print(param_task.get_data())
+            try:
+                DAO.taskdao.insert(
+                    user=DAO.user,
+                    task=param_task.get_data()
+                )
+            except Exception as e:
+                print(e)
 
 ############################# gestion affichage taches finies ################################
     def show_finished_task(self):

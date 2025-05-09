@@ -3,7 +3,7 @@ from PyQt6.QtGui import QStandardItem, QColor, QStandardItemModel
 from PyQt6.QtWidgets import QDialog, QLineEdit, QVBoxLayout, QLabel, QDateEdit, QTimeEdit, QComboBox, QPushButton
 from src.dataclass.color import Color
 from src.dataclass.task import Task
-import datetime
+from datetime import datetime
 
 
 def hexcolor_to_int(hexcolor: str) -> Color:
@@ -116,5 +116,5 @@ class TaskMenu(QDialog):
             name=self.task_name.text(),
             details=self.task_details.text(),
             date=timestamp,
-            color=hexcolor_to_int(self.colors[self.color_event.currentText()])
+            color=hexcolor_to_int(self.colors[self.color_task.currentText()])
         )

@@ -99,10 +99,9 @@ class TaskFinishedDisplay(QtWidgets.QListWidget):
         font.setStrikeOut(True)
         self.setFont(font)
 
-        # TODO Léo gérer récupération
-        for t in task :
-            if t["ongoing"] == False :
-                item = QtWidgets.QListWidgetItem(t["name"])
+        for task in DAO.tasklist:
+            if task.done:
+                item = QtWidgets.QListWidgetItem(task.name)
                 item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
                 self.addItem(item)
 

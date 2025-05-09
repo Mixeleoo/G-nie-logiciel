@@ -48,6 +48,25 @@ def getPendingAgendaList(cur: sqlite3.Cursor) -> str:
     }
     return json.dumps(m_json)
 
+def getSharedAgendaList(cur: sqlite3.Cursor) -> str:
+    data = cur.fetchall()
+    agendaList = []
+    for agenda in data:
+        agendaList.append(
+            {
+                "id": agenda[0],
+                "name": agenda[1]
+            }
+        )
+
+    m_json = {
+        "data":{
+            "agendaList": agendaList
+        },
+        "op": 4
+    }
+    return json.dumps(m_json)
+
 def createEvent(cur: sqlite3.Cursor) -> str:
     return "{\"data\":{\"event_id\":" + str(cur.lastrowid) + "},\"op\":4}"
 
@@ -74,6 +93,29 @@ def getEventList(cur: sqlite3.Cursor) -> str:
     m_json = {
         "data":{
             "eventList": eventList
+        },
+        "op": 4
+    }
+    return json.dumps(m_json)
+
+def getTaskList(cur: sqlite3.Cursor) -> str:
+    data = cur.fetchall()
+    taskList = []
+    for event in data:
+        taskList.append(
+            {
+                "id": event[0],
+                "name": event[1],
+                "desc": event[2],
+                "done": event[3],
+                "color": event[4],
+                "deadline": event[5]
+            }
+        )
+
+    m_json = {
+        "data":{
+            "taskList": taskList
         },
         "op": 4
     }

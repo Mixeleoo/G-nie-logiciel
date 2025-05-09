@@ -1,6 +1,7 @@
 from PyQt6.QtCore import QPoint
 from PyQt6.QtWidgets import QMenu, QMessageBox
-
+import src.DAO as DAO
+from src.dataclass.agenda import Agenda
 
 class SharedDiaryMenu(QMenu):
     def __init__(self, favoritebox, mainpage, pos : QPoint, eventpage) :
@@ -10,9 +11,6 @@ class SharedDiaryMenu(QMenu):
                          'en' : ["Delete selected diary","Remove selected diary from favorite","Remove from favorite confirmation","Do you want to remove","from favorite?","Yes","No","Delete confirmation","Do you want to delete diary"]}
         
         self.ui = mainpage.ui
-
-        # TODO : remplir la liste avec les agendas partagés à l'utilisateur
-        # remplissage de la liste des agendas suivis
 
         self.remove_action = None
 
@@ -25,7 +23,6 @@ class SharedDiaryMenu(QMenu):
 
         # supression d'un agenda suivi
         if action == self.remove_action:
-            # TODO Léo: Mémoriser ces supression quelque pars
             item_text = self.ui.followedagenda_box.currentText()
 
             msg = QMessageBox(eventpage)
@@ -39,3 +36,8 @@ class SharedDiaryMenu(QMenu):
 
             if msg.clickedButton() == btn_oui:
                 self.ui.followedagenda_box.removeItem(current_index)  # suppression des favoris
+                DAO.agendadao.delete_shared_agenda(DAO.user, self.selected_agenda)
+
+    @property
+    def selected_agenda(self) -> Agenda:
+        return DAO.sharedagendalist[self.ui.followedagenda_box.currentIndex()]
