@@ -1,8 +1,7 @@
 
 # Import bibliothèques
-from PyQt6.QtCore import Qt, QDate, QTime
-from PyQt6.QtGui import QStandardItem, QStandardItemModel, QColor
-from PyQt6.QtWidgets import QDialog, QLineEdit, QVBoxLayout, QLabel, QDateEdit, QTimeEdit, QPushButton, QComboBox, QListWidgetItem
+from PyQt6.QtCore import QDate, QTime
+from PyQt6.QtWidgets import QListWidgetItem
 from datetime import datetime
 
 # Nos import
