@@ -62,8 +62,6 @@ class EditEventMenu(QDialog) :
         layout.addWidget(self.new_reminder_label)
         layout.addWidget(self.new_reminder_event)
 
-
-
         layout.addWidget(self.ok_button)
         layout.addWidget(self.cancel_button)
 
@@ -103,14 +101,6 @@ class EditEventMenu(QDialog) :
                            "Violet": "#8723cd",
                            "Rose": "#cd2393"}  # choix couleur
 
-            for couleur, hexcolor in self.colors.items():
-                print(hexcolor, int_to_hexcolor(self.event.color).lower())
-
-            self.new_color.setCurrentText(
-                next((couleur for couleur, hexcolor in self.colors.items() if
-                      hexcolor == int_to_hexcolor(self.event.color).lower()), "Rouge")
-            )
-
             self.setWindowTitle("Modifier évenement")
             self.new_name_label.setText("Nom")
             self.new_date_label.setText("Date")
@@ -137,11 +127,6 @@ class EditEventMenu(QDialog) :
                            "Purple": "#8723cd",
                            "Pink": "#cd2393"}  # choix couleur
 
-            self.new_color.setCurrentText(
-                next((couleur for couleur, hexcolor in enumerate(self.colors) if
-                      hexcolor == int_to_hexcolor(self.event.color).lower()), "Red")
-            )
-
             self.setWindowTitle("Edit event")
             self.new_name_label.setText("Name")
             self.new_date_label.setText("Date")
@@ -166,6 +151,11 @@ class EditEventMenu(QDialog) :
             item.setForeground(Qt.GlobalColor.black)  # texte en noir pour une meilleure lisibilité
             model_color.appendRow(item)
         self.new_color.setModel(model_color)
+
+        self.new_color.setCurrentIndex(
+            next((index for index, hexcolor in enumerate(self.colors.values()) if
+                    hexcolor == int_to_hexcolor(self.event.color).lower()), 0)
+        )
 
         # remplissage combobox répétitions
         for name in self.repeat.keys():
