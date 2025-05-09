@@ -1,50 +1,24 @@
-from PyQt6.QtCore import QPoint, QTimer
-from PyQt6.QtWidgets import QMenu, QInputDialog, QMessageBox, QDialog, QLineEdit, QLabel
+from PyQt6.QtCore import QPoint
+from PyQt6.QtWidgets import QInputDialog, QMessageBox, QComboBox
 import src.DAO as DAO
 from src.dataclass.agenda import Agenda
 from src.dataclass.user import User
-
-translate_dic = {
-    'fr': ["Ajouter un agenda", "Supprimer l'agenda sélectionné", "Ajouter l'agenda sélectionné aux favoris",
-           "Modifier l'agenda sélectionné", "Ajouter un agenda", "Nom de l'agenda :", "Confirmer l'ajout aux favoris",
-           "Voulez-vous ajouter", "aux favoris?", "Oui", "Non", "Confirmer la suppression", "Voulez-vous supprimer",
-           "Partager l'agenda sélectionné","Email du receveur","Partager agenda","Erreur email","Entrée non valide","Modifier agenda"],
-    'en': ["Add a diary", "Delete selected diary", "Add selected diary to favorite", "Edit selected diary",
-           "Add a diary", "Diary name :", "Add to favorite confirmation", "Do you want to add", "to favorite?", "Yes",
-           "No", "Delete confirmation", "Do you want to delete", "Share selected diary","Receiver's email","Share diary","Email error","No valide entry","Edit diary"]}
+from src.menus.diaries.diary_menuABC import DiaryMenuABC
 
 
-
-class DiaryMenu(QMenu) :
-
-    @property
-    def phrase(self) -> list[str]:
-        return translate_dic[self.ui.current_lang]
-    
-    @property
-    def agenda_selected(self) -> Agenda:
-        return DAO.agendalist[self.ui.myagenda_box.currentIndex()]
-    
-    def __init__(self, agandabox, mainpage, pos : QPoint, eventpage) :
-        super().__init__(parent = agandabox)
-        self.ui = mainpage.ui
+class DiaryMenu(DiaryMenuABC) :
+    def __init__(self, agendabox, mainpage, pos : QPoint, eventpage) :
+        super().__init__(agendabox, mainpage)
 
         self.share_input = None
 
         self.add_action = self.addAction(self.phrase[0])
         self.edit_action = None
-        self.remove_action = None
         self.share_action = None
 
-        current_index = self.ui.myagenda_box.currentIndex()
-        if current_index != -1:
-            self.remove_action = self.addAction(self.phrase[1])
-            self.edit_action = self.addAction(self.phrase[3])
-            self.share_action = self.addAction(self.phrase[13])
+        self.check(pos, eventpage)
 
-        action = self.exec(self.ui.myagenda_box.mapToGlobal(pos))
-
-        if action == self.add_action:
+        if self.action == self.add_action:
             text, ok = QInputDialog.getText(self, self.phrase[4], self.phrase[5])
             if ok and text:
                 DAO.agendalist.append(
@@ -56,7 +30,7 @@ class DiaryMenu(QMenu) :
                 )
                 self.ui.myagenda_box.addItem(text)
 
-        elif action == self.edit_action:
+        elif self.action == self.edit_action:
             text, ok = QInputDialog.getText(self, self.phrase[18], self.phrase[5])
             if ok and text:
                 agenda: Agenda = self.agenda_selected
@@ -65,27 +39,7 @@ class DiaryMenu(QMenu) :
 
                 self.ui.myagenda_box.setItemText(self.ui.myagenda_box.currentIndex(), text)
 
-        elif action == self.remove_action:
-            item_text = self.ui.myagenda_box.currentText()
-
-            msg = QMessageBox(eventpage)
-            msg.setWindowTitle(self.phrase[11])
-            msg.setText(f"{self.phrase[12]} « {item_text} » ?")
-
-            btn_oui = msg.addButton(self.phrase[9], QMessageBox.ButtonRole.YesRole)
-            btn_non = msg.addButton(self.phrase[10], QMessageBox.ButtonRole.NoRole)
-
-            msg.exec()
-
-            if msg.clickedButton() == btn_oui:
-                self.ui.followedagenda_box.removeItem(self.ui.followedagenda_box.findText(item_text))  # suppression des agenda en récupérant son indice à l'aide de son nom
-                self.ui.myagenda_box.removeItem(current_index) # suppression de l'agenda sélectionné
-                
-                # suppression de l'agenda dans la base de données
-                DAO.agendadao.delete(self.agenda_selected)
-                DAO.agendalist.remove(self.agenda_selected)
-
-        elif action == self.share_action:
+        elif self.action == self.share_action:
             text, ok = QInputDialog.getText(self, self.phrase[14], self.phrase[15])
             if ok :
                 if not text or (text and not DAO.userdao.is_valid(User(mail=text))):
@@ -98,3 +52,90 @@ class DiaryMenu(QMenu) :
 
                 else:
                     DAO.agendadao.share(text, DAO.agendalist[self.ui.myagenda_box.currentIndex()])
+    
+    def initActions(self) -> None:
+        self.edit_action = self.addAction(self.phrase[3])
+        self.share_action = self.addAction(self.phrase[13])
+
+    def on_remove(self) -> None:
+        self.ui.followedagenda_box.removeItem(self.ui.followedagenda_box.findText(self.item_text))  # suppression des agenda en récupérant son indice à l'aide de son nom
+        self.ui.myagenda_box.removeItem(self.current_index) # suppression de l'agenda sélectionné
+        
+        # suppression de l'agenda dans la base de données
+        DAO.agendadao.delete(self.agenda_selected)
+        DAO.agendalist.remove(self.agenda_selected)
+
+    @property
+    def agendabox(self) -> QComboBox:
+        return self.ui.myagenda_box
+
+    @property
+    def agendalist(self) -> list[Agenda]:
+        return DAO.agendalist
+
+    @property
+    def translate_dic(self) -> dict:
+        return {
+            'fr': [
+                "Ajouter un agenda",
+                "Supprimer l'agenda sélectionné",
+                "Ajouter l'agenda sélectionné aux favoris",
+                "Modifier l'agenda sélectionné",
+                "Ajouter un agenda",
+                "Nom de l'agenda :",
+                "Confirmer l'ajout aux favoris",
+                "Voulez-vous ajouter",
+                "aux favoris?",
+                "Oui",
+                "Non",
+                "Confirmer la suppression",
+                "Voulez-vous supprimer",
+                "Partager l'agenda sélectionné",
+                "Email du receveur",
+                "Partager agenda",
+                "Erreur email",
+                "Entrée non valide",
+                "Modifier agenda"
+            ],
+            'en': [
+                "Add a diary",
+                "Delete selected diary",
+                "Add selected diary to favorite",
+                "Edit selected diary",
+                "Add a diary",
+                "Diary name :",
+                "Add to favorite confirmation",
+                "Do you want to add",
+                "to favorite?",
+                "Yes",
+                "No",
+                "Delete confirmation",
+                "Do you want to delete",
+                "Share selected diary",
+                "Receiver's email",
+                "Share diary",
+                "Email error",
+                "No valide entry",
+                "Edit diary"
+            ]
+        }
+
+    @property
+    def title_remove_page(self) -> str:
+        return self.phrase[11]
+
+    @property
+    def text_remove_page(self) -> str:
+        return self.phrase[12]
+
+    @property
+    def remove_yes_text(self) -> str:
+        return self.phrase[9]
+
+    @property
+    def remove_no_text(self) -> str:
+        return self.phrase[10]
+
+    @property
+    def remove_text(self) -> str:
+        return self.phrase[1]
