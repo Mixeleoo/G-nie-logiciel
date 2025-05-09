@@ -125,7 +125,7 @@ class EventListMenu(QDialog):
         try:
             edit_page = EditEventMenu(self.mainpage, self, item)
             if edit_page.exec():
-                    DAO.eventdao.update(edit_page.get_new_event())
+                DAO.eventdao.update(edit_page.get_data())
         except Exception as e:
             print(e)
 
