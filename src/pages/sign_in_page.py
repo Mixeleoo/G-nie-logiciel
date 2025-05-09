@@ -42,7 +42,6 @@ class SignInPage(QWidget) :
         if not self.check_password_repeat():
             self.ui.error_label2.show()
 
-        # TODO Éloïse CR2ER SON PROPRE MESSAGE DERREUR A LADRESSE MAIL DEJA EXISTANTE
         elif self.ui.email_line_connection_2.text().strip() == "" or DAO.userdao.is_valid(user):
             self.ui.error_label3.show()
         elif self.ui.password_line_connection_2.text().strip() == "" or self.ui.passwordconfirm_line_connection_2.text().strip() == "":
