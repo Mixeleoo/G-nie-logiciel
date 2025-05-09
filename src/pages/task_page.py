@@ -19,10 +19,7 @@ class TaskPage(QWidget) :
 
 
         # initialisation de l'affichage
-
-        self.ongoing_task = TaskOngoingDisplay(self.mainpage, self.ui.frame_task)
-
-        self.finished_task = TaskFinishedDisplay(self.mainpage, self.ui.frame_7)
+        self.show_ongoing_task()
 
 
         # changement de page vers evenement

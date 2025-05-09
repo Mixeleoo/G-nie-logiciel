@@ -716,6 +716,9 @@ class Ui_sofware_ui(object):
         self.deconnect_button_t.setFont(font)
         self.deconnect_button_t.setObjectName("deconnect_button_t")
 
+        self.ongoing_task_display = None
+        self.finished_task_display = None
+
 
         self.retranslateUi_french(sofware_ui)
         self.pages_logiciel.setCurrentIndex(2)

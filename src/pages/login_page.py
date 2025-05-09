@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import QWidget
 from src.main import MainWindow
 import src.DAO as DAO
 from src.dataclass.user import User
+from src.menus.task.task_display import TaskFinishedDisplay, TaskOngoingDisplay
 
 class LoginPage(QWidget):
     def __init__(self, mainpage: MainWindow):
@@ -11,6 +12,7 @@ class LoginPage(QWidget):
         '''
         super().__init__(mainpage)
         self.ui = mainpage.ui
+        self.mainpage = mainpage
 
         self.ui.back_button.clicked.connect(lambda : self.goto_homepage()) # bouton retour
         self.ui.validate_connect_button.clicked.connect(self.validate_connection)
@@ -62,6 +64,9 @@ class LoginPage(QWidget):
                 
             self.ui.pages_logiciel.setCurrentIndex(3) #aller à la pages evenement
             self.clear_all()
+
+            self.ui.ongoing_task_display = TaskOngoingDisplay(self.mainpage, self.ui.frame_task)
+            self.ui.finished_task_display = self.finished_task = TaskFinishedDisplay(self.mainpage, self.ui.frame_7)
         else :
             self.ui.error_label1.show()
 
