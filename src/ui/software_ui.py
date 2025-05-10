@@ -704,7 +704,7 @@ class Ui_sofware_ui(object):
 
     def retranslateUi_french(self, sofware_ui):
         _translate = QtCore.QCoreApplication.translate
-        sofware_ui.setWindowTitle(_translate("sofware_ui", "Form"))
+        sofware_ui.setWindowTitle(_translate("sofware_ui", "Agenda"))
         self.create_account_button.setText(_translate("sofware_ui", "Créer un compte"))
         self.connect_button.setText(_translate("sofware_ui", "Se connecter"))
         self.french_button.setText(_translate("sofware_ui", "Français"))
@@ -768,7 +768,7 @@ class Ui_sofware_ui(object):
             #:return: None
             '''
             _translate = QtCore.QCoreApplication.translate
-            sofware_ui.setWindowTitle(_translate("sofware_ui", "Diary and tasks manager"))
+            sofware_ui.setWindowTitle(_translate("sofware_ui", "Agenda"))
             self.create_account_button.setText(_translate("sofware_ui", "Sign in"))
             self.connect_button.setText(_translate("sofware_ui", "Login"))
             self.french_button.setText(_translate("sofware_ui", "Français"))
