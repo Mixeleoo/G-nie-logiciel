@@ -62,6 +62,11 @@ class TaskPage(QWidget) :
         text = self.ui.email_label_t.text()
         self.ui.email_label_t.setText(text[:len(text) - len(DAO.user.mail)])
 
+        DAO.ftasklist.clear()
+        DAO.ogtasklist.clear()
+        DAO.agendalist.clear()
+        DAO.sharedagendalist.clear()
+
 ############################# gestion ajout evenement ################################
     def add_task(self, mainpage: MainWindow):
         '''
@@ -81,6 +86,7 @@ class TaskPage(QWidget) :
 ############################# gestion affichage taches finies ################################
     def show_finished_task(self):
         self.ui.pages_tasks.setCurrentIndex(1)
+        self.ui.finished_task_display.refresh()
 
 
 ############################# gestion affichage taches finies ################################

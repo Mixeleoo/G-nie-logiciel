@@ -3,6 +3,7 @@ from PyQt6.QtCore import QDate, QTime
 from PyQt6.QtWidgets import QListWidgetItem
 from datetime import datetime
 
+import DAO
 # Nos imports
 from src.menus.task.task_menuABC import TaskMenuABC
 from src.dataclass.task import Task, Color
@@ -19,17 +20,17 @@ class EditTaskMenu(TaskMenuABC):
         else:
             self.setWindowTitle("Edit Task")
 
-        self.task: Task = taskpage.get_event_selected(item)
+        self.task: Task = DAO.ogtasklist[self.tas]
 
         # 1. Convertir en datetime standard Python
         dt = datetime.fromtimestamp(self.task.date)
 
         self.task_name.setText(self.task.name)
-        self.new_date.setDate(QDate(dt.year, dt.month, dt.day))
-        self.new_hour.setTime(QTime(dt.hour, dt.minute, dt.second))
-        self.new_details.setText(self.task.details)
+        self.date_task.setDate(QDate(dt.year, dt.month, dt.day))
+        self.time_task.setTime(QTime(dt.hour, dt.minute, dt.second))
+        self.task_details.setText(self.task.details)
         
-        self.color_event.setCurrentIndex(
+        self.color_task.setCurrentIndex(
             next((index for index, hexcolor in enumerate(self.colors.values()) if
-                    hexcolor == int_to_hexcolor(self.event.color).lower()), 0)
+                    hexcolor == int_to_hexcolor(self.task.color).lower()), 0)
         )

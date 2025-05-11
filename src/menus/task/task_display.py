@@ -79,15 +79,19 @@ class TaskOngoingDisplay(QtWidgets.QListWidget):
             self.refresh()
 
     def edit_task(self, item: QListWidgetItem, task_index: int):
-        edit_menu = EditTaskMenu(self.mainpage, self, item)
+        try :
+            edit_menu = EditTaskMenu(self.mainpage, self, item)
 
-        if edit_menu.exec():
-            DAO.ogtasklist[task_index] = edit_menu.get_data()
-            DAO.taskdao.update(DAO.ogtasklist[task_index])
-            self.refresh()
+            if edit_menu.exec():
+                DAO.ogtasklist[task_index] = edit_menu.get_data()
+                DAO.taskdao.update(DAO.ogtasklist[task_index])
+                self.refresh()
+        except Exception as e:
+            print(e)
 
     def refresh(self):
         self.clear()
+        print(DAO.ogtasklist)
         for task in DAO.ogtasklist:
             item = QtWidgets.QListWidgetItem(task.name)
             item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -141,6 +145,7 @@ class TaskFinishedDisplay(QtWidgets.QListWidget):
 
     def refresh(self):
         self.clear()
+        print(DAO.ftasklist)
         for task in DAO.ftasklist:
             item = QtWidgets.QListWidgetItem(task.name)
             item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
