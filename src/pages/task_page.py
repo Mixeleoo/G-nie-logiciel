@@ -70,14 +70,12 @@ class TaskPage(QWidget) :
         '''
         param_task = TaskMenu(mainpage, self)
         if param_task.exec():
-            print(param_task.get_data())
-            try:
-                DAO.taskdao.insert(
-                    user=DAO.user,
-                    task=param_task.get_data()
-                )
-            except Exception as e:
-                print(e)
+            task = param_task.get_data()
+            DAO.taskdao.insert(
+                user=DAO.user,
+                task=task
+            )
+            DAO.tasklist.append(task)
 
 ############################# gestion affichage taches finies ################################
     def show_finished_task(self):

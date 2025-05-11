@@ -58,6 +58,7 @@ class TaskOngoingDisplay(QtWidgets.QListWidget):
 
             elif action == supprimer_action:
                 DAO.taskdao.delete(task)
+                DAO.tasklist.remove(task)
                 self.takeItem(self.currentRow())
 
                 self.refresh()
