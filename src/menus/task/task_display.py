@@ -130,7 +130,7 @@ class TaskFinishedDisplay(QtWidgets.QListWidget):
 
             # gestion actions sur les tâches terminées
             if action == encours_action:
-                task.done = True
+                task.done = False
                 DAO.taskdao.update(task)
 
                 self.takeItem(self.currentRow())

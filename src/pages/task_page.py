@@ -76,6 +76,7 @@ class TaskPage(QWidget) :
                 task=task
             )
             DAO.tasklist.append(task)
+        self.ui.ongoing_task_display.refresh()
 
 ############################# gestion affichage taches finies ################################
     def show_finished_task(self):
