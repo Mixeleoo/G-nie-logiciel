@@ -47,7 +47,11 @@ class LoginPage(QWidget):
             DAO.sharedagendalist = DAO.agendadao.get_shared_agenda_list(DAO.user)
 
             # Récupérer toutes les tâches de l'utilisateur
-            DAO.tasklist = DAO.taskdao.get_task_list(DAO.user)
+            for task in DAO.taskdao.get_task_list(DAO.user):
+                if task.done:
+                    DAO.ftasklist.append(task)
+                else:
+                    DAO.ogtasklist.append(task)
 
             # ajout des agendas de l'utilisateur
             for agenda in DAO.agendalist:

@@ -48,6 +48,8 @@ class TaskOngoingDisplay(QtWidgets.QListWidget):
             if action == terminee_action:
                 task.done = True
                 DAO.taskdao.update(task)
+                DAO.ogtasklist.pop(task_index)
+                DAO.ftasklist.append(task)
                 self.takeItem(self.currentRow())
 
             elif action == renommer_action:
@@ -86,12 +88,10 @@ class TaskOngoingDisplay(QtWidgets.QListWidget):
 
     def refresh(self):
         self.clear()
-        for task in DAO.tasklist:
-            if not task.done:
-                print(task)
-                item = QtWidgets.QListWidgetItem(task.name)
-                item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-                self.addItem(item)
+        for task in DAO.ogtasklist:
+            item = QtWidgets.QListWidgetItem(task.name)
+            item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.addItem(item)
 
 
 
@@ -120,7 +120,8 @@ class TaskFinishedDisplay(QtWidgets.QListWidget):
                   'en': ['Ongoing']}
 
         item = self.itemAt(pos)
-        task: Task = DAO.tasklist[self.row((item))]
+        task_index = self.row(item)
+        task: Task = DAO.tasklist[task_index]
         if item:
             menu = QMenu()
 
@@ -132,14 +133,15 @@ class TaskFinishedDisplay(QtWidgets.QListWidget):
             if action == encours_action:
                 task.done = False
                 DAO.taskdao.update(task)
+                DAO.ftasklist.pop(task_index)
+                DAO.ogtasklist.append(task)
 
                 self.takeItem(self.currentRow())
                 self.refresh()
 
     def refresh(self):
         self.clear()
-        for task in DAO.tasklist:
-            if task.done:
-                item = QtWidgets.QListWidgetItem(task.name)
-                item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-                self.addItem(item)
+        for task in DAO.ftasklist:
+            item = QtWidgets.QListWidgetItem(task.name)
+            item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.addItem(item)

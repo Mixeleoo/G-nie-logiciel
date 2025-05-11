@@ -89,4 +89,5 @@ class TaskDAO:
         return r
 
 taskdao = TaskDAO(dbcom)
-tasklist: list[Task] = []
+ogtasklist: list[Task] = []
+ftasklist: list[Task] = []
