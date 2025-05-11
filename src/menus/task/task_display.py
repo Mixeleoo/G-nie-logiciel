@@ -5,7 +5,6 @@ from PyQt6.QtWidgets import QMenu, QListWidgetItem
 
 import src.DAO as DAO
 from src.dataclass.task import Task
-from src.menus.task.edit_task_menu import EditTaskMenu
 
 class TaskOngoingDisplay(QtWidgets.QListWidget):
     def __init__(self,mainpage, taskpage):
@@ -79,6 +78,7 @@ class TaskOngoingDisplay(QtWidgets.QListWidget):
             self.refresh()
 
     def edit_task(self, item: QListWidgetItem, task_index: int):
+        from src.menus.task.edit_task_menu import EditTaskMenu
         try :
             edit_menu = EditTaskMenu(self.mainpage, self, item)
 

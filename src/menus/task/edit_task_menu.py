@@ -1,9 +1,9 @@
 # Import bibliothèques
 from PyQt6.QtCore import QDate, QTime
-from PyQt6.QtWidgets import QListWidgetItem
+from PyQt6.QtWidgets import QListWidgetItem, QListWidget
 from datetime import datetime
 
-import DAO
+import src.DAO as DAO
 # Nos imports
 from src.menus.task.task_menuABC import TaskMenuABC
 from src.dataclass.task import Task, Color
@@ -12,7 +12,7 @@ def int_to_hexcolor(color: Color) -> str:
     return f"#{color.r:02X}{color.g:02X}{color.b:02X}"
 
 class EditTaskMenu(TaskMenuABC):
-    def __init__(self, mainpage, taskpage, item: QListWidgetItem):
+    def __init__(self, mainpage, taskpage: QListWidget, item: QListWidgetItem):
         super().__init__(mainpage, taskpage)
 
         if self.ui.current_lang == 'fr':
@@ -20,7 +20,7 @@ class EditTaskMenu(TaskMenuABC):
         else:
             self.setWindowTitle("Edit Task")
 
-        self.task: Task = DAO.ogtasklist[self.tas]
+        self.task: Task = DAO.ogtasklist[taskpage.row(item)]
 
         # 1. Convertir en datetime standard Python
         dt = datetime.fromtimestamp(self.task.date)
