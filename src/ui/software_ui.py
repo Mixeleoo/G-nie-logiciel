@@ -14,6 +14,9 @@ import calendar
 
 class Ui_sofware_ui(object):
     def setupUi(self, sofware_ui):
+        '''
+        Classe crée par QtDesigner pour mettre en place l'interface graphique et ses éléments
+        '''
         sofware_ui.setObjectName("sofware_ui")
         sofware_ui.resize(1200, 800)
         self.current_lang = "fr" #langue par défaut
@@ -703,6 +706,11 @@ class Ui_sofware_ui(object):
         QtCore.QMetaObject.connectSlotsByName(sofware_ui)
 
     def retranslateUi_french(self, sofware_ui):
+        '''
+        Permet de traduire tous les éléments du logiciel vers le français
+        :param software_ui interface graphique
+        :return None
+        '''
         _translate = QtCore.QCoreApplication.translate
         sofware_ui.setWindowTitle(_translate("sofware_ui", "Agenda"))
         self.create_account_button.setText(_translate("sofware_ui", "Créer un compte"))
@@ -762,10 +770,10 @@ class Ui_sofware_ui(object):
 
     def retranslateUi_english(self, sofware_ui):
             '''
-            #Permet de traduire l'entièreté du logiciel du français vers l'anglais
+            Permet de traduire l'entièreté du logiciel du français vers l'anglais
 
-            #:param sofware_ui: QWidget sur lequel la traduction s'applique
-            #:return: None
+            :param sofware_ui: QWidget sur lequel la traduction s'applique
+            :return: None
             '''
             _translate = QtCore.QCoreApplication.translate
             sofware_ui.setWindowTitle(_translate("sofware_ui", "Agenda"))

@@ -11,6 +11,12 @@ def int_to_hexcolor(color: Color) -> str:
 
 class EventListMenu(QDialog):
     def __init__(self, mainpage , eventpage, curr_date : QDate):
+        '''
+        Affichage de la fenêtre listant tous les évènements programmés à la date cliquée par l'utilisateur
+        :param mainpage: Fenêtre du logiciel
+        :param eventpage : Page de gestion des evenements
+        :param curr_date : date cliquée par l'utilisateur
+        '''
         super().__init__(parent=eventpage)
 
         self.ui = mainpage.ui
@@ -64,6 +70,10 @@ class EventListMenu(QDialog):
         return self.event_listleo[self.event_list.row(item)]
 
     def show_event_menu(self, pos: QPoint):
+        '''
+        Affichage du menu de choix d'action d'un événement
+        :param pos: position du menu par rapport à l'événement cliqué
+        '''
         a_lang = {'fr' : ['Modifier évenement','Renommer évenement', 'Annuler évenement', 'Supprimer évenement',"Ajouter à un agenda"],
                 'en' : ['Edit event', 'Rename event', 'Cancel event', 'Delete event',"Add to diary"]}
 

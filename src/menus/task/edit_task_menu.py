@@ -13,6 +13,9 @@ def int_to_hexcolor(color: Color) -> str:
 
 class EditTaskMenu(TaskMenuABC):
     def __init__(self, mainpage, taskpage: QListWidget, item: QListWidgetItem):
+        '''
+       Permet la modification d'une tâche déjà existante
+       '''
         super().__init__(mainpage, taskpage)
 
         if self.ui.current_lang == 'fr':

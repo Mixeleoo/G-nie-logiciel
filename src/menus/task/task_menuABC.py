@@ -15,6 +15,9 @@ def hexcolor_to_int(hexcolor: str) -> Color:
 
 class TaskMenuABC(QDialog):
     def __init__(self, mainpage, taskpage):
+        '''
+        Intialisation de la page de paramètrage d'une tâche
+        '''
         super().__init__(parent=taskpage)
 
         self.ui = mainpage.ui

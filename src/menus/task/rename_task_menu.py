@@ -3,6 +3,9 @@ from PyQt6.QtWidgets import QVBoxLayout, QLineEdit, QLabel, QPushButton, QDialog
 
 class RenameTaskMenu(QDialog) :
     def __init__(self, mainpage, taskpage):
+        '''
+        Fenêtre pour renommer une tâche
+        '''
         super().__init__(parent=taskpage)
         self.ui = mainpage.ui
 

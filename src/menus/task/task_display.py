@@ -8,6 +8,9 @@ from src.dataclass.task import Task
 
 class TaskOngoingDisplay(QtWidgets.QListWidget):
     def __init__(self,mainpage, taskpage):
+        '''
+        Element graphique permettant d'afficher la liste des tâches en cours et permettre des actions sur celle-ci
+        '''
         super(TaskOngoingDisplay, self).__init__(taskpage)
 
         self.ui = mainpage.ui
@@ -102,6 +105,9 @@ class TaskOngoingDisplay(QtWidgets.QListWidget):
 
 class TaskFinishedDisplay(QtWidgets.QListWidget):
     def __init__(self, mainpage, taskpage):
+        '''
+        Element graphique permettant d'afficher la liste des tâches terminées et permettre des actions sur celle-ci
+        '''
         super(TaskFinishedDisplay, self).__init__(taskpage)
 
         self.setGeometry(50,40,710,570)

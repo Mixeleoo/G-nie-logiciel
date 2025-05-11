@@ -8,6 +8,9 @@ from src.menus.diaries.diary_menuABC import DiaryMenuABC
 
 class DiaryMenu(DiaryMenuABC) :
     def __init__(self, agendabox, mainpage, pos : QPoint, eventpage) :
+        '''
+        Gestion des actions possibles sur un agenda
+        '''
         super().__init__(agendabox, mainpage)
 
         self.share_input = None

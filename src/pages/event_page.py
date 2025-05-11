@@ -13,7 +13,8 @@ from src.dataclass.event import Event
 class EventPage(QWidget) :
     def __init__(self, mainpage: MainWindow):
         '''
-        Initialise la page d'acceuil du logiciel
+        Initialise la page d'affichage et gestion des événements du logiciel
+        : param mainpage: Fenêtre du logiciel
         '''
         super().__init__(mainpage)
         self.mainpage = mainpage
@@ -77,7 +78,7 @@ class EventPage(QWidget) :
 ############################# gestion changement task to event page ################################
     def goto_login(self):
         '''
-        Change la page d'affichage du logiciel à la page d'acceuil
+        Change la page d'affichage du logiciel à la page d'acceuil et réinitialise tous les affichage liées à l'utilisateur
         :return: None
         '''
         self.ui.pages_logiciel.setCurrentIndex(0)
@@ -141,6 +142,10 @@ class EventPage(QWidget) :
 
 ############################# gestion recuperation date cliquée ################################
     def get_date_month(self, date : QDate):
+        '''
+        Récupère la date lorsque l'utilisateur clique sur un élément du calendrier
+        : return : None
+        '''
         try :
             self.see_event(self.mainpage,date)
         except Exception as e:

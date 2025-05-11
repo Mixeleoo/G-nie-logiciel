@@ -7,6 +7,9 @@ from src.menus.diaries.diary_menuABC import DiaryMenuABC
        
 class SharedDiaryMenu(DiaryMenuABC):
     def __init__(self, favoritebox, mainpage, pos : QPoint, eventpage) :
+        '''
+        Gestion des actions possibles sur un agenda partagé
+        '''
         super().__init__(favoritebox, mainpage)
         self.check(pos, eventpage)
 

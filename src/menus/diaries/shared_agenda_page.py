@@ -8,6 +8,9 @@ from src.dataclass.agenda import Agenda
 
 class SharedAgendaMenu(QDialog):
     def __init__(self, mainpage, eventpage):
+        '''
+        Gestion de la fenêtre de partage d'agenda
+        '''
         super().__init__(parent=eventpage)
 
         self.ui = mainpage.ui
@@ -34,6 +37,9 @@ class SharedAgendaMenu(QDialog):
         self.shared_list.customContextMenuRequested.connect(self.show_shared_menu)
 
     def show_shared_menu(self, pos: QPoint):
+        '''
+        Propose à l'utilisateur d'accepter ou refuser un agenda qui lui a été partagé
+        '''
         a_lang = {'fr' : ['Accepter','Refuser'],
                 'en' : ['Accept', 'Deny']}
 

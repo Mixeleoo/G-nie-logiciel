@@ -16,6 +16,9 @@ def int_to_hexcolor(color: Color) -> str:
 
 class EditEventMenu(EventMenuABC) :
     def __init__(self, mainpage, eventpage: EventListMenu, item: QListWidgetItem):
+        '''
+        Permet de gérer la modification d'un événement existant
+        '''
         super().__init__(mainpage, eventpage)
 
         self.event: Event = eventpage.get_event_selected(item)

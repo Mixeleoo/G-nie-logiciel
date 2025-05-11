@@ -11,7 +11,8 @@ import src.DAO as DAO
 class TaskPage(QWidget) :
     def __init__(self, mainpage: MainWindow):
         '''
-        Initialise la page d'acceuil du logiciel
+        Initialise la page d'affichage et gestion des tâches du logiciel
+        : param mainpage: Fenêtre du logiciel
         '''
         super().__init__(mainpage)
         self.ui = mainpage.ui
@@ -49,7 +50,7 @@ class TaskPage(QWidget) :
 ############################# gestion changement task to event page ################################
     def goto_login(self):
         '''
-        Change la page d'affichage du logiciel à la page d'acceuil
+        Change la page d'affichage du logiciel à la page d'acceuil en vidant l'interface de toutes les information lié à l'utilisateur
         :return: None
         '''
         self.ui.pages_logiciel.setCurrentIndex(0)
@@ -85,11 +86,17 @@ class TaskPage(QWidget) :
 
 ############################# gestion affichage taches finies ################################
     def show_finished_task(self):
+        '''
+        Changement vers la page des tâches terminées
+        '''
         self.ui.pages_tasks.setCurrentIndex(1)
         self.ui.finished_task_display.refresh()
 
 
 ############################# gestion affichage taches finies ################################
     def show_ongoing_task(self):
+        '''
+        Changement vers la page des tâches en cours
+        '''
         self.ui.pages_tasks.setCurrentIndex(0)
         self.ui.ongoing_task_display.refresh()

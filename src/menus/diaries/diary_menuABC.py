@@ -8,6 +8,9 @@ from abc import abstractmethod
 
 class DiaryMenuABC(QMenu):
     def __init__(self, agendabox, mainpage):
+        '''
+        Classe abstraite qui permettra la création des menu clic droit sur les agendas
+        '''
         super().__init__(parent=agendabox)
 
         self.ui = mainpage.ui

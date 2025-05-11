@@ -8,7 +8,8 @@ from src.menus.task.task_display import TaskFinishedDisplay, TaskOngoingDisplay
 class LoginPage(QWidget):
     def __init__(self, mainpage: MainWindow):
         '''
-        Initialise la page d'acceuil du logiciel
+        Initialise la page de connexion du logiciel
+        : param mainpage: Fenêtre du logiciel
         '''
         super().__init__(mainpage)
         self.ui = mainpage.ui
@@ -32,6 +33,9 @@ class LoginPage(QWidget):
         self.clear_all()
 
     def clear_all(self):
+        '''
+        Vide les input si remplis
+        '''
         self.ui.email_line_connection.clear()
         self.ui.password_line_connection.clear()
 

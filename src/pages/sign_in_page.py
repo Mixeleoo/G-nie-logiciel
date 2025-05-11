@@ -6,7 +6,8 @@ from src.dataclass.user import User
 class SignInPage(QWidget) :
     def __init__(self, mainpage: MainWindow):
         '''
-        Initialise la page d'acceuil du logiciel
+        Initialise la page de création de compte du logiciel
+        : param mainpage: Fenêtre du logiciel
         '''
         super().__init__(mainpage)
         self.ui = mainpage.ui
@@ -59,6 +60,9 @@ class SignInPage(QWidget) :
         return self.ui.password_line_connection_2.text() == self.ui.passwordconfirm_line_connection_2.text()
 
     def clear_all(self):
+        '''
+        Vide tous les input et efface les messages d'erreur
+        '''
         self.ui.password_line_connection_2.clear()
         self.ui.passwordconfirm_line_connection_2.clear()
         self.ui.email_line_connection_2.clear()

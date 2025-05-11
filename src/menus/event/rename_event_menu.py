@@ -3,6 +3,9 @@ from PyQt6.QtWidgets import QDialog, QLabel, QLineEdit, QPushButton, QVBoxLayout
 
 class RenameEventMenu(QDialog) :
     def __init__(self, mainpage, eventpage):
+        '''
+        Fenêtre pour renomment un évenment
+        '''
         super().__init__(parent=eventpage)
         self.ui = mainpage.ui
         

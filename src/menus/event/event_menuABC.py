@@ -23,6 +23,9 @@ def get_day_of_week(date_str):
 
 class EventMenuABC(QDialog):
     def __init__(self, mainpage, eventpage):
+        '''
+        Intialisation de la page de paramètrage d'un événement
+        '''
         super().__init__(parent=eventpage)
 
         self.ui = mainpage.ui
