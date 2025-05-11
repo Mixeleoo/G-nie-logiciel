@@ -1,13 +1,11 @@
-from PyQt6 import QtCore, QtWidgets, QtGui
+from PyQt6 import QtWidgets
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont
-from PyQt6.QtWidgets import QListWidget, QMenu
+from PyQt6.QtWidgets import QMenu, QListWidgetItem
 
 import src.DAO as DAO
 from src.dataclass.task import Task
 from src.menus.task.edit_task_menu import EditTaskMenu
-
-# TODO Léo : maj la tasklist pour prendre en compte les modif
 
 class TaskOngoingDisplay(QtWidgets.QListWidget):
     def __init__(self,mainpage, taskpage):
@@ -43,7 +41,8 @@ class TaskOngoingDisplay(QtWidgets.QListWidget):
 
             action = menu.exec(self.mapToGlobal(pos))
 
-            task = DAO.tasklist[self.row((item))]
+            task_index = self.row(item)
+            task = DAO.tasklist[task_index]
 
             # gestion actions sur les tâches en cours
             if action == terminee_action:
@@ -55,7 +54,7 @@ class TaskOngoingDisplay(QtWidgets.QListWidget):
                 self.rename_task(task)
 
             elif action == modifier_action:
-                self.edit_task(item)
+                self.edit_task(item, task_index)
 
             elif action == supprimer_action:
                 DAO.taskdao.delete(task)
@@ -73,24 +72,25 @@ class TaskOngoingDisplay(QtWidgets.QListWidget):
         if rename_page.exec() :
             task.name = rename_page.get_new_name()
             DAO.taskdao.update(task)
-            print(rename_page.get_new_name())
 
             self.refresh()
 
-    def edit_task(self,item):
+    def edit_task(self, item: QListWidgetItem, task_index: int):
         edit_menu = EditTaskMenu(self.mainpage, self, item)
+
         if edit_menu.exec():
+            DAO.tasklist[task_index] = edit_menu.get_data()
+            DAO.taskdao.update(DAO.tasklist[task_index])
             self.refresh()
 
     def refresh(self):
         self.clear()
-        # TODO Léo : afficher que les tâches en cours ici, là tu les mets toutes sans distinction
         for task in DAO.tasklist:
-            print(task)
-            item = QtWidgets.QListWidgetItem(task.name)
-            item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-            self.addItem(item)
-
+            if not task.done:
+                print(task)
+                item = QtWidgets.QListWidgetItem(task.name)
+                item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+                self.addItem(item)
 
 
 
@@ -135,10 +135,8 @@ class TaskFinishedDisplay(QtWidgets.QListWidget):
                 self.takeItem(self.currentRow())
                 self.refresh()
 
-
     def refresh(self):
         self.clear()
-
         for task in DAO.tasklist:
             if task.done:
                 item = QtWidgets.QListWidgetItem(task.name)
