@@ -42,7 +42,7 @@ class TaskOngoingDisplay(QtWidgets.QListWidget):
             action = menu.exec(self.mapToGlobal(pos))
 
             task_index = self.row(item)
-            task = DAO.tasklist[task_index]
+            task = DAO.ogtasklist[task_index]
 
             # gestion actions sur les tâches en cours
             if action == terminee_action:
@@ -60,7 +60,7 @@ class TaskOngoingDisplay(QtWidgets.QListWidget):
 
             elif action == supprimer_action:
                 DAO.taskdao.delete(task)
-                DAO.tasklist.pop(task_index)
+                DAO.ogtasklist.pop(task_index)
                 self.takeItem(self.currentRow())
 
                 self.refresh()
@@ -82,8 +82,8 @@ class TaskOngoingDisplay(QtWidgets.QListWidget):
         edit_menu = EditTaskMenu(self.mainpage, self, item)
 
         if edit_menu.exec():
-            DAO.tasklist[task_index] = edit_menu.get_data()
-            DAO.taskdao.update(DAO.tasklist[task_index])
+            DAO.ogtasklist[task_index] = edit_menu.get_data()
+            DAO.taskdao.update(DAO.ogtasklist[task_index])
             self.refresh()
 
     def refresh(self):
@@ -121,7 +121,7 @@ class TaskFinishedDisplay(QtWidgets.QListWidget):
 
         item = self.itemAt(pos)
         task_index = self.row(item)
-        task: Task = DAO.tasklist[task_index]
+        task: Task = DAO.ftasklist[task_index]
         if item:
             menu = QMenu()
 
