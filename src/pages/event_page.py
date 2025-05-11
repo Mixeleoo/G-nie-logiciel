@@ -91,6 +91,11 @@ class EventPage(QWidget) :
         text = self.ui.email_label_t.text()
         self.ui.email_label_t.setText(text[:len(text) - len(DAO.user.mail)])
 
+        DAO.ftasklist.clear()
+        DAO.ogtasklist.clear()
+        DAO.agendalist.clear()
+        DAO.sharedagendalist.clear()
+
 ############################# gestion ajout evenement ################################
     def add_event(self, mainpage: MainWindow):
         '''
