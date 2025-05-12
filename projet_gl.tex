@@ -1,0 +1,624 @@
+\documentclass{article}
+%\setlength{\parindent}{2em}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx} % Required for inserting images
+\graphicspath{{images/}}
+\usepackage{float}
+\usepackage[letterpaper, top=1in, bottom=1.0in, left=1.20in, heightrounded]{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{orange},
+    showstringspaces=false,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    numbersep=5pt,
+    breaklines=true,
+    breakatwhitespace=true,
+    basicstyle=\ttfamily\normalsize,
+    columns=fullflexible,
+    inputencoding=utf8,
+    literate=
+      {é}{{\'e}}1 {è}{{\`e}}1 {ê}{{\^e}}1 {ë}{{\"e}}1
+      {à}{{\`a}}1 {â}{{\^a}}1 {ä}{{\"a}}1
+      {ù}{{\`u}}1 {û}{{\^u}}1 {ü}{{\"u}}1
+      {ô}{{\^o}}1 {ö}{{\"o}}1 {î}{{\^i}}1 {ï}{{\"i}}1
+      {ç}{{\c{c}}}1
+      {É}{{\'E}}1 {È}{{\`E}}1 {Ê}{{\^E}}1 {Ë}{{\"E}}1
+}
+%insertion images
+%\begin{figure}[h]
+    %\centering
+    %\includegraphics[width=345pt]{chemin images}
+    %\caption{test cap}
+    %\label{fig:enter-label}
+%\end{figure}
+
+\begin{document}
+\large
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill} % remplit l'espace vertical avant
+    {\Huge\bfseries Projet GL\par}
+    %\vspace{1}
+    {\Large FAUCON Léo RULLAC Éloïse\par}
+    \vspace{0.5cm}
+    {\Large Avril 2025\par}
+    \vspace*{\fill} % remplit l'espace vertical après
+\end{titlepage}
+
+\newpage
+
+\renewcommand{\contentsname}{Sommaire}
+{\large
+\tableofcontents
+}
+
+
+\newpage
+
+\section{Présentation du Projet}
+
+\large Dans le cadre de ce projet, nous avons préféré choisir notre propre sujet plutôt que celui du gestionnaire de facture et avons donc choisi de concevoir et développer un logiciel de gestion d’agenda et de tâches.\\
+L’objectif principal était de répondre à un besoin concret d’organisation personnelle, en proposant un outil à la fois intuitif, fonctionnel et adaptable aux différents profils d’utilisateurs.\\ 
+À travers ce développement, nous avons mis en œuvre plusieurs compétences apprises au cours de ce module, tout en nous appliquant sur l’expérience utilisateur et sur la gestion de projet.\\
+Ce rapport retrace les différentes étapes de la conception et de développement de l'application réalisés tout au long du projet.
+
+\section{Répartition des tâches}
+\begin{itemize}
+    \item Groupe :  Cahier des charges, axe fonctionnel, statique et
+ dynamique.
+    \item Léo : Développement de la communication client-serveur (back-end)
+    \item Éloïse :  Développement IHM, UI et contrôleurs (front-end).
+\end{itemize} 
+
+\section{Planning du projet}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=500px]{images/Graphique_Gantt_Projet_GL.png}
+    \caption{Graphique de Gantt}
+\end{figure}
+
+\newpage
+\section{Exigences}
+
+SUJET : Agenda
+
+
+\subsection{Exigences}
+
+\textbf{Accès utilisateur :}
+\begin{itemize}
+    \item AU010 : Le système doit permettre à l’utilisateur de se connecter via une adresse mail et un mot de passe.
+    \item AU020 : Le système doit permettre à l’utilisateur de gérer son compte (adresse mail, mot de passe, nom, prénom).
+\end{itemize}
+
+\textbf{Personnalisation :}
+\begin{itemize}
+    \item P010 : Le système doit permettre de paramétrer l’état sombre ou clair, le début du jour de la semaine, le langage, l’heure locale, les éventuelles notifications.
+    \item P020 : Le système doit permettre à l’utilisateur de rechercher un événement (par titre ou description).
+    \item P030 : Le système doit permettre à l’utilisateur de rechercher une tâche (par titre).
+    \item P040 : Le système doit permettre à l’utilisateur de visualiser les détails d’un événement en cliquant dessus.
+    \item P050 : Le système doit permettre à l’utilisateur de passer d’un événement à un autre dans l’ordre chronologique.
+    \item P060 : Le système doit permettre à l’utilisateur de modifier l’affichage (jour, semaine, mois…).
+\end{itemize}
+\textbf{Création et modification :}\\
+\begin{itemize}
+    \item CM010 : Le système doit permettre à l’utilisateur de créer des agenda.
+    \item CM020 : Le système doit permettre à l’utilisateur de créer des tâches.
+    \item CM030 : Le système doit permettre à l’utilisateur de modifier des tâches.
+    \item CM040 : Le système doit permettre à l'utilisateur de supprimer des tâches.
+    \item CM050 : Le système doit permettre à l'utilisateur d’annuler des tâches (affiche la tâche barrée).
+    \item CM060 : Le système doit permettre à l’utilisateur de créer des évènements.
+    \item CM070 : Le système doit permettre à l’utilisateur de modifier des événements.
+    \item CM080 : Le système doit permettre à l'utilisateur de supprimer des événements.
+    \item CM090 : Le système doit permettre à l'utilisateur d’annuler des événements (affiche l’événement barré).
+    \item CM100 : Le système doit permettre de dupliquer un événement (affiche la page de création d’un événement avec les détails identique à l’événement dupliqué).
+    \item CM110 : Les agenda doivent être caractérisées par leur couleur, leur visibilité, les personnes y ayant accès (caractérisées par leur adresse mail), les rappels de base
+    \item CM120 : Les évènements doivent être caractérisées par agenda, par heure (de début ou de fin) ou éventuellement toute la journée, de l’heure locale, de la répétition, des gens concernés (référencés par leur mail), d’une localisation, des rappels, d’une couleur, d’une description, d’une visibilité si la catégorie est partagée, par leur état (annulé ou non).
+\end{itemize}
+
+\textbf{Partage et communication :}
+\begin{itemize}
+    \item PC010 : Le système doit permettre à l’utilisateur de partager un événement.
+    \item PC020 : Le système doit permettre à l’utilisateur de partager une tâche.
+    \item PC030 : Le système doit permettre à l’utilisateur de partager son agenda (en mode lecture seule.
+    \item PC040 : Le système doit permettre à l’utilisateur d’importer un agenda.
+    \item PC050 : Le système doit envoyer un mail à l’utilisateur lorsqu’un de ses agenda se fait importer.
+    \item PC060 : Le système doit envoyer un mail à l’utilisateur lorsqu’il importe un agenda.
+    \item PC070 : Le système doit permettre à l’utilisateur de transformer un événement en récapitulatif textuel.
+    \item PC080 : Le système doit permettre à l’utilisateur de transformer une tâche en récapitulatif textuel.
+\end{itemize}
+
+\newpage
+
+\subsection{Implémentation des exigences}
+\begin{table}[h]
+\large
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+Exigence & Appliquée  & Non appliquée & Partiellement appliquée \\
+\hline
+\multicolumn{4}{|c|}{\textbf{Accès utilisateur}} \\
+AU010 & X & &  \\
+AU020 &  & X & \\
+\hline
+\multicolumn{4}{|c|}{\textbf{Personnalisation}} \\
+P010 & & & X \\
+P020 & & X & \\
+P030 & & X & \\
+P040 & & X & \\
+P050 & & X & \\
+P060 & X & & \\
+\hline
+\multicolumn{4}{|c|}{\textbf{ Création et modification}} \\
+CM010 & X & & \\
+CM020 & X & & \\
+CM030 & X & & \\
+CM040 & X & & \\
+CM050 & X & & \\
+CM060 & X & & \\
+CM070 & X & & \\
+CM080 & X & & \\
+CM090 & X & & \\
+CM100 & & X & \\
+CM110 & & & X \\
+CM120 & & & X \\
+\hline
+\multicolumn{4}{|c|}{\textbf{Partage et communication}} \\
+PC010 & & X & \\
+PC020 & & X & \\
+PC030 & & & X \\
+PC040 & & X & \\
+PC050 & & X & \\
+PC060 & & X & \\
+PC070 & & X & \\
+PC080 & & X & \\
+\hline
+\end{tabular}
+\caption{Implémentation des exigences}
+\label{tab:exemple}
+\end{table}
+
+\newpage
+\section{Maquettage}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=430px]{images/Maquette_Logiciel/Ecran acceuil logiciel.png}
+    \caption{Écran d’accueil}
+    \label{fig:21}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=430px]{images/Maquette_Logiciel/Ecran connexion.png}
+    \caption{Écran de connexion}
+    \label{fig:22}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=430px]{images/Maquette_Logiciel/Ecran creation de compte.png}
+    \caption{Écran de création de compte}
+    \label{fig:23}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=430px]{images/Maquette_Logiciel/Affichage jours.png}
+    \caption{Affichage page événement}
+    \label{fig:24}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=430px]{images/Maquette_Logiciel/Liste style d'affichage.png}
+    \caption{Liste des modes d'affichage possibles}
+    \label{fig:25}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=430px]{images/Maquette_Logiciel/Liste agendas utilisateur.png}
+    \caption{Liste des agendas de l'utilisateur}
+    \label{fig:26}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=430px]{images/Maquette_Logiciel/Clic droit agenda.png}
+    \caption{Menu clic droit sur la liste d'agendas}
+    \label{fig:27}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=430px]{images/Maquette_Logiciel/Clic paramètres.png}
+    \caption{Clic sur les paramètres d'agenda}
+    \label{fig:28}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=430px]{images/Maquette_Logiciel/Tâche en cours.png}
+    \caption{Affichage des tâches en cours}
+    \label{fig:29}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=430px]{images/Maquette_Logiciel/Tâches terminées.png}
+    \caption{Affichage des tâches terminées}
+    \label{fig:30}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=430px]{images/Maquette_Logiciel/Clic droit tâches.png}
+    \caption{Clic droit sur la liste de tâche}
+    \label{fig:31}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=430px]{images/Maquette_Logiciel/Modification tâches.png}
+    \caption{Clic droit sur une tâche}
+    \label{fig:32}
+\end{figure}
+
+\newpage
+\section{Axe Fonctionnel}
+
+\subsection{Diagrammes des cas d'usages}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=373px]{images/diagramme_UC.png}
+    \caption{UC Diagram}
+    \label{fig:1}
+\end{figure}
+\subsection{Descriptions cas d'usage}
+
+\subsubsection{Cas : Créer un Evenement}
+
+\textbf{Précondition : } L'utilisateur est connecté.\\
+\textbf{Scénario nominal :}\\
+3. L'utilisateur choisit l'agenda.\\
+4. L'utilisateur personnalise la date de l'évènement.\\
+5. Le système valide la date de l'évènement.\\
+6. L'utilisateur personnalise l'heure de l'évènement.\\
+7. Le système valide l'heure de l'évènement.\\
+8. L'utilisateur personnalise la répétition de l'évènement.\\
+9. Le système propose les répétitions possibles.\\
+10. L'utilisateur ajoute les invités à cet évènement.\\
+11. Le système valide les invités à cet évènement.\\
+12. L'utilisateur indique une localisation à cet évènement.\\
+13. Le système valide la localisation à cet évènement.\\
+14. L'utilisateur indique les rappels à cet évènement.\\
+15. Le système propose les rappels possibles.\\
+16. L'utilisateur choisit ses rappels.\\
+17. L'utilisateur rentre une description.\\
+18. Le système valide la description.\\
+19. L'utilisateur personnalise la visibilité de l'évènement.\\
+20. Le système propose les visibilités possible.\\
+21. L'utilisateur choisit les visibilités possible.\\
+
+\textbf{A1. Le système ne valide pas la date de l'évènement.}\\
+L'enchaînement A1 commence au point 5. du scénario nominal.\\
+6. Le système indique à l'utilisateur que la date de l'évènement n'est pas conforme.\\
+Le scénario nominal reprend au point 4.\\
+
+\textbf{A2. Le système ne valide pas l'heure de l'évènement.}\\
+L'enchaînement A2 commence au point 7. du scénario nominal.\\
+8. Le système indique à l'utilisateur que la date de l'évènement n'est pas conforme.\\
+Le scénario nominal reprend au point 6.\\
+
+\textbf{A3. Le système ne valide pas les invités de l'évènement.}\\
+L'enchaînement A3 commence au point 11. du scénario nominal.\\
+12. Le système indique à l'utilisateur que l'utilisateur saisi n'existe pas dans le serveur.\\
+Le scénario nominal reprend au point 10.\\
+
+\newpage
+\section{Axe Dynamique}
+\subsection{Diagrammes de séquence}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=300px]{images/create_event_sequence.png}
+    \caption{Create event seq}
+    \label{fig:2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{images/connect_seq.png}
+    \caption{Connect seq}
+    \label{fig:3}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{images/change_password_seq.png}
+    \caption{Change password seq}
+    \label{fig:4}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{images/create_agenda_seq.png}
+    \caption{Create agenda seq}
+    \label{fig:5}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{images/export_agenda_seq.png}
+    \caption{Export agenda seq}
+    \label{fig:6}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{images/import_agenda_seq.png}
+    \caption{Import agenda seq}
+    \label{fig:7}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{images/event_to_text_seq.png}
+    \caption{Event to text seq}
+    \label{fig:8}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{images/switch_event_seq.png}
+    \caption{Switch event seq}
+    \label{fig:9}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{images/parameterize_event_seq.png}
+    \caption{Parameterize event seq}
+    \label{fig:10}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{images/parameterize_event_date_seq.png.png}
+    \caption{Parameterize date event seq}
+    \label{fig:11}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{images/parameterize_event_hour_seq.png}
+    \caption{Parameterize hour event seq}
+    \label{fig:12}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{images/parameterize_event_localisation_seq.png}
+    \caption{Parameterize location event seq}
+    \label{fig:13}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{images/parameterize_event_reminder_seq.png}
+    \caption{Parameterize reminder event seq}
+    \label{fig:14}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{images/parameterize_event_repetition_seq.png}
+    \caption{Parameterize repetition event seq}
+    \label{fig:15}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{images/parameterize_event_description_seq.png.png}
+    \caption{Parameterize description event seq}
+    \label{fig:16}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{images/parameterize_event_visibility_seq.png}
+    \caption{Parameterize visibility event seq}
+    \label{fig:17}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{images/parameterize_event_invitation_seq.png}
+    \caption{Parameterize invitation event seq}
+    \label{fig:18}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{images/task_to_text_seq.png}
+    \caption{Task to text seq}
+    \label{fig:19}
+\end{figure}
+
+\newpage
+\section{Axe Statique}
+\subsection{Diagramme de classes}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=390px]{images/classe_diagram_complete_ver.png}
+    \caption{Class diagram}
+    \label{fig:20}
+\end{figure}
+
+\newpage
+
+\section{Phase de tests}
+
+Lors du développement du projet nous avons effectué nos test à chaque fois qu'une des fonctionnalité listées dans les exigence du logiciel était programmée.\\
+D'abord le bon fonctionnement des actions sur l'interface graphique (callback sur les boutons, récupération des données dans les input), puis la gestion des erreur par rapport aux entrées possibles par l'utilisateur ainsi que leur signalement à celui-ci.\\
+Nous avons ensuite associé la base de données à l'interface graphique puis testé le bon fonctionnement de cette association, en testant la communication entre les deux.\\
+
+\section{Interface graphique}
+
+\subsection{Interface}
+Pour la conception de l'interface visuel nous avons utilisé le module PyQT et le logiciel QtDesigner.\\
+Le fichier "software\_ui.py" a été généré par QtDesigner et réadapté sur quelque points par nos soins.\\
+Notamment l’ajout d'une méthode pour initialiser l'affichage des calendrier affichés par jours ou par semaines et le rajout d'un élément graphique non crée par QtDesigner pour afficher les tâches en cours ou terminées (Les classes "TaskOngoingDisplay" et "TaskFinishedDisplay" servent à créer ces éléments graphiques).\\
+
+\subsection{Contrôleurs}
+Pour ce qui est des contrôleurs, toutes les autres classes dans les dossiers "pages" et "menu" leur sont dédiées.\\
+Les classes de "pages" servent à contrôler tous les éléments graphiques par page du logiciel : écran d'accueil, écran de connexion, écran de création de compte, affichage et gestion des événements, affichage et gestion des tâches.\\
+Les classes dans "menu" servent à gérer les menus affichés lors du clic droit sur des éléments des pages, ou encore les pages de paramétrage des événements et des tâches, ainsi que leurs modifications.\\
+
+\newpage
+\section{Communication client-serveur}
+\subsection{Serveur}
+Pour la communication entre le client et le serveur, nous avons utilisé le module socket.
+Pour la communication entre le serveur et la base de données, nous avons utilisé le module sqlite3.
+Le serveur est simplement en attente de connexion d'un client, et lance une boucle qui attend des messages de celui-ci après connexion.
+Les messages sont formatés en JSON, et le serveur les traite en fonction de leur type (appelé $op$).
+\\
+
+\noindent Il y a 5 types d'opérations :
+\begin{itemize}
+    \item \textbf{1}: création de compte
+    \item \textbf{2}: connexion à un compte
+    \item \textbf{3}: requête du client avec comme spécification la catégorie "requestType"
+    \item \textbf{4}: retour serveur positif
+    \item \textbf{5}: retour serveur négatif avec message d'erreur dans la catégorie "errmsg"
+\end{itemize}
+
+\vspace{\medskipamount}
+\noindent Il existe plusieurs types de requêtes comme :
+\begin{itemize}
+    \item \textbf{"createAgenda"}: création d'un agenda
+    \item \textbf{"updateAgenda"}: mise à jour d'un agenda
+    \item \textbf{"getAgendaList"}: récupération de la liste des agendas pour un utilisateur
+    \item \textbf{"deleteAgenda"}: suppression d'un agenda
+    \item et bien d'autres...
+\end{itemize}
+
+Nous avons mis toutes ces requêtes sous la forme d'un dictionnaire,
+Dans celui-ci, la clef sera le nom de la requête et la valeur sera une Request.
+
+\begin{lstlisting}
+class Request:
+    def __init__(self, query: str, func: Callable[[sqlite3.Cursor], str]):
+        self.query = query
+        self.func = func
+
+    def send(self, *args) -> bytes:
+        return self.func(con.execute(self.query, args)).encode()
+\end{lstlisting}
+
+Nous pouvons donc voir que le constructeur de la class Request prend en paramètres
+\begin{itemize}
+    \item \textbf{query}: la requête SQL à exécuter.
+    \item \textbf{func}: la fonction qui va formater le résultat de la requête en une réponse JSON à envoyer au client.
+\end{itemize}
+
+Pour un exemple :
+
+\begin{lstlisting}
+def createAgenda(cur: sqlite3.Cursor) -> str:
+    return "{\"data\":{\"agenda_id\":" + str(cur.lastrowid) + "},\"op\":4}"
+
+requestType_to_query: dict[str, Request] = {
+    "createAgenda": Request(
+            "insert into agenda (user_id, name) values (?, ?);",
+            createAgenda
+        )
+}
+\end{lstlisting}
+
+\vspace{\medskipamount}
+\noindent Toutes les fonctions qui formatent les retours de requêtes sont dans $request_format.py$.
+Pour l'utilisation de ce dictionnaire il suffit de faire :
+
+\begin{lstlisting}
+# Si l'opération est la numéro 3
+try:
+    data: bytes = requestType_to_query[m_json["requestType"]].send(*m_json["data"].values())
+except sqlite3.Error as e:
+    conn.sendall(("{\"errmsg\":\"" + str(e) + "\",\"op\":5}").encode())
+else:
+    conn.sendall(data)
+\end{lstlisting}
+
+\noindent L'affreuse ligne
+\[
+    requestType\_to\_query[m\_json["requestType"]].send(*m\_json["data"].values())
+\]
+
+\noindent est centrale dans l'automatisation des requêtes, elle permet d'en ajouter sans rajouter un nouveau elif.
+\\Elle récupère les données dans "data", ne récupère que les valeurs via $.values()$,
+transforme cela via $*$ en suite d'arguments (donc ce n'est plus une liste),
+et envoie tout dans la fonction $send$ de la classe Request.
+\\Il est donc un peu contreintuitif,
+mais obligatoire à ce que les requêtes côté client envoient bien les données dans l'ordre
+des $?$ des requêtes dans $requestType\_to\_query$.
+
+\newpage
+\subsection{Client}
+Du côté du client il y a simplement une classe qui gère la communication
+avec le serveur (DBCom) et plusieurs DAO qui transcrivent les types requêtes en méthode.
+Voici deux exemples, un assesseur et un mutateur:
+
+\begin{lstlisting}
+class AgendaDAO:
+    def __init__(self, s: DBCom):
+        self.dbcom = s
+
+    def delete(self, agenda: Agenda):
+        self.dbcom.sendall({
+            "data":{
+                "agenda_id": agenda.id
+            },
+            "requestType": "deleteAgenda",
+            "op": 3
+        })
+        return self.dbcom.recv()
+    
+    def get_list(self, user: User) -> list[Agenda]:
+        self.dbcom.sendall({
+            "data": {
+                "user_id": user.id
+            },
+            "requestType": "getAgendaList",
+            "op": 3
+        })
+        r: list[Agenda] = []
+        data: dict = self.dbcom.recv()
+        for agenda in data["data"]["agendaList"]:
+            r.append(Agenda(agenda["id"], agenda["name"]))
+
+        return r
+\end{lstlisting}
+
+\newpage
+\noindent Voici le modèle entité association de notre base de donnée :
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{images/12.png}
+    \caption{MEA}
+\end{figure}
+
+\end{document}
