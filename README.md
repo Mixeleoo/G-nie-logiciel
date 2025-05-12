@@ -35,7 +35,3 @@ python -m src.main
 * `sqlite3` – pour la base de données locale
 * `dataclasses` – pour des structures de données simples et lisibles
 * `datetime` – pour la gestion des dates et heures
-
----
-
-Souhaites-tu que j’ajoute une section pour les prérequis ou l’installation des dépendances ?
