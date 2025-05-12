@@ -29,9 +29,10 @@ python -m src.main
 
 ## Modules utilisés
 
-* `PyQt6` – pour l'interface graphique
-* `json` – pour la sérialisation des données
-* `socket` – pour la communication réseau
-* `sqlite3` – pour la base de données locale
-* `dataclasses` – pour des structures de données simples et lisibles
-* `datetime` – pour la gestion des dates et heures
+* `PyQt6`
+* `json`
+* `socket`
+* `sqlite3`
+* `dataclasses`
+* `datetime`
+* `abc`
