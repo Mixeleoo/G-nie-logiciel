@@ -1,0 +1,265 @@
+\documentclass[11pt]{beamer}
+\usetheme{Madrid}
+\usefonttheme{serif}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{forest}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{orange},
+    showstringspaces=false,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    numbersep=5pt,
+    breaklines=true,
+    breakatwhitespace=true,
+    basicstyle=\ttfamily\scriptsize,
+    columns=fullflexible,
+    inputencoding=utf8,
+    literate=
+      {é}{{\'e}}1 {è}{{\`e}}1 {ê}{{\^e}}1 {ë}{{\"e}}1
+      {à}{{\`a}}1 {â}{{\^a}}1 {ä}{{\"a}}1
+      {ù}{{\`u}}1 {û}{{\^u}}1 {ü}{{\"u}}1
+      {ô}{{\^o}}1 {ö}{{\"o}}1 {î}{{\^i}}1 {ï}{{\"i}}1
+      {ç}{{\c{c}}}1
+      {É}{{\'E}}1 {È}{{\`E}}1 {Ê}{{\^E}}1 {Ë}{{\"E}}1
+}
+
+\setbeamertemplate{caption}[numbered]
+
+\author[RULLAC FAUCON]{Auteurs \\ RULLAC Éloïse, FAUCON Léo}
+\title{UE622 - Génie Logiciel}
+\date{May 5, 2025} 
+
+\bibliographystyle{apalike}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Répartition des tâches}
+    \centering
+    \begin{itemize}
+        \item \textbf{En groupe} : Cahier des charges, axe fonctionnel, statique, dynamique.
+        \item \textbf{Éloïse} : IHM, UI, controleurs (front-end).
+        \item \textbf{Léo} : Communication client-serveur (back-end).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Graphique de Gantt}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=\linewidth]{captures/11.png}
+            \caption{Graphique de Gantt}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Exemple d'exigences}
+    \centering
+    \begin{itemize}
+        \item AU010 : Le système doit permettre à l'utilisateur de se connecter via une adresse mail et un mot de passe.
+        \item AU020 : Le système doit permettre à l'utilisateur de gérer son compte (adresse mail, mot de passe, nom, prénom).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=\linewidth]{captures/9.png}
+            \caption{Cas d'usages (1/2)}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=\linewidth]{captures/10.png}
+            \caption{Cas d'usages (2/2)}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{captures/5.png}
+        \caption{Maquettage}
+    \end{subfigure}
+    \vfill
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{captures/1.png}
+        \caption{home\_page.py}
+    \end{subfigure}
+\end{figure}
+\end{frame}
+\begin{frame}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{captures/6.png}
+        \caption{Maquettage}
+    \end{subfigure}
+    \vfill
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{captures/2.png}
+        \caption{login\_page.py}
+    \end{subfigure}
+\end{figure}
+\end{frame}
+\begin{frame}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{captures/7.png}
+        \caption{Maquettage}
+    \end{subfigure}
+    \vfill
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{captures/3.png}
+        \caption{sign\_in\_page.py}
+    \end{subfigure}
+\end{figure}
+\end{frame}
+\begin{frame}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{captures/8.png}
+        \caption{Maquettage}
+    \end{subfigure}
+    \vfill
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{captures/4.png}
+        \caption{event\_page.py}
+    \end{subfigure}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Arborescence du projet}
+    \centering
+    \begin{forest}
+    [src
+        [DAO]
+        [dataclass]
+        [factory]
+        [menus 
+            [diairies]
+            [event]
+            [task]
+        ]
+        [pages]
+        [ui]
+    ]
+    \end{forest}
+\end{frame}
+
+\begin{frame}{Communication client-serveur - Modules}
+    \begin{itemize}
+        \item Communucation client-serveur: socket.
+        \item Communication serveur-BDD : sqlite3.    
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{CCS - Opérations}
+    \centering
+    \begin{itemize}
+        \item \textbf{1}: création de compte
+        \item \textbf{2}: connexion à un compte
+        \item \textbf{3}: requête du client avec comme spécification la catégorie $requestType$
+        \item \textbf{4}: retour serveur positif
+        \item \textbf{5}: retour serveur négatif avec message d'erreur dans la catégorie $errmsg$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{CCS - RequestType}
+    \begin{itemize}
+        \item \textbf{"createAgenda"}: création d'un agenda
+        \item \textbf{"updateAgenda"}: mise à jour d'un agenda
+        \item \textbf{"getAgendaList"}: récupération de la liste des agendas pour un utilisateur
+        \item \textbf{"deleteAgenda"}: suppression d'un agenda
+        \item ...
+    \end{itemize}
+\end{frame}
+
+\begin{lstlisting}
+class Request:
+    def __init__(self, query: str, func: Callable[[sqlite3.Cursor], str]):
+        self.query = query
+        self.func = func
+
+    def send(self, *args) -> bytes:
+        return self.func(con.execute(self.query, args)).encode()
+
+def createAgenda(cur: sqlite3.Cursor) -> str:
+    return "{\"data\":{\"agenda_id\":" + str(cur.lastrowid) + "},\"op\":4}"
+
+requestType_to_query: dict[str, Request] = {
+    "createAgenda": Request(
+        "insert into agenda (user_id, name) values (?, ?);",
+        createAgenda
+    )
+}
+
+# if m_json["op"] == 3:
+try:
+    data: bytes = requestType_to_query[m_json["requestType"]].send(*m_json["data"].values())
+except sqlite3.Error as e:
+    conn.sendall(("{\"errmsg\":\"" + str(e) + "\",\"op\":5}").encode())
+else:
+    conn.sendall(data)
+\end{lstlisting}
+
+\newpage
+\begin{lstlisting}
+class AgendaDAO:
+    def delete(self, agenda: Agenda):
+        self.dbcom.sendall({
+            "data":{
+                "agenda_id": agenda.id
+            },
+            "requestType": "deleteAgenda",
+            "op": 3
+        })
+        return self.dbcom.recv()
+    
+    def get_list(self, user: User) -> list[Agenda]:
+        self.dbcom.sendall({
+            "data": {
+                "user_id": user.id
+            },
+            "requestType": "getAgendaList",
+            "op": 3
+        })
+        r: list[Agenda] = []
+        data: dict = self.dbcom.recv()
+        for agenda in data["data"]["agendaList"]:
+            r.append(Agenda(agenda["id"], agenda["name"]))
+
+        return r
+\end{lstlisting}
+
+\begin{frame}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=\linewidth]{captures/12.png}
+            \caption{MEA}
+    \end{figure}
+\end{frame}
+
+\end{document}
