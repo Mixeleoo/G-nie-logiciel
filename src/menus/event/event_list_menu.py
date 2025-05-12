@@ -74,8 +74,8 @@ class EventListMenu(QDialog):
         Affichage du menu de choix d'action d'un événement
         :param pos: position du menu par rapport à l'événement cliqué
         '''
-        a_lang = {'fr' : ['Modifier évenement','Renommer évenement', 'Annuler évenement', 'Supprimer évenement',"Ajouter à un agenda"],
-                'en' : ['Edit event', 'Rename event', 'Cancel event', 'Delete event',"Add to diary"]}
+        a_lang = {'fr' : ['Modifier évenement','Renommer évenement', 'Annuler évenement', 'Supprimer évenement'],
+                'en' : ['Edit event', 'Rename event', 'Cancel event', 'Delete event']}
 
         item = self.event_list.itemAt(pos)
         if item:
@@ -89,14 +89,12 @@ class EventListMenu(QDialog):
 
             if item.font() != self.cancel_font:
                 modifier_action = menu.addAction(a_lang[self.ui.current_lang][0])
-                add_to_diary_action = menu.addAction(a_lang[self.ui.current_lang][4])
                 renommer_action = menu.addAction(a_lang[self.ui.current_lang][1])
                 annuler_action = menu.addAction(a_lang[self.ui.current_lang][2])
                 supprimer_action = menu.addAction(a_lang[self.ui.current_lang][3])
 
             elif item.font() == self.cancel_font:
                 modifier_action = menu.addAction(a_lang[self.ui.current_lang][0])
-                add_to_diary_action = menu.addAction(a_lang[self.ui.current_lang][4])
                 renommer_action = menu.addAction(a_lang[self.ui.current_lang][1])
                 supprimer_action = menu.addAction(a_lang[self.ui.current_lang][3])
 
@@ -111,8 +109,6 @@ class EventListMenu(QDialog):
                 self.delete_event(item)
             elif action == annuler_action:
                 self.cancel_event(item) # Vachement brut-force le truc
-            elif action == add_to_diary_action:
-                self.add_event_to_diary()
 
     def rename_event(self, item: QListWidgetItem):
         '''
@@ -154,10 +150,3 @@ class EventListMenu(QDialog):
         '''
         DAO.eventdao.cancel(self.get_event_selected(item))
         item.setFont(self.cancel_font) # affichage de l'evenment barré
-
-    def add_event_to_diary(self):
-        '''
-        Crée et ouvre une liste des agenda disponibles pour permettre l'ajout dans l'une d'elle à l'utilisateur
-        :return: None
-        '''
-        print('ajout agenda')
