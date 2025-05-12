@@ -1,25 +1,29 @@
 from PyQt6.QtCore import QPoint, Qt
-from PyQt6.QtWidgets import QWidget, QMenu, QInputDialog, QMessageBox
+from PyQt6.QtWidgets import QWidget, QMenu, QInputDialog, QMessageBox, QVBoxLayout
 
 from src.menus.task.task_menu import TaskMenu
 from src.main import MainWindow
 
 from src.menus.task.task_display import TaskOngoingDisplay, TaskFinishedDisplay
-from src.menus.task.task_list_menu import TaskListMenu
-from src.menus.task.favorite_task_menu import FavoriteTaskMenu
+
+import src.DAO as DAO
 
 class TaskPage(QWidget) :
     def __init__(self, mainpage: MainWindow):
         '''
-        Initialise la page d'acceuil du logiciel
+        Initialise la page d'affichage et gestion des tâches du logiciel
+        : param mainpage: Fenêtre du logiciel
         '''
         super().__init__(mainpage)
         self.ui = mainpage.ui
         self.mainpage = mainpage
 
+
         # initialisation de l'affichage
+        self.ui.ongoing_task_display = TaskOngoingDisplay(self.mainpage, self.ui.frame_task)
+        self.ui.finished_task_display = TaskFinishedDisplay(self.mainpage, self.ui.frame_7)
         self.show_ongoing_task()
-        self.ui.pages_tasks.setCurrentIndex(0)
+
 
         # changement de page vers evenement
         self.ui.event_button_2.clicked.connect(self.goto_event)
@@ -34,14 +38,6 @@ class TaskPage(QWidget) :
         self.ui.finished_task_button.clicked.connect(self.show_finished_task)
         self.ui.back_ftask_button.clicked.connect(self.show_ongoing_task)
 
-        # gestion liste d'agenda
-        self.ui.mytask_box.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
-        self.ui.mytask_box.customContextMenuRequested.connect(self.show_task_menu)
-
-        # gestion liste favoris
-        self.ui.followedtask_box.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
-        self.ui.followedtask_box.customContextMenuRequested.connect(self.show_task_favorite_menu)
-
 
 ############################# gestion changement task to event page ################################
     def goto_event(self):
@@ -54,14 +50,23 @@ class TaskPage(QWidget) :
 ############################# gestion changement task to event page ################################
     def goto_login(self):
         '''
-        Change la page d'affichage du logiciel à la page d'acceuil
+        Change la page d'affichage du logiciel à la page d'acceuil en vidant l'interface de toutes les information lié à l'utilisateur
         :return: None
         '''
         self.ui.pages_logiciel.setCurrentIndex(0)
-        self.ui.mytask_box.clear()
         self.ui.myagenda_box.clear()
-        self.ui.followedtask_box.clear()
         self.ui.followedagenda_box.clear()
+
+        text = self.ui.email_label_e.text()
+        self.ui.email_label_e.setText(text[:len(text) - len(DAO.user.mail)])
+
+        text = self.ui.email_label_t.text()
+        self.ui.email_label_t.setText(text[:len(text) - len(DAO.user.mail)])
+
+        DAO.ftasklist.clear()
+        DAO.ogtasklist.clear()
+        DAO.agendalist.clear()
+        DAO.sharedagendalist.clear()
 
 ############################# gestion ajout evenement ################################
     def add_task(self, mainpage: MainWindow):
@@ -71,37 +76,27 @@ class TaskPage(QWidget) :
         '''
         param_task = TaskMenu(mainpage, self)
         if param_task.exec():
-            print(param_task.get_data())
+            task = param_task.get_data()
+            DAO.taskdao.insert(
+                user=DAO.user,
+                task=task
+            )
+            DAO.tasklist.append(task)
+        self.ui.ongoing_task_display.refresh()
 
 ############################# gestion affichage taches finies ################################
     def show_finished_task(self):
-        curr_task_list = self.ui.mytask_box.currentText() # récupération de la liste d'event actuellement selectionée par l'utilisateur
-        task_list = TaskFinishedDisplay(self.ui.frame_7, curr_task_list)
+        '''
+        Changement vers la page des tâches terminées
+        '''
         self.ui.pages_tasks.setCurrentIndex(1)
+        self.ui.finished_task_display.refresh()
+
 
 ############################# gestion affichage taches finies ################################
     def show_ongoing_task(self):
-        curr_task_list = self.ui.mytask_box.currentText()  # récupération de la liste d'event actuellement selectionée par l'utilisateur
-        task_list = TaskOngoingDisplay(self.ui.frame_task,curr_task_list)
+        '''
+        Changement vers la page des tâches en cours
+        '''
         self.ui.pages_tasks.setCurrentIndex(0)
-
-
-############################# gestion liste taches #########################################
-
-    def show_task_menu(self, pos: QPoint):
-        '''
-        Permet d'ajouter ou supprimer une liste de tâche dans la liste des tâches de l'utilisateur
-        :param pos: Position du menu (en fonction du clic droit)
-        :return: None
-        '''
-        menu = TaskListMenu(self.ui.mytask_box,self.mainpage,pos,self)
-
-    ############################# gestion liste favoris agenda #########################################
-
-    def show_task_favorite_menu(self, pos: QPoint):
-        '''
-        Permet d'ajouter ou supprimer une liste de tâche dans la liste des favoris de l'utilisateur
-        :param pos: Position du menu (en fonction du clic droit)
-        :return: None
-        '''
-        menu = FavoriteTaskMenu(self.ui.followedtask_box,self.mainpage,pos,self)
+        self.ui.ongoing_task_display.refresh()

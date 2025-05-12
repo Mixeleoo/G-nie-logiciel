@@ -14,6 +14,9 @@ import calendar
 
 class Ui_sofware_ui(object):
     def setupUi(self, sofware_ui):
+        '''
+        Classe crée par QtDesigner pour mettre en place l'interface graphique et ses éléments
+        '''
         sofware_ui.setObjectName("sofware_ui")
         sofware_ui.resize(1200, 800)
         self.current_lang = "fr" #langue par défaut
@@ -586,30 +589,6 @@ class Ui_sofware_ui(object):
         font.setBold(True)
         self.new_task_button.setFont(font)
         self.new_task_button.setObjectName("new_task_button")
-        self.mytask_box = QtWidgets.QComboBox(parent=self.page_5)
-        self.mytask_box.setGeometry(QtCore.QRect(10, 180, 161, 44))
-        self.mytask_box.setObjectName("mytask_box")
-        self.task_labrl = QtWidgets.QLabel(parent=self.page_5)
-        self.task_labrl.setGeometry(QtCore.QRect(20, 150, 131, 21))
-        font = QtGui.QFont()
-        font.setFamily("SamsungOneUILatin 700")
-        font.setPointSize(14)
-        font.setBold(True)
-        self.task_labrl.setFont(font)
-        self.task_labrl.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.task_labrl.setObjectName("task_labrl")
-        self.followedtask_box = QtWidgets.QComboBox(parent=self.page_5)
-        self.followedtask_box.setGeometry(QtCore.QRect(10, 330, 161, 44))
-        self.followedtask_box.setObjectName("followedtask_box")
-        self.task_label_2 = QtWidgets.QLabel(parent=self.page_5)
-        self.task_label_2.setGeometry(QtCore.QRect(20, 300, 131, 21))
-        font = QtGui.QFont()
-        font.setFamily("SamsungOneUILatin 700")
-        font.setPointSize(14)
-        font.setBold(True)
-        self.task_label_2.setFont(font)
-        self.task_label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.task_label_2.setObjectName("task_label_2")
         self.pages_tasks = QtWidgets.QStackedWidget(parent=self.page_5)
         self.pages_tasks.setGeometry(QtCore.QRect(180, 40, 830, 700))
         self.pages_tasks.setObjectName("pages_tasks")
@@ -716,6 +695,9 @@ class Ui_sofware_ui(object):
         self.deconnect_button_t.setFont(font)
         self.deconnect_button_t.setObjectName("deconnect_button_t")
 
+        self.ongoing_task_display = None
+        self.finished_task_display = None
+
 
         self.retranslateUi_french(sofware_ui)
         self.pages_logiciel.setCurrentIndex(2)
@@ -724,8 +706,13 @@ class Ui_sofware_ui(object):
         QtCore.QMetaObject.connectSlotsByName(sofware_ui)
 
     def retranslateUi_french(self, sofware_ui):
+        '''
+        Permet de traduire tous les éléments du logiciel vers le français
+        :param software_ui interface graphique
+        :return None
+        '''
         _translate = QtCore.QCoreApplication.translate
-        sofware_ui.setWindowTitle(_translate("sofware_ui", "Form"))
+        sofware_ui.setWindowTitle(_translate("sofware_ui", "Agenda"))
         self.create_account_button.setText(_translate("sofware_ui", "Créer un compte"))
         self.connect_button.setText(_translate("sofware_ui", "Se connecter"))
         self.french_button.setText(_translate("sofware_ui", "Français"))
@@ -746,7 +733,7 @@ class Ui_sofware_ui(object):
         self.label_6.setText(_translate("sofware_ui", "Créez votre compte"))
         self.error_label2.setText("Veuillez entrer le même mot de passe")
         self.error_label4.setText("Veuillez choisir un mot de passe")
-        self.error_label3.setText("Veuillez entrer une adresse mail")
+        self.error_label3.setText("Veuillez entrer une adresse mail valide")
         self.shared_agenda_button.setText("Agendas partagés")
         self.deconnect_button_e.setText("Déconnexion")
         self.deconnect_button_t.setText("Déconnexion")
@@ -774,8 +761,6 @@ class Ui_sofware_ui(object):
         self.event_button_2.setText(_translate("sofware_ui", "E"))
         self.task_button_2.setText(_translate("sofware_ui", "T"))
         self.new_task_button.setText(_translate("sofware_ui", "Nouveau"))
-        self.task_labrl.setText(_translate("sofware_ui", "Mes tâches"))
-        self.task_label_2.setText(_translate("sofware_ui", "Tâches suivis"))
         self.finished_task_button.setText(_translate("sofware_ui", "Tâches terminées"))
         self.back_ftask_button.setText(_translate("sofware_ui", "Tâches en cours"))
         self.myinfo_label_t.setText(_translate("sofware_ui", "Mes information"))
@@ -785,13 +770,13 @@ class Ui_sofware_ui(object):
 
     def retranslateUi_english(self, sofware_ui):
             '''
-            #Permet de traduire l'entièreté du logiciel du français vers l'anglais
+            Permet de traduire l'entièreté du logiciel du français vers l'anglais
 
-            #:param sofware_ui: QWidget sur lequel la traduction s'applique
-            #:return: None
+            :param sofware_ui: QWidget sur lequel la traduction s'applique
+            :return: None
             '''
             _translate = QtCore.QCoreApplication.translate
-            sofware_ui.setWindowTitle(_translate("sofware_ui", "Diary and tasks manager"))
+            sofware_ui.setWindowTitle(_translate("sofware_ui", "Agenda"))
             self.create_account_button.setText(_translate("sofware_ui", "Sign in"))
             self.connect_button.setText(_translate("sofware_ui", "Login"))
             self.french_button.setText(_translate("sofware_ui", "Français"))
@@ -812,7 +797,7 @@ class Ui_sofware_ui(object):
             self.label_6.setText(_translate("sofware_ui", "Create your account"))
             self.error_label2.setText("Please put the same password")
             self.error_label4.setText("Please choose a password")
-            self.error_label3.setText("Please put your email")
+            self.error_label3.setText("Please put a valid email")
             self.set_week_headers(QDate.currentDate(),self.current_lang)
             self.shared_agenda_button.setText("Shared diaries")
             self.deconnect_button_e.setText("Sign out")
@@ -840,8 +825,6 @@ class Ui_sofware_ui(object):
             self.event_button_2.setText(_translate("sofware_ui", "E"))
             self.task_button_2.setText(_translate("sofware_ui", "T"))
             self.new_task_button.setText(_translate("sofware_ui", "New"))
-            self.task_labrl.setText(_translate("sofware_ui", "My tasks"))
-            self.task_label_2.setText(_translate("sofware_ui", "Favorite tasks"))
             self.finished_task_button.setText(_translate("sofware_ui", "Completed tasks"))
             self.back_ftask_button.setText(_translate("sofware_ui", "Ongoing tasks"))
             self.myinfo_label_t.setText(_translate("sofware_ui", "My information"))

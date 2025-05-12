@@ -6,7 +6,8 @@ from src.dataclass.user import User
 class SignInPage(QWidget) :
     def __init__(self, mainpage: MainWindow):
         '''
-        Initialise la page d'acceuil du logiciel
+        Initialise la page de création de compte du logiciel
+        : param mainpage: Fenêtre du logiciel
         '''
         super().__init__(mainpage)
         self.ui = mainpage.ui
@@ -37,23 +38,19 @@ class SignInPage(QWidget) :
         :return: None
         '''
 
+        user = User(mail=self.ui.email_line_connection_2.text(), mdp=self.ui.password_line_connection_2.text())
+
         if not self.check_password_repeat():
             self.ui.error_label2.show()
 
-        # TODO CR2ER SON PROPRE MESSAGE DERREUR A LADRESSE MAIL DEJA EXISTANTE
-        elif self.ui.email_line_connection_2.text().strip() == "" or DAO.userdao.is_valid(DAO.user):
+        elif self.ui.email_line_connection_2.text().strip() == "" or DAO.userdao.is_valid(user):
             self.ui.error_label3.show()
         elif self.ui.password_line_connection_2.text().strip() == "" or self.ui.passwordconfirm_line_connection_2.text().strip() == "":
             self.ui.error_label4.show()
         else :
             self.ui.pages_logiciel.setCurrentIndex(1) # ouvre la page de connexion
+            DAO.userdao.insert(user)
             self.clear_all()
-            DAO.userdao.insert(
-                User(
-                    mail=self.ui.email_line_connection_2.text(),
-                    mdp=self.ui.password_line_connection_2.text()
-                )
-            )
 
     def check_password_repeat(self) -> bool:
         '''
@@ -63,6 +60,9 @@ class SignInPage(QWidget) :
         return self.ui.password_line_connection_2.text() == self.ui.passwordconfirm_line_connection_2.text()
 
     def clear_all(self):
+        '''
+        Vide tous les input et efface les messages d'erreur
+        '''
         self.ui.password_line_connection_2.clear()
         self.ui.passwordconfirm_line_connection_2.clear()
         self.ui.email_line_connection_2.clear()

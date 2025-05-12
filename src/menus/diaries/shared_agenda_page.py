@@ -2,11 +2,15 @@ from PyQt6 import QtWidgets
 from PyQt6.QtCore import QDate, QPoint, Qt
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QMenu, QListWidgetItem
 import src.DAO as DAO
+from src.DAO import pendingsharedagendalist
 from src.dataclass.agenda import Agenda
 
 
 class SharedAgendaMenu(QDialog):
-    def __init__(self, mainpage , eventpage):
+    def __init__(self, mainpage, eventpage):
+        '''
+        Gestion de la fenêtre de partage d'agenda
+        '''
         super().__init__(parent=eventpage)
 
         self.ui = mainpage.ui
@@ -33,6 +37,9 @@ class SharedAgendaMenu(QDialog):
         self.shared_list.customContextMenuRequested.connect(self.show_shared_menu)
 
     def show_shared_menu(self, pos: QPoint):
+        '''
+        Propose à l'utilisateur d'accepter ou refuser un agenda qui lui a été partagé
+        '''
         a_lang = {'fr' : ['Accepter','Refuser'],
                 'en' : ['Accept', 'Deny']}
 
@@ -67,7 +74,16 @@ class SharedAgendaMenu(QDialog):
         DAO.agendadao.accept_shared_agenda(
             DAO.user, self.selected_agenda
         )
+
+        # Dans tous les cas on supprime l'agenda des choix visuels
         self.shared_list.takeItem(self.shared_list.row(item))
+
+        # On supprime l'agenda dans la liste
+        DAO.pendingsharedagendalist.remove(self.selected_agenda)
+
+        DAO.sharedagendalist.append(self.selected_agenda)
+
+        self.ui.followedagenda_box.addItem(self.selected_agenda.name)
 
     def deny_agenda(self, item : QListWidgetItem):
         '''
@@ -77,4 +93,9 @@ class SharedAgendaMenu(QDialog):
         DAO.agendadao.deny_shared_agenda(
             DAO.user, self.selected_agenda
         )
+
+        # Dans tous les cas on supprime l'agenda des choix visuels
         self.shared_list.takeItem(self.shared_list.row(item))
+
+        # On supprime l'agenda dans la liste
+        DAO.pendingsharedagendalist.remove(self.selected_agenda)

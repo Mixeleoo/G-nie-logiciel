@@ -1,14 +1,14 @@
-from PyQt6.QtWidgets import QDialog, QLabel, QLineEdit, QPushButton, QVBoxLayout
+from PyQt6.QtWidgets import QVBoxLayout, QLineEdit, QLabel, QPushButton, QDialog
 
 
-class RenameEventMenu(QDialog) :
-    def __init__(self, mainpage, eventpage):
+class RenameTaskMenu(QDialog) :
+    def __init__(self, mainpage, taskpage):
         '''
-        Fenêtre pour renomment un évenment
+        Fenêtre pour renommer une tâche
         '''
-        super().__init__(parent=eventpage)
+        super().__init__(parent=taskpage)
         self.ui = mainpage.ui
-        
+
         layout = QVBoxLayout(self)
 
         self.new_name_label = QLabel()
@@ -26,17 +26,19 @@ class RenameEventMenu(QDialog) :
         self.ok_button.clicked.connect(self.accept)
         self.cancel_button.clicked.connect(self.reject)
 
+
+
         if self.ui.current_lang == 'fr':
-            self.setWindowTitle('Renommer évenement')
+            self.setWindowTitle('Renommer Tâche')
             self.new_name_label.setText("Nom")
             self.ok_button.setText("Valider")
             self.cancel_button.setText("Annuler")
 
         elif self.ui.current_lang == 'en':
-            self.setWindowTitle("Rename event")
+            self.setWindowTitle("Rename task")
             self.new_name_label.setText("Name")
             self.ok_button.setText("Ok")
             self.cancel_button.setText("Cancel")
 
-    def get_new_data(self) -> str:
+    def get_new_name(self) -> str:
         return self.new_name.text()

@@ -86,6 +86,7 @@ class EventDAO:
             r.append(
                 Event(
                     event["id"],
+                    agenda.id,
                     event["name"],
                     event["cancel"],
                     event["start"],

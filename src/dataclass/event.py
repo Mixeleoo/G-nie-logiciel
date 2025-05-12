@@ -6,6 +6,7 @@ from datetime import date
 @dataclass
 class Event:
     id: int = -1
+    agenda_id: int = -1
     name: str = ""
     cancel: bool = False
 
