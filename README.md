@@ -1,6 +1,3 @@
-# G-nie-logiciel
----
-
 # Projet Génie Logiciel - Gestion d'agenda
 
 Ce projet contient une application client-serveur développée en Python.
